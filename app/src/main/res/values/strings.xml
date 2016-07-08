@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Time Work</string>
+    <string name="title_activity_landing_page">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Routine Alert dialog string constants-->
+    <string name="dialog_routine_title">Add Routine event</string>
+    <string name="dialog_routine_positive_btn">Save</string>
+    <string name="event_name">Event Name</string>
+    <string name="repeat_string">Repeat</string>
+
+    <!--Array for the spinner in create routine-->
+    <string-array name="type_create_routine">
+        <item>Work</item>
+        <item>Hobbies</item>
+        <item>Personal</item>
+    </string-array>
+    <string name="title_activity_task_page">TaskPageActivity</string>
+</resources>
