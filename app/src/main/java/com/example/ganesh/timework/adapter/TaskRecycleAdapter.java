@@ -4,15 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.ListItemTemp;
-
-import java.util.zip.Inflater;
 
 /**
  * Created by Ganesh Prasad on 07-07-2016.
@@ -41,7 +38,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mTaskItemArray.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

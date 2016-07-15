@@ -7,9 +7,6 @@
 
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!--Routine Alert dialog string constants-->
     <string name="dialog_routine_title">Add Routine event</string>
     <string name="dialog_routine_positive_btn">Save</string>
@@ -23,4 +20,7 @@
         <item>Personal</item>
     </string-array>
     <string name="title_activity_task_page">TaskPageActivity</string>
+    <string name="task_name">Task name</string>
+    <string name="select_date">Select Date</string>
+    <string name="pick_time">Pick time</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.ganesh.timework.ui;
+package com.example.ganesh.timework.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -78,7 +78,6 @@ public class CreateRoutineFragment extends DialogFragment {
 //            TODO save routine
             return true;
         }else if (id == android.R.id.home) {
-//            TODO close routine
             dismiss();
             return true;
         }

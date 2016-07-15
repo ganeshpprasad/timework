@@ -1,0 +1,30 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 261 ciObject found
+ciMethod java/lang/Object <init> ()V 4097 1 35706 0 0
+ciMethod java/lang/Object hashCode ()I 2049 1 256 0 -1
+ciMethod java/lang/Object equals (Ljava/lang/Object;)Z 4097 1 1171 0 0
+ciMethod java/lang/String hashCode ()I 2801 32769 1356 0 288
+ciMethod java/util/ArrayList size ()I 1089 1 136 0 0
+ciMethod java/util/ArrayList elementData (I)Ljava/lang/Object; 2185 1 17715 0 0
+ciMethod java/util/ArrayList get (I)Ljava/lang/Object; 2185 1 14240 0 128
+ciMethod java/util/ArrayList rangeCheck (I)V 2185 1 17697 0 0
+ciMethod java/util/HashMap hash (Ljava/lang/Object;)I 2049 1 12870 0 0
+ciMethod java/util/HashMap get (Ljava/lang/Object;)Ljava/lang/Object; 2153 1 6358 0 0
+ciMethod java/util/HashMap getNode (ILjava/lang/Object;)Ljava/util/HashMap$Node; 2081 25 9394 0 0
+ciMethod java/util/HashMap put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 2049 1 1974 0 0
+ciMethod java/util/HashMap putVal (ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; 2041 329 2002 0 0
+ciMethod java/util/HashMap resize ()[Ljava/util/HashMap$Node; 177 5193 131 0 0
+ciMethod java/util/HashMap treeifyBin ([Ljava/util/HashMap$Node;I)V 0 0 1 0 -1
+ciMethod java/util/HashMap newNode (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/HashMap$Node;)Ljava/util/HashMap$Node; 2049 1 1664 0 0
+ciMethod java/util/HashMap afterNodeAccess (Ljava/util/HashMap$Node;)V 3113 1 321 0 0
+ciMethod java/util/HashMap afterNodeInsertion (Z)V 2049 1 1284 0 0
+ciMethod java/util/HashMap$Node <init> (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/HashMap$Node;)V 2049 1 1682 0 0
+ciMethodData java/lang/Object <init> ()V 2 35902 orig 264 136 112 165 87 0 0 0 0 136 4 73 20 0 0 0 0 32 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 225 81 4 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 255 255 255 255 0 0 0 0 0 0 0 0 data 0 oops 0
+ciMethod java/util/HashMap$TreeNode getTreeNode (ILjava/lang/Object;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethod java/util/HashMap$TreeNode putTreeVal (Ljava/util/HashMap;[Ljava/util/HashMap$Node;ILjava/lang/Object;Ljava/lang/Object;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethod java/util/HashMap$TreeNode split (Ljava/util/HashMap;[Ljava/util/HashMap$Node;II)V 0 0 1 0 -1
+ciMethodData java/lang/String hashCode ()I 2 20663 orig 264 136 112 165 87 0 0 0 0 128 79 73 20 0 0 0 0 152 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 16 0 0 113 31 0 0 185 5 2 0 0 0 0 0 0 0 0 0 2 0 0 0 1 0 11 0 2 0 0 0 120 0 0 0 255 255 255 255 7 0 6 0 0 0 0 0 data 15 0x60007 0x120 0x78 0x2ce 0xe0007 0x1 0x58 0x2cd 0x1e0007 0x2cd 0x38 0x40ab 0x2d0003 0x40ab 0xffffffffffffffe0 oops 0
+ciMethod java/util/HashSet add (Ljava/lang/Object;)Z 4097 1 680 0 0
+ciMethodData java/util/HashMap hash (Ljava/lang/Object;)I 2 12889 orig 264 136 112 165 87 0 0 0 0 32 189 88 20 0 0 0 0 176 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
