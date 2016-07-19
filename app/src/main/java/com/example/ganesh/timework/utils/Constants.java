@@ -15,4 +15,19 @@ public class Constants {
         public static final int SUNDAY = 7;
     }
 
+    public static final class RoutineTypes {
+
+        public static final String PERSONAL = "personal";
+        public static final String WORK = "work";
+        public static final String HOBBY = "hobby";
+
+    }
+
+    public static final class RoutineBoolean {
+
+        public static final int TRUE = 1;
+        public static final int FALSE = 0;
+
+    }
+
 }

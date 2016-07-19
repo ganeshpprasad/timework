@@ -19,9 +19,9 @@ public final class DatabaseContract {
 
     public final static Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    private static final String PATH_ROUTINE = "routine";
-    private static final String PATH_TASK = "task";
-    private static final String PATH_NOTE = "note";
+    public static final String PATH_ROUTINE = "routine";
+    public static final String PATH_TASK = "task";
+    public static final String PATH_NOTE = "note";
 
     //    Empty constructor
     public DatabaseContract() {
@@ -85,6 +85,10 @@ public final class DatabaseContract {
                         type).build();
                 default: return null;
             }
+        }
+
+        public static String getIdFromUri( Uri uri ) {
+            return uri.getPathSegments().get(1);
         }
 
         public static String getColumnDayFromUri(Uri uri) {
