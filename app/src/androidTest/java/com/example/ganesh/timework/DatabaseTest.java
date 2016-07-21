@@ -17,9 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Created by Ganesh Prasad on 16-07-2016.
  */
@@ -33,11 +30,9 @@ public class DatabaseTest extends InstrumentationTestCase {
 
     @Before
     public void setUp() throws Exception{
-
         mContext = InstrumentationRegistry.getTargetContext();
         assertTrue( mContext != null );
         mContext.deleteDatabase(DatabaseHelper.DATABASE_NAME);
-
     }
 
     @Test

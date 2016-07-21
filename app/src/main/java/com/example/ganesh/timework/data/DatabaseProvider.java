@@ -20,7 +20,7 @@ public class DatabaseProvider extends ContentProvider {
     private static final int ROUTINE_TABLE_WITH_DAY = 104;
 
     private static final UriMatcher sUriMatcher = getUriMatcher();
-    private DatabaseHelper mOpenDbHelper;
+    public DatabaseHelper mOpenDbHelper;
     private static SQLiteQueryBuilder sRoutineQueryBuilder;
 
     static {
@@ -84,10 +84,6 @@ public class DatabaseProvider extends ContentProvider {
                 sortOrder
         );
     }
-
-//    a selection string for the method getRoutineWithType() to hold the day and the type
-//    private static final String sSelectionRoutineDayAndType =
-//        DatabaseContract.RoutineContract.COL
 
 //    Method to retuen the filtered rows of the day based on the type in the uri
     private Cursor getRoutineWithType( Uri uri , String[] projection , String sortOrder ) {
@@ -179,16 +175,21 @@ public class DatabaseProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         int match = sUriMatcher.match(uri);
-
+        Uri returnUri;
         switch (match) {
 
             case ROUTINE_TABLE : {
-                mOpenDbHelper.getWritableDatabase().insert(
+                long id = mOpenDbHelper.getWritableDatabase().insert(
                         DatabaseContract.RoutineContract.TABLE_NAME ,
                         null ,
                         values
-                );
-                return uri;
+                        );
+                if ( id > 0 ) {
+                    returnUri = DatabaseContract.RoutineContract.buildRoutineUri( id );
+                    return returnUri;
+                } else {
+                    return null;
+                }
             }
 
             default: return null;

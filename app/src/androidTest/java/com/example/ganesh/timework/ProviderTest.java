@@ -1,14 +1,23 @@
 package com.example.ganesh.timework;
 
+import android.app.Instrumentation;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.InstrumentationTestCase;
 import android.test.ProviderTestCase2;
+import android.test.mock.MockContentResolver;
+import android.util.Log;
 
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.DatabaseHelper;
@@ -19,57 +28,97 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Created by Ganesh Prasad on 18-07-2016.
  */
-public class ProviderTest extends ProviderTestCase2<DatabaseProvider> {
+@RunWith(AndroidJUnit4.class)
+public class ProviderTest extends InstrumentationTestCase {
+
+//    public ProviderTest() {
+//        super( DatabaseProvider.class , DatabaseContract.CONTENT_AUTHORITY);
+//    }
+
 
     public ProviderTest() {
-        super( DatabaseProvider.class , DatabaseContract.CONTENT_AUTHORITY);
+        super();
     }
 
+    Context mContext;
+    DatabaseHelper databaseHelper;
+    ContentResolver contentResolver;
+    SQLiteDatabase db;
+    private static final String LOG_TAG = "Provider Test Log tag";
+
+
+//    @Override
+//    public void setUp() throws Exception {
+//        super.setUp();
+//        initialSetup();
+//    }
+
     @Before
-    public void providerRegistryTest(){
+    public void initialSetup(){
+
+        mContext = InstrumentationRegistry.getContext();
+        assertNotNull(mContext);
+
+        contentResolver = mContext.getContentResolver();
+        assertNotNull(contentResolver);
+
+        injectInstrumentation( InstrumentationRegistry.getInstrumentation() );
+
+        Log.d( LOG_TAG , "Setup method" );
+
+//        deleteRecords();
 
         PackageManager pm = mContext.getPackageManager();
-
         ComponentName cn = new ComponentName( mContext.getPackageName() , DatabaseProvider.class.getName() );
 
         try {
-
             ProviderInfo pi = pm.getProviderInfo( cn , 0 );
-
+            Log.d( LOG_TAG , pi.authority );
             assertEquals( pi.authority , DatabaseContract.CONTENT_AUTHORITY );
-
         } catch (Exception e ) {
             e.printStackTrace();
         }
 
     }
 
-    @Test
-    public void typeTest(){
+    public void getType(){
+
+//        deleteRecords();
+
+        Log.d( LOG_TAG , "Type test method" );
 
         long testIdRoutine = 1;
         Uri uriRoutine = DatabaseContract.RoutineContract.buildRoutineUri(testIdRoutine);
 
-        String type = getMockContentResolver().getType(uriRoutine);
+        String type = contentResolver.getType(uriRoutine);
         assertEquals( type , DatabaseContract.RoutineContract.CONTENT_ITEM_TYPE );
 
         uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithDay(Constants.Days.MONDAY);
-        type = getMockContentResolver().getType(uriRoutine);
+        type = contentResolver.getType(uriRoutine);
         assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
 
         uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithType( Constants.RoutineTypes.PERSONAL ,
                 Constants.Days.MONDAY );
-        type = getMockContentResolver().getType(uriRoutine);
+        type = contentResolver.getType(uriRoutine);
         assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
 
     }
 
     @Test
-    public void insertTest() {
+    public void insert() {
+
+        Log.d( LOG_TAG , "Insert test method" );
+
+        databaseHelper = new DatabaseHelper(getInstrumentation().getTargetContext());
+        assertNotNull(databaseHelper);
+        db = databaseHelper.getWritableDatabase();
+        assertTrue( db.isOpen() );
+        deleteRecords();
 
 //        The Uri required for database from database contract - CONTENT_URI of the RoutineTable
         Uri uriRoutineInsert = DatabaseContract.RoutineContract.CONTENT_URI;
@@ -77,21 +126,75 @@ public class ProviderTest extends ProviderTestCase2<DatabaseProvider> {
         ContentValues mockValues = TestUtils.getMockRoutineValues();
 
 //        Insert called on mock content resolver
-        Uri uriRoutineInsertResult = getMockContentResolver().insert( uriRoutineInsert ,  mockValues );
-        assertTrue( uriRoutineInsertResult != null );
+        Uri uriRoutineInsertResult = contentResolver.insert( uriRoutineInsert ,  mockValues );
+        assertNotNull( uriRoutineInsertResult);
+        Log.d( LOG_TAG , uriRoutineInsertResult.toString() );
+
 //        id for testing the read back from the database also testing insertion
-        long id = ContentUris.parseId(uriRoutineInsert);
+        long id = ContentUris.parseId(uriRoutineInsertResult);
         assertTrue( id != -1 );
 
-        Uri uriRoutineRead = DatabaseContract.RoutineContract.buildRoutineUri(id);
-        Cursor cursor = getMockContentResolver().query( uriRoutineRead , null ,null , null , null );
+//        Uri uriRoutineRead = DatabaseContract.RoutineContract.buildRoutineUri(id);
+        Cursor cursor = contentResolver.query( uriRoutineInsert , null ,null , null , null );
         assertTrue( cursor != null );
         if ( cursor.moveToFirst() ) {
             TestUtils.validateDbValues( cursor , mockValues );
         }
 
+        Log.d( LOG_TAG , "finished" );
+
     }
 
+    public void queryForADay() {
 
+        Log.v( LOG_TAG , "query for the day test" );
+
+        Uri uriInsert = DatabaseContract.RoutineContract.CONTENT_URI;
+
+        ContentValues record1 = TestUtils.getMockRoutineValues( "jog" , 1 ,
+                Constants.RoutineTypes.HOBBY , 1 , 1 , 1 , 1 , 1 , 1 , 0);
+        ContentValues record2 = TestUtils.getMockRoutineValues( "water" , 1 ,
+                Constants.RoutineTypes.PERSONAL , 1 , 1 , 1 , 1 , 1 , 1 , 1);
+        ContentValues record3 = TestUtils.getMockRoutineValues( "eat" , 0 ,
+                Constants.RoutineTypes.PERSONAL , 1 , 1 , 1 , 0 , 1 , 1 , 0);
+        ContentValues record4 = TestUtils.getMockRoutineValues( "work 1" , 1 ,
+                Constants.RoutineTypes.WORK , 1 , 0 , 1 , 0 , 1 , 1 , 0);
+        ContentValues record5 = TestUtils.getMockRoutineValues( " work 2" , 1 ,
+                Constants.RoutineTypes.WORK , 1 , 1 , 1 , 1 , 0 , 0 , 0);
+        ContentValues record6 = TestUtils.getMockRoutineValues( " work 3" , 1 ,
+                Constants.RoutineTypes.WORK , 0 , 0 , 0 , 0 , 1 , 1 , 1);
+
+        Uri insert1 = contentResolver.insert( uriInsert , record1 );
+        assertNotNull( insert1 );
+
+        Uri insert2 = contentResolver.insert( uriInsert , record2 );
+        assertNotNull( insert2 );
+
+        Uri insert3 = contentResolver.insert( uriInsert , record3 );
+        assertNotNull( insert3 );
+
+        Uri insert4 = contentResolver.insert( uriInsert , record4 );
+        assertNotNull( insert4 );
+
+        Uri insert5 = contentResolver.insert( uriInsert , record5 );
+        assertNotNull( insert5 );
+
+
+
+    }
+
+//    Method to delete all the previous records at the beginning. Called at Before class
+    public void deleteRecords(){
+
+        Log.d( LOG_TAG , "Delete Records method" );
+
+        long deleteId = db.delete( DatabaseContract.RoutineContract.TABLE_NAME , null , null );
+        assertTrue( deleteId != -1 );
+
+        Cursor cursor = db.query( DatabaseContract.RoutineContract.TABLE_NAME , null , null , null ,null ,null ,null );
+        assertEquals( cursor.getCount() , 0 );
+        cursor.close();
+
+    }
 
 }

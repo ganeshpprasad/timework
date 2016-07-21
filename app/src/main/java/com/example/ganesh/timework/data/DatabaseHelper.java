@@ -14,14 +14,13 @@ import com.example.ganesh.timework.data.DatabaseContract.NotesContract;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String LOG_TAG = "DatabaseHelper Log";
+//    private static final String LOG_TAG = "DatabaseHelper Log";
 
     public static final String DATABASE_NAME = "timework.db";
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.d( LOG_TAG , "Before calling on create" + context);
     }
 
     private static final String PRIMARY_KEY = " INTEGER PRIMARY KEY";
@@ -74,13 +73,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d( LOG_TAG , "Before Creating any table" );
         db.execSQL(SQL_CREATE_NOTE_TABLE);
-        Log.d( LOG_TAG , "Before Creating task and routine table" );
         db.execSQL(SQL_CREATE_ROUTINE_TABLE);
-        Log.d( LOG_TAG , "Before Creating task table" );
         db.execSQL(SQL_CREATE_TASK_TABLE);
-        Log.d( LOG_TAG , "After Creating all the table" );
     }
 
     @Override

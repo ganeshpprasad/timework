@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public class TestUtils extends AndroidTestCase {
 
+    private static final String LOG_TAG = "Test Util Log";
+
     public static ContentValues getMockRoutineValues(){
 
         ContentValues contentValues = new ContentValues();
@@ -35,9 +37,29 @@ public class TestUtils extends AndroidTestCase {
 
     }
 
-    public static void validateDbValues(Cursor valueCursor , ContentValues expectedValues ) {
+    public static ContentValues getMockRoutineValues( String name , int notify , String type ,
+                                                      int mon , int tue , int wed , int thu , int fri , int sat , int sun) {
 
-        String error = " Routine query validation ";
+        Log.d( LOG_TAG , "values inserted" + name );
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_ROUTINE_NAME , name );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_ROUTINE_NOTIFY , notify );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_ROUTINE_TYPE , type );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_MON , mon );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_TUE , tue );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_WED , wed );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_THU , thu );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_FRI , fri );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_SAT , sat );
+        contentValues.put( DatabaseContract.RoutineContract.COLUMN_DAY_SUN , sun );
+
+        return contentValues;
+
+    }
+
+    public static void validateDbValues(Cursor valueCursor , ContentValues expectedValues ) {
 
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
         for (Map.Entry<String, Object> entry : valueSet) {
@@ -46,7 +68,7 @@ public class TestUtils extends AndroidTestCase {
             int idx = valueCursor.getColumnIndex(columnName);
             assertFalse(idx == -1);
             String expectedValue = entry.getValue().toString();
-
+            Log.d( LOG_TAG + "/validate" , valueCursor.getString(idx) );
             assertEquals(expectedValue, valueCursor.getString(idx));
         }
 
