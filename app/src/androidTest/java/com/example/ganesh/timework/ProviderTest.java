@@ -19,6 +19,7 @@ import android.test.ProviderTestCase2;
 import android.test.mock.MockContentResolver;
 import android.util.Log;
 
+import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.DatabaseHelper;
 import com.example.ganesh.timework.data.DatabaseProvider;
@@ -71,7 +72,11 @@ public class ProviderTest extends InstrumentationTestCase {
 
         Log.d( LOG_TAG , "Setup method" );
 
-//        deleteRecords();
+        databaseHelper = new DatabaseHelper(getInstrumentation().getTargetContext());
+        assertNotNull(databaseHelper);
+        db = databaseHelper.getWritableDatabase();
+        assertTrue( db.isOpen() );
+        deleteRecords();
 
         PackageManager pm = mContext.getPackageManager();
         ComponentName cn = new ComponentName( mContext.getPackageName() , DatabaseProvider.class.getName() );
@@ -109,16 +114,9 @@ public class ProviderTest extends InstrumentationTestCase {
 
     }
 
-    @Test
     public void insert() {
 
         Log.d( LOG_TAG , "Insert test method" );
-
-        databaseHelper = new DatabaseHelper(getInstrumentation().getTargetContext());
-        assertNotNull(databaseHelper);
-        db = databaseHelper.getWritableDatabase();
-        assertTrue( db.isOpen() );
-        deleteRecords();
 
 //        The Uri required for database from database contract - CONTENT_URI of the RoutineTable
         Uri uriRoutineInsert = DatabaseContract.RoutineContract.CONTENT_URI;
@@ -128,7 +126,6 @@ public class ProviderTest extends InstrumentationTestCase {
 //        Insert called on mock content resolver
         Uri uriRoutineInsertResult = contentResolver.insert( uriRoutineInsert ,  mockValues );
         assertNotNull( uriRoutineInsertResult);
-        Log.d( LOG_TAG , uriRoutineInsertResult.toString() );
 
 //        id for testing the read back from the database also testing insertion
         long id = ContentUris.parseId(uriRoutineInsertResult);
@@ -145,6 +142,7 @@ public class ProviderTest extends InstrumentationTestCase {
 
     }
 
+    @Test
     public void queryForADay() {
 
         Log.v( LOG_TAG , "query for the day test" );
@@ -165,21 +163,52 @@ public class ProviderTest extends InstrumentationTestCase {
                 Constants.RoutineTypes.WORK , 0 , 0 , 0 , 0 , 1 , 1 , 1);
 
         Uri insert1 = contentResolver.insert( uriInsert , record1 );
-        assertNotNull( insert1 );
+        long id1 = ContentUris.parseId( insert1 );
+        assertTrue( id1 != -1 );
+        Log.d( LOG_TAG , insert1.toString() );
 
         Uri insert2 = contentResolver.insert( uriInsert , record2 );
-        assertNotNull( insert2 );
+        long id2 = ContentUris.parseId( insert2 );
+        assertTrue( id2 != -1 );
+        Log.d( LOG_TAG , insert2.toString() );
 
         Uri insert3 = contentResolver.insert( uriInsert , record3 );
-        assertNotNull( insert3 );
+        long id3 = ContentUris.parseId( insert3 );
+        assertTrue( id3 != -1 );
+        Log.d( LOG_TAG , insert3.toString() );
 
         Uri insert4 = contentResolver.insert( uriInsert , record4 );
-        assertNotNull( insert4 );
+        long id4 = ContentUris.parseId( insert4 );
+        assertTrue( id4 != -1 );
+        Log.d( LOG_TAG , insert4.toString() );
 
         Uri insert5 = contentResolver.insert( uriInsert , record5 );
-        assertNotNull( insert5 );
+        long id5 = ContentUris.parseId( insert5 );
+        assertTrue( id5 != -1 );
+        Log.d( LOG_TAG , insert5.toString() );
 
+        Uri insert6 = contentResolver.insert( uriInsert , record6 );
+        long id6 = ContentUris.parseId( insert6 );
+        assertTrue( id6 != -1 );
+        Log.d( LOG_TAG , insert6.toString() );
 
+        Cursor cursor1 = contentResolver.query( DatabaseContract.RoutineContract.buildRoutineUriWithDay( Constants.Days.FRIDAY ) ,
+                null , null , null , null);
+        assertNotNull( cursor1 );
+        if ( cursor1.moveToFirst() ) {
+
+            do {
+
+                String name = cursor1.getString( cursor1.getColumnIndexOrThrow( DatabaseContract.RoutineContract.COLUMN_ROUTINE_NAME ) );
+                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_NAME + name );
+                String type = cursor1.getString( cursor1.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_TYPE ) );
+                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_TYPE + type );
+                int notify = cursor1.getInt( cursor1.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_NOTIFY ) );
+                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_NOTIFY + " " + notify );
+
+            }while ( cursor1.moveToNext() );
+
+        }
 
     }
 

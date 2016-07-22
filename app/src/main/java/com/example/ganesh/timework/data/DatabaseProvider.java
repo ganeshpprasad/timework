@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by Ganesh Prasad on 15-07-2016.
  */
 public class DatabaseProvider extends ContentProvider {
+
+    private static final String LOG_TAG = "Data Provider";
 
     private static final int ROUTINE_TABLE = 101;
     private static final int ROUTINE_TABLE_ID = 102;
