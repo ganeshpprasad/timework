@@ -30,4 +30,45 @@ public class Constants {
 
     }
 
+    public static final class DayGroups {
+
+        public static final int WEEKDAYS = 1;
+        public static final int ALLDAYS = 2;
+        public static final int CUSTOM = 3;
+
+    }
+
+    public static int[] getDaysArray( int days ){
+
+        int[] array;
+
+        if ( days == DayGroups.WEEKDAYS ) {
+            array = new int[] { 1 , 1 , 1 , 1 , 1 , 0 , 0 };
+        }else if ( days == DayGroups.ALLDAYS ) {
+            array = new int[] { 1 , 1 , 1 , 1 , 1 , 1 , 1 };
+        }else {
+            return null;
+        }
+
+        return array;
+    }
+
+    public static String getTypeOfRoutine( int typeSelected ) {
+
+        switch ( typeSelected ) {
+
+            case 0 : return RoutineTypes.HOBBY;
+            case 1 : return  RoutineTypes.PERSONAL;
+            case 2 : return  RoutineTypes.WORK;
+            default: return null;
+        }
+    }
+
+    public static int booleanToInt( boolean bool ) {
+
+        if ( bool ) return 1;
+        else return 0;
+
+    }
+
 }

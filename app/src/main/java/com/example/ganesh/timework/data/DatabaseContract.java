@@ -38,9 +38,20 @@ public final class DatabaseContract {
 
         public static final String TABLE_NAME = "routine";
 
+//        Columns
+
         public static final String COLUMN_ROUTINE_NAME = "name";
+
+//        Boolean(stored as integer) for reminder
         public static final String COLUMN_ROUTINE_NOTIFY = "notify";
+
+//        Has only 3 values - HOBBY  , PRESONAL , WORK [for now]
         public static final String COLUMN_ROUTINE_TYPE = "type";
+
+        public static final String COLUMN_ROUTINE_TIME_HOUR = "hour";
+        public static final String COLUMN_ROUTINE_TIME_MINUTES = "minutes";
+
+//        Days the routine will be repeated
         public static final String COLUMN_DAY_MON = "mon";
         public static final String COLUMN_DAY_TUE = "tue";
         public static final String COLUMN_DAY_WED = "wed";
@@ -48,6 +59,13 @@ public final class DatabaseContract {
         public static final String COLUMN_DAY_FRI = "fri";
         public static final String COLUMN_DAY_SAT = "sat";
         public static final String COLUMN_DAY_SUN = "sun";
+
+        public static String[] getColumnNameDaysArray(){
+
+            String[] daysColumnArray = new String[]{ COLUMN_DAY_MON , COLUMN_DAY_TUE , COLUMN_DAY_WED ,
+            COLUMN_DAY_THU , COLUMN_DAY_FRI , COLUMN_DAY_SAT , COLUMN_DAY_SUN};
+            return daysColumnArray;
+        }
 
 //        Helper methods to return uris
         public static Uri buildRoutineUri(long id) {
@@ -69,20 +87,13 @@ public final class DatabaseContract {
 
         public static Uri buildRoutineUriWithType( String type , int day ) {
             switch (day) {
-                case Days.MONDAY : return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_MON).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.TUESDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_TUE).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.WEDNESDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_WED).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.THURSDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_THU).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.FRIDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_FRI).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.SATURDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_SAT).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
-                case Days.SUNDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_SUN).appendQueryParameter(COLUMN_ROUTINE_TYPE ,
-                        type).build();
+                case Days.MONDAY : return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_MON).appendPath(type).build();
+                case Days.TUESDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_TUE).appendPath(type).build();
+                case Days.WEDNESDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_WED).appendPath(type).build();
+                case Days.THURSDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_THU).appendPath(type).build();
+                case Days.FRIDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_FRI).appendPath(type).build();
+                case Days.SATURDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_SAT).appendPath(type).build();
+                case Days.SUNDAY: return CONTENT_URI.buildUpon().appendPath(COLUMN_DAY_SUN).appendPath(type).build();
                 default: return null;
             }
         }

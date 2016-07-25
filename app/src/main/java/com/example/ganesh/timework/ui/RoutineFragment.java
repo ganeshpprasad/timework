@@ -47,7 +47,7 @@ public class RoutineFragment extends Fragment {
         assert viewPager != null;
         viewPager.setAdapter(sectionsPagerAdapter);
 
-//        TableLayout implementation
+//        TabLayout implementation
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabs_routine_fragment);
         assert tabLayout != null;
         tabLayout.setupWithViewPager(viewPager);

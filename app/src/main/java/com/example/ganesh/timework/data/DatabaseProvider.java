@@ -94,7 +94,9 @@ public class DatabaseProvider extends ContentProvider {
         String day = DatabaseContract.RoutineContract.getColumnDayFromUri(uri);
         String type = DatabaseContract.RoutineContract.getRoutineType(uri);
 
-        String selection = day + " = ? AND " + DatabaseContract.RoutineContract.CONTENT_TYPE +
+        Log.d( LOG_TAG , day + " " + type );
+
+        String selection = day + " = ? AND " + DatabaseContract.RoutineContract.COLUMN_ROUTINE_TYPE +
                 " = ? ";
         String[] selectionArgs = new String[] {"1" , type};
 

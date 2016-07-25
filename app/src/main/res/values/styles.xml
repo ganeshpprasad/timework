@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Theme for action bar -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -17,6 +18,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!-- Tab style -->
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">16dp</item>
@@ -25,10 +27,15 @@
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
     </style>
 
-    <!-- for text -->
+    <!-- for text in tab -->
     <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18sp</item>
         <item name="textAllCaps">false</item>
+    </style>
+
+    <!-- Style for heading in forums -->
+    <style name="TextStyleForHeadings" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

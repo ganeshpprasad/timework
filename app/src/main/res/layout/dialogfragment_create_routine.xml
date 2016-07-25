@@ -20,7 +20,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_dialogfragment"
+                android:id="@+id/toolbar_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -41,12 +41,18 @@
                 android:paddingStart="8dp">
 
                 <EditText
-                    android:id="@+id/event_name_dialogfragment"
+                    android:id="@+id/event_name_routine_dialogfragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:hint="@string/event_name"/>
 
             </android.support.design.widget.TextInputLayout>
+
+            <View android:layout_height="1dp"
+                  android:layout_width="match_parent"
+                  android:background="@color/colorPrimaryDark"
+                android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,32 +60,36 @@
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
                 android:text="@string/repeat_string"
-                android:textAppearance="?android:textAppearanceMedium"/>
+                style="@style/TextStyleForHeadings"/>
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
+                android:id="@+id/radio_group_days_routine_dialogfragment"
                 android:paddingStart="8dp">
 
                 <RadioButton
-                    android:id="@+id/repeat_radio_dialogfragment"
+                    android:id="@+id/radio_weekdays_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:checked="true"
                     android:text="Weekdays"/>
 
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/radio_alldays_routine_dialogfragment"
                     android:text="All Days"/>
 
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/radio_custom_routine_dialogfragment"
                     android:text="Custom"/>
 
             </RadioGroup>
@@ -89,70 +99,115 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
+                android:id="@+id/check_box_container_routine_dialogfragment"
+                android:alpha="0.5"
                 android:paddingStart="8dp">
 
                 <CheckBox
-                    android:id="@+id/radioButtonM"
+                    android:id="@+id/check_box_m_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="M"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonTu"
+                    android:id="@+id/check_box_tu_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="T"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonW"
+                    android:id="@+id/check_box_w_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="W"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonTh"
+                    android:id="@+id/check_box_th_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="T"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonF"
+                    android:id="@+id/check_box_f_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="F"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonSa"
+                    android:id="@+id/check_box_sa_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="S"/>
 
                 <CheckBox
-                    android:id="@+id/radioButtonSu"
+                    android:id="@+id/check_box_su_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:text="S"/>
 
             </LinearLayout>
 
+            <View android:layout_height="1dp"
+                  android:layout_width="match_parent"
+                  android:background="@color/colorPrimaryDark"
+                  android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="8dp"
+                android:text="@string/type_of_routine"
+                style="@style/TextStyleForHeadings"/>
+
             <Spinner
-                android:id="@+id/spinner_type_dialogfragment"
+                android:id="@+id/spinner_type_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"/>
 
+            <View android:layout_height="1dp"
+                  android:layout_width="match_parent"
+                  android:background="@color/colorPrimaryDark"
+                  android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="8dp"
+                android:text="Select Time"
+                style="@style/TextStyleForHeadings"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/lightGray"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:gravity="center"
+                android:id="@+id/time_picker_tv_routine_dialogfragment"/>
+
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
+                android:id="@+id/checkbox_notify_routine_dialogfragment"
                 android:text="Notify ?"
                 android:textAppearance="?android:textAppearanceMedium"/>
 

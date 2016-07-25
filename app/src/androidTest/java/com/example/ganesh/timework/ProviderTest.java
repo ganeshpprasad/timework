@@ -78,16 +78,16 @@ public class ProviderTest extends InstrumentationTestCase {
         assertTrue( db.isOpen() );
         deleteRecords();
 
-        PackageManager pm = mContext.getPackageManager();
-        ComponentName cn = new ComponentName( mContext.getPackageName() , DatabaseProvider.class.getName() );
-
-        try {
-            ProviderInfo pi = pm.getProviderInfo( cn , 0 );
-            Log.d( LOG_TAG , pi.authority );
-            assertEquals( pi.authority , DatabaseContract.CONTENT_AUTHORITY );
-        } catch (Exception e ) {
-            e.printStackTrace();
-        }
+//        PackageManager pm = mContext.getPackageManager();
+//        ComponentName cn = new ComponentName( mContext.getPackageName() , DatabaseProvider.class.getName() );
+//
+//        try {
+//            ProviderInfo pi = pm.getProviderInfo( cn , 0 );
+//            Log.d( LOG_TAG , pi.authority );
+//            assertEquals( pi.authority , DatabaseContract.CONTENT_AUTHORITY );
+//        } catch (Exception e ) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -192,21 +192,22 @@ public class ProviderTest extends InstrumentationTestCase {
         assertTrue( id6 != -1 );
         Log.d( LOG_TAG , insert6.toString() );
 
-        Cursor cursor1 = contentResolver.query( DatabaseContract.RoutineContract.buildRoutineUriWithDay( Constants.Days.FRIDAY ) ,
-                null , null , null , null);
-        assertNotNull( cursor1 );
-        if ( cursor1.moveToFirst() ) {
+        Uri uriRoutineQueryForType = RoutineContract.buildRoutineUriWithType( Constants.RoutineTypes.PERSONAL ,
+                Constants.Days.MONDAY );
+
+        Log.d( LOG_TAG , uriRoutineQueryForType.toString() );
+
+        Cursor cursor = contentResolver.query( uriRoutineQueryForType  , null , null , null , null );
+        if ( cursor.moveToFirst() ) {
 
             do {
 
-                String name = cursor1.getString( cursor1.getColumnIndexOrThrow( DatabaseContract.RoutineContract.COLUMN_ROUTINE_NAME ) );
-                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_NAME + name );
-                String type = cursor1.getString( cursor1.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_TYPE ) );
-                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_TYPE + type );
-                int notify = cursor1.getInt( cursor1.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_NOTIFY ) );
-                Log.d( LOG_TAG , RoutineContract.COLUMN_ROUTINE_NOTIFY + " " + notify );
+                String name = cursor.getString( cursor.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_NAME ) );
+                Log.d( LOG_TAG , name );
+                String type = cursor.getString( cursor.getColumnIndexOrThrow( RoutineContract.COLUMN_ROUTINE_TYPE ) );
+                Log.d( LOG_TAG , type );
 
-            }while ( cursor1.moveToNext() );
+            }while ( cursor.moveToNext() );
 
         }
 

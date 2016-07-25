@@ -34,6 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     RoutineContract.COLUMN_ROUTINE_NAME + TEXT_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_NOTIFY + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_TYPE + TEXT_TYPE + COMMA_SEP +
+                    RoutineContract.COLUMN_ROUTINE_TIME_HOUR + INTEGER_TYPE + COMMA_SEP +
+                    RoutineContract.COLUMN_ROUTINE_TIME_MINUTES + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_DAY_MON + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_DAY_TUE + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_DAY_WED + INTEGER_TYPE + COMMA_SEP +

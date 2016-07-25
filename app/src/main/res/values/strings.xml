@@ -15,12 +15,13 @@
 
     <!--Array for the spinner in create routine-->
     <string-array name="type_create_routine">
-        <item>Work</item>
         <item>Hobbies</item>
         <item>Personal</item>
+        <item>Work</item>
     </string-array>
     <string name="title_activity_task_page">TaskPageActivity</string>
     <string name="task_name">Task name</string>
     <string name="select_date">Select Date</string>
     <string name="pick_time">Pick time</string>
+    <string name="type_of_routine">Type of routine</string>
 </resources>
