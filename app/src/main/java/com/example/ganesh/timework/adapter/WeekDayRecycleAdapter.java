@@ -1,6 +1,7 @@
 package com.example.ganesh.timework.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,18 @@ import com.example.ganesh.timework.data.ListItemTemp;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 /**
  * Created by Ganesh Prasad on 05-07-2016.
  */
 public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAdapter.ViewHolder> {
 
-    public ListItemTemp.Item[] mItemsArray;
+    private static final String LOG_TAG = "weekday adapter";
 
-    public WeekDayRecycleAdapter( ListItemTemp.Item[] _mitems ) {
+    public List<ListItemTemp.Item> mItemsArray;
+
+    public WeekDayRecycleAdapter( List<ListItemTemp.Item> _mitems ) {
         mItemsArray = _mitems;
     }
 
@@ -32,16 +37,17 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
 
     @Override
     public void onBindViewHolder(WeekDayRecycleAdapter.ViewHolder holder, int position) {
-        holder.mItem = mItemsArray[position];
+        holder.mItem = mItemsArray.get(position);
 
-        holder.mEventName.setText(holder.mItem.eventName);
-        holder.mTime.setText(holder.mItem.time);
+        holder.mEventName.setText( holder.mItem.eventName );
+        String time = holder.mItem.timeHour + ":" + holder.mItem.timeMinutes;
+        holder.mTime.setText( time );
 
     }
 
     @Override
     public int getItemCount() {
-        return mItemsArray.length;
+        return mItemsArray.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

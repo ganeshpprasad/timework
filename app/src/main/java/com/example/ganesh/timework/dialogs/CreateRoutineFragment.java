@@ -65,6 +65,15 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     CheckBox sat;
     CheckBox sun;
 
+    onSaveButtonListener saveButtonListener;
+
+    public static CreateRoutineFragment newInstance( onSaveButtonListener listener ) {
+
+        CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
+        createRoutineFragment.saveButtonListener = listener;
+        return createRoutineFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -217,7 +226,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         DialogToDatabaseAdapter adapter;
 
-        if ( eventNameString != null ) {
+        if ( !eventNameString.equals("") ) {
 
             if ( idRadioDays == R.id.radio_custom_routine_dialogfragment ) {
 
@@ -231,23 +240,26 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 custom[5] = sat.isChecked();
                 custom[6] = sun.isChecked();
 
-                adapter = new DialogToDatabaseAdapter( eventNameString , dayGroup ,
+
+                adapter = new DialogToDatabaseAdapter(getContext() , eventNameString , dayGroup ,
                         idTypeSelection , notifyBool , custom , timeHour , timeMinutes);
 
             } else if ( idRadioDays == R.id.radio_alldays_routine_dialogfragment ) {
                 dayGroup = Constants.DayGroups.ALLDAYS;
 
-                adapter = new DialogToDatabaseAdapter( eventNameString , dayGroup ,
+                adapter = new DialogToDatabaseAdapter( getContext() , eventNameString , dayGroup ,
                         idTypeSelection , notifyBool , timeHour , timeMinutes);
 
             } else {
                 dayGroup = Constants.DayGroups.WEEKDAYS;
 
-                adapter = new DialogToDatabaseAdapter( eventNameString , dayGroup ,
+                adapter = new DialogToDatabaseAdapter( getContext() , eventNameString , dayGroup ,
                         idTypeSelection , notifyBool , timeHour , timeMinutes);
             }
 
             adapter.addValuesToDb();
+
+            saveButtonListener.onSaveButton();
 
             dismiss();
 
@@ -274,5 +286,9 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         timePickerTv.setText( String.format(Locale.getDefault() , " %d : %d " , hour , minutes ) );
 
+    }
+
+    public interface onSaveButtonListener{
+        void onSaveButton();
     }
 }

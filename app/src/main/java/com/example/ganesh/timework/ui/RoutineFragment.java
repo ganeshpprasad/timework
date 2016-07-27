@@ -7,7 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 
-public class RoutineFragment extends Fragment {
+public class RoutineFragment extends Fragment implements  CreateRoutineFragment.onSaveButtonListener{
 
     private OnRoutineFragmentInteractionListener mListener;
     SectionsPagerAdapter sectionsPagerAdapter;
@@ -59,7 +59,7 @@ public class RoutineFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
+                CreateRoutineFragment createRoutineFragment = CreateRoutineFragment.newInstance(RoutineFragment.this);
                 getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, createRoutineFragment).commit();
             }
         });
@@ -97,7 +97,7 @@ public class RoutineFragment extends Fragment {
         void onRoutineFragmentInteraction();
     }
 
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private static final int NUM_OF_PAGES = 7;
 
@@ -153,6 +153,20 @@ public class RoutineFragment extends Fragment {
             }
             return null;
         }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
     }
 
+    @Override
+    public void onSaveButton() {
+        sectionsPagerAdapter.notifyDataSetChanged();
+    }
 }

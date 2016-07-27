@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.ganesh.timework.data.DatabaseHelper;
 import com.example.ganesh.timework.ui.NotesFragment;
 import com.example.ganesh.timework.ui.RoutineFragment;
 import com.example.ganesh.timework.ui.TasksFragment;
@@ -50,7 +51,6 @@ TasksFragment.OnTasksFragmentInteractionListener{
         navigationView.getMenu().getItem(0).setChecked(true);
 
         getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, NotesFragment.newInstance()).commit();
-
     }
 
     @Override

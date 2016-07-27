@@ -1,5 +1,7 @@
 package com.example.ganesh.timework.utils;
 
+import android.util.Log;
+
 /**
  * Created by Ganesh Prasad on 15-07-2016.
  */
@@ -38,7 +40,7 @@ public class Constants {
 
     }
 
-    public static int[] getDaysArray( int days ){
+    public static int[] getDaysArray( int days , boolean[] custom ){
 
         int[] array;
 
@@ -47,9 +49,11 @@ public class Constants {
         }else if ( days == DayGroups.ALLDAYS ) {
             array = new int[] { 1 , 1 , 1 , 1 , 1 , 1 , 1 };
         }else {
-            return null;
+            array = new int[7];
+            for ( int i = 0; i < custom.length; i++ ) {
+                array[i] = Constants.booleanToInt( custom[i] );
+            }
         }
-
         return array;
     }
 

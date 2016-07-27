@@ -7,21 +7,18 @@ public class ListItemTemp {
 
     public static class Item{
 
-        public final int id;
         public final String eventName;
-        public final String time;
-        public enum type { PERSONAL , WORK , HOBBIES }
-        public enum repeat { WEEKDAYS , ALLDAYS , NONE }
+        public final int timeHour;
+        public final int timeMinutes;
+        public String type;
+        public boolean repeat;
 
-        public final repeat r;
-        public final type t;
-
-        public Item( int _id , String _eventName , String _time , type _type , repeat _r ){
-            id = _id;
+        public Item(String _eventName , int _timeHour , int _timeMinutes , String _type , boolean _r ){
             eventName = _eventName;
-            time = _time;
-            t = _type;
-            r = _r;
+            timeHour = _timeHour;
+            timeMinutes = _timeMinutes;
+            type = _type;
+            repeat = _r;
         }
 
     }

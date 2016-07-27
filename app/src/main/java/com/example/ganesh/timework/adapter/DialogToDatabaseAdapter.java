@@ -1,11 +1,16 @@
 package com.example.ganesh.timework.adapter;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.ganesh.timework.R;
+import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
 
+import com.example.ganesh.timework.ui.WeekdayFragment;
 import com.example.ganesh.timework.utils.Constants;
 
 /**
@@ -24,9 +29,11 @@ public class DialogToDatabaseAdapter {
     int hour;
     int minutes;
 
-    boolean[] custom;
+    boolean[] custom = null;
 
-    public DialogToDatabaseAdapter(String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , int _hour , int _minutes ) {
+    Context context;
+
+    public DialogToDatabaseAdapter(Context _context , String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , int _hour , int _minutes ) {
 
         this.routineName = _routineName;
         this.dayGroup = _dayGroup;
@@ -35,11 +42,13 @@ public class DialogToDatabaseAdapter {
 
         this.hour = _hour;
         this.minutes = _minutes;
+
+        this.context = _context;
     }
 
-    public DialogToDatabaseAdapter(String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , boolean[] _custom , int _hour , int _minutes) {
+    public DialogToDatabaseAdapter( Context _context , String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , boolean[] _custom , int _hour , int _minutes) {
 
-        this(_routineName , _dayGroup ,_typeSelected , _notify , _hour , _minutes );
+        this( _context , _routineName , _dayGroup ,_typeSelected , _notify , _hour , _minutes );
 
         this.custom = _custom;
 
@@ -54,14 +63,7 @@ public class DialogToDatabaseAdapter {
     public boolean addValuesToDb(){
 
 //        getting an array of integer based on the days group
-        daysArray = Constants.getDaysArray( dayGroup );
-//        if the method return null then the user has chosen a custom day group
-        if ( daysArray == null ) {
-            for ( int i = 0; i < custom.length; i++ ) {
-                daysArray = new int[7];
-                daysArray[i] = Constants.booleanToInt( custom[i] );
-            }
-        }
+        daysArray = Constants.getDaysArray( dayGroup , custom );
 
 //        storing the int value in database.
         notifyInt = Constants.booleanToInt( notify );
@@ -81,10 +83,12 @@ public class DialogToDatabaseAdapter {
         contentValues.put( RoutineContract.COLUMN_ROUTINE_TIME_MINUTES , minutes );
 
         for ( int i = 0; i < daysArray.length; i++ ) {
-
             contentValues.put( daysColumnArray[i] , daysArray[i] );
-
+            Log.d( LOG_TAG , daysArray[i] + " " );
         }
+
+        Uri insertUri = context.getContentResolver().insert(RoutineContract.CONTENT_URI , contentValues );
+        long id = ContentUris.parseId( insertUri );
 
         return false;
     }
