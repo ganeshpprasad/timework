@@ -6,7 +6,9 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.example.ganesh.timework.data.DatabaseContract;
+import com.example.ganesh.timework.data.DatabaseContract.NotesContract;
 import com.example.ganesh.timework.utils.Constants;
+import com.example.ganesh.timework.utils.Notes;
 
 import java.util.Map;
 import java.util.Set;
@@ -71,6 +73,29 @@ public class TestUtils extends AndroidTestCase {
             Log.d( LOG_TAG + "/validate" , valueCursor.getString(idx) );
             assertEquals(expectedValue, valueCursor.getString(idx));
         }
+
+    }
+
+    public static ContentValues getMockNotesValues(){
+
+        ContentValues contentValues = new ContentValues();
+
+        Notes notes = new Notes( "note1" , Constants.RoutineTypes.HOBBY , "note to check things" );
+
+        notes.setCreatedDate(5);
+        notes.setCreatedMonth(10);
+        notes.setCreatedHour(10);
+        notes.setCreatedMinutes(46);
+
+        contentValues.put( NotesContract.COLUMN_NOTES_NAME , notes.getName() );
+        contentValues.put( NotesContract.COLUMN_NOTES_TYPE , notes.getType() );
+        contentValues.put( NotesContract.COLUMN_NOTES_CONTENT , notes.getContent() );
+        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_HOUR , notes.getCreatedHour() );
+        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MINUTES , notes.getCreatedMinutes() );
+        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_DATE , notes.getCreatedDate() );
+        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MONTH , notes.getCreatedMonth() );
+
+        return contentValues;
 
     }
 

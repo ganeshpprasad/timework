@@ -61,7 +61,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     NotesContract.COLUMN_NOTES_NAME + TEXT_TYPE + COMMA_SEP +
                     NotesContract.COLUMN_NOTES_CONTENT + TEXT_TYPE + COMMA_SEP +
                     NotesContract.COLUMN_NOTES_TYPE + TEXT_TYPE + COMMA_SEP +
-                    NotesContract.COLUMN_NOTES_CREATED + INTEGER_TYPE +
+                    NotesContract.COLUMN_NOTES_CREATED_HOUR + INTEGER_TYPE + COMMA_SEP +
+                    NotesContract.COLUMN_NOTES_CREATED_MINUTES + INTEGER_TYPE + COMMA_SEP +
+                    NotesContract.COLUMN_NOTES_CREATED_DATE + INTEGER_TYPE + COMMA_SEP +
+                    NotesContract.COLUMN_NOTES_CREATED_MONTH + INTEGER_TYPE +
                     " );";
 
     private static final String SQL_DELETE_ROUTINE_TABLE =

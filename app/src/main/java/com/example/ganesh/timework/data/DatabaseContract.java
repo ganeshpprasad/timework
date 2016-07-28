@@ -146,7 +146,28 @@ public final class DatabaseContract {
         public static final String COLUMN_NOTES_NAME = "name";
         public static final String COLUMN_NOTES_CONTENT = "content";
         public static final String COLUMN_NOTES_TYPE = "type";
-        public static final String COLUMN_NOTES_CREATED = "created";
+        public static final String COLUMN_NOTES_CREATED_HOUR = "createdHour";
+        public static final String COLUMN_NOTES_CREATED_MINUTES = "createdMinutes";
+        public static final String COLUMN_NOTES_CREATED_DATE = "createdDate";
+        public static final String COLUMN_NOTES_CREATED_MONTH = "createdMonth";
+
+//        method to return uri with id
+        public static Uri buildNotesUriWithId( long id )  {
+            return ContentUris.withAppendedId( CONTENT_URI , id );
+        }
+
+//        method to return uri with type
+        public static Uri buildNotesUriWithType( String type ){
+            return CONTENT_URI.buildUpon().appendPath( type ).build();
+        }
+
+        public static String getIdFromUri(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        public static String getTypeFromUri( Uri uri ){
+            return uri.getPathSegments().get(1);
+        }
 
     }
 

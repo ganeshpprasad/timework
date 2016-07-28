@@ -52,13 +52,6 @@ public class ProviderTest extends InstrumentationTestCase {
     SQLiteDatabase db;
     private static final String LOG_TAG = "Provider Test Log tag";
 
-
-//    @Override
-//    public void setUp() throws Exception {
-//        super.setUp();
-//        initialSetup();
-//    }
-
     @Before
     public void initialSetup(){
 
@@ -78,53 +71,45 @@ public class ProviderTest extends InstrumentationTestCase {
         assertTrue( db.isOpen() );
         deleteRecords();
 
-//        PackageManager pm = mContext.getPackageManager();
-//        ComponentName cn = new ComponentName( mContext.getPackageName() , DatabaseProvider.class.getName() );
-//
-//        try {
-//            ProviderInfo pi = pm.getProviderInfo( cn , 0 );
-//            Log.d( LOG_TAG , pi.authority );
-//            assertEquals( pi.authority , DatabaseContract.CONTENT_AUTHORITY );
-//        } catch (Exception e ) {
-//            e.printStackTrace();
-//        }
-
     }
 
+    @Test
     public void getType(){
-
-//        deleteRecords();
-
         Log.d( LOG_TAG , "Type test method" );
 
         long testIdRoutine = 1;
-        Uri uriRoutine = DatabaseContract.RoutineContract.buildRoutineUri(testIdRoutine);
+        Uri uriRoutine = DatabaseContract.NotesContract.buildNotesUriWithId(testIdRoutine);
 
         String type = contentResolver.getType(uriRoutine);
-        assertEquals( type , DatabaseContract.RoutineContract.CONTENT_ITEM_TYPE );
+        assertEquals( type , DatabaseContract.NotesContract.CONTENT_ITEM_TYPE );
 
-        uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithDay(Constants.Days.MONDAY);
-        type = contentResolver.getType(uriRoutine);
-        assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
+        Uri uriNotes = DatabaseContract.NotesContract.CONTENT_URI;
+        String type2  = contentResolver.getType( uriNotes );
+        assertEquals( type2 , DatabaseContract.NotesContract.CONTENT_TYPE);
 
-        uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithType( Constants.RoutineTypes.PERSONAL ,
-                Constants.Days.MONDAY );
-        type = contentResolver.getType(uriRoutine);
-        assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
+//        uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithDay(Constants.Days.MONDAY);
+//        type = contentResolver.getType(uriRoutine);
+//        assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
+
+//        uriRoutine = DatabaseContract.RoutineContract.buildRoutineUriWithType( Constants.RoutineTypes.PERSONAL ,
+//                Constants.Days.MONDAY );
+//        type = contentResolver.getType(uriRoutine);
+//        assertEquals( type , DatabaseContract.RoutineContract.CONTENT_TYPE );
 
     }
 
+    @Test
     public void insert() {
 
         Log.d( LOG_TAG , "Insert test method" );
 
 //        The Uri required for database from database contract - CONTENT_URI of the RoutineTable
-        Uri uriRoutineInsert = DatabaseContract.RoutineContract.CONTENT_URI;
+        Uri uriNotesInsert = DatabaseContract.NotesContract.CONTENT_URI;
 //        Content values from the testUtils
-        ContentValues mockValues = TestUtils.getMockRoutineValues();
+        ContentValues mockValues = TestUtils.getMockNotesValues();
 
 //        Insert called on mock content resolver
-        Uri uriRoutineInsertResult = contentResolver.insert( uriRoutineInsert ,  mockValues );
+        Uri uriRoutineInsertResult = contentResolver.insert( uriNotesInsert ,  mockValues );
         assertNotNull( uriRoutineInsertResult);
 
 //        id for testing the read back from the database also testing insertion
@@ -132,8 +117,9 @@ public class ProviderTest extends InstrumentationTestCase {
         assertTrue( id != -1 );
 
 //        Uri uriRoutineRead = DatabaseContract.RoutineContract.buildRoutineUri(id);
-        Cursor cursor = contentResolver.query( uriRoutineInsert , null ,null , null , null );
+        Cursor cursor = contentResolver.query( uriNotesInsert , null ,null , null , null );
         assertTrue( cursor != null );
+
         if ( cursor.moveToFirst() ) {
             TestUtils.validateDbValues( cursor , mockValues );
         }
@@ -142,7 +128,6 @@ public class ProviderTest extends InstrumentationTestCase {
 
     }
 
-    @Test
     public void queryForADay() {
 
         Log.v( LOG_TAG , "query for the day test" );
@@ -218,10 +203,10 @@ public class ProviderTest extends InstrumentationTestCase {
 
         Log.d( LOG_TAG , "Delete Records method" );
 
-        long deleteId = db.delete( DatabaseContract.RoutineContract.TABLE_NAME , null , null );
+        long deleteId = db.delete( DatabaseContract.NotesContract.TABLE_NAME , null , null );
         assertTrue( deleteId != -1 );
 
-        Cursor cursor = db.query( DatabaseContract.RoutineContract.TABLE_NAME , null , null , null ,null ,null ,null );
+        Cursor cursor = db.query( DatabaseContract.NotesContract.TABLE_NAME , null , null , null ,null ,null ,null );
         assertEquals( cursor.getCount() , 0 );
         cursor.close();
 

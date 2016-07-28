@@ -41,12 +41,14 @@ public class DatabaseTest extends InstrumentationTestCase {
         mOpenHelper = new DatabaseHelper(mContext);
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         assertEquals(true , db.isOpen());
-        ContentValues testValues = TestUtils.getMockRoutineValues();
 
-        long insertionId = db.insert( DatabaseContract.RoutineContract.TABLE_NAME , null , testValues  );
+//        ContentValues testValues = TestUtils.getMockRoutineValues();
+        ContentValues testValues = TestUtils.getMockNotesValues();
+
+        long insertionId = db.insert( DatabaseContract.NotesContract.TABLE_NAME , null , testValues  );
         assertTrue(insertionId != -1);
 
-        Cursor cursor = db.query(DatabaseContract.RoutineContract.TABLE_NAME ,
+        Cursor cursor = db.query(DatabaseContract.NotesContract.TABLE_NAME ,
                 null ,
                 null ,
                 null ,
