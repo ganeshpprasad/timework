@@ -5,9 +5,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +15,16 @@ import android.view.ViewGroup;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.WeekDayRecycleAdapter;
 import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
-import com.example.ganesh.timework.data.DatabaseHelper;
 import com.example.ganesh.timework.data.ListItemTemp;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Constants.Days;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeekdayFragment extends Fragment implements CreateRoutineFragment.onSaveButtonListener  {
+
+    private static final String LOG_TAG = "Weekday fragment";
 
     private static final String ARG_DAY = "day";
 
@@ -105,7 +105,10 @@ public class WeekdayFragment extends Fragment implements CreateRoutineFragment.o
 
     private void initialiseItemArray(Uri uri){
 
-        Cursor cursor = getContext().getContentResolver().query( uri , null , null , null , null);
+        String sortOrder = RoutineContract.COLUMN_ROUTINE_TIME_HOUR + " ASC," +
+                RoutineContract.COLUMN_ROUTINE_TIME_MINUTES + " ASC";
+
+        Cursor cursor = getContext().getContentResolver().query( uri , null , null , null , sortOrder);
         assert cursor != null;
         if ( cursor.moveToFirst() ) {
             do {

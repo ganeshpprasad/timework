@@ -3,7 +3,9 @@ package com.example.ganesh.timework.ui;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,8 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
 
     private OnRoutineFragmentInteractionListener mListener;
     SectionsPagerAdapter sectionsPagerAdapter;
+
+    CoordinatorLayout coordinatorLayout;
 
     public RoutineFragment() {
         // Required empty public constructor
@@ -63,6 +67,8 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
                 getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, createRoutineFragment).commit();
             }
         });
+
+        coordinatorLayout = ( CoordinatorLayout ) rootView.findViewById( R.id.coordinator_layout_routine_fragment );
 
         return rootView;
 
@@ -168,5 +174,6 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
     @Override
     public void onSaveButton() {
         sectionsPagerAdapter.notifyDataSetChanged();
+        Snackbar.make( coordinatorLayout , " Routine created " , Snackbar.LENGTH_SHORT );
     }
 }
