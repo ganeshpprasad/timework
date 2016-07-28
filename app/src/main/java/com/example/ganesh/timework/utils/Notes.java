@@ -13,11 +13,15 @@ public class Notes {
     private int createdDate;
     private int createdMonth;
 
-    public Notes( String _name , String _type , String _content ) {
+    public Notes( String _name , String _type , String _content , int _hour , int _minutes , int _date , int _month ) {
 
         this.name = _name;
         this.type = _type;
         this.content = _content;
+        this.createdHour = _hour;
+        this.createdMinutes = _minutes;
+        this.createdDate = _date;
+        this.createdMonth = _month;
 
     }
 

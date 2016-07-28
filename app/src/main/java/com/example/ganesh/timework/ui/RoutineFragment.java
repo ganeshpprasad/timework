@@ -74,7 +74,6 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onRoutineFragmentInteraction();
@@ -99,7 +98,6 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
     }
 
     public interface OnRoutineFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onRoutineFragmentInteraction();
     }
 

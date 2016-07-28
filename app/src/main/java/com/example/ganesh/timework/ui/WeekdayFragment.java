@@ -148,7 +148,6 @@ public class WeekdayFragment extends Fragment implements CreateRoutineFragment.o
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onWeekdayFragmentInteraction(uri);
@@ -173,7 +172,6 @@ public class WeekdayFragment extends Fragment implements CreateRoutineFragment.o
     }
 
     public interface OnWeekdayFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onWeekdayFragmentInteraction(Uri uri);
     }
 
