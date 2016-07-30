@@ -29,11 +29,16 @@ public class DatabaseProvider extends ContentProvider {
     private static final int NOTES_TABLE_WITH_TYPE = 203;
     private static final int NOTES_TABLE_WITH_CREATED_DATE = 204;
 
+    private static final int TASKS_TABLE = 301;
+    private static final int TASKS_WITH_ID = 302;
+    private static final int TASKS_WITH_TYPE = 303;
+
     private static final UriMatcher sUriMatcher = getUriMatcher();
     public DatabaseHelper mOpenDbHelper;
 
     private static SQLiteQueryBuilder sRoutineQueryBuilder;
     private static SQLiteQueryBuilder sNotesQueryBuilder;
+    private static SQLiteQueryBuilder sTasksQueryBuilder;
 
     static {
         sRoutineQueryBuilder = new SQLiteQueryBuilder();
@@ -41,6 +46,9 @@ public class DatabaseProvider extends ContentProvider {
 
         sNotesQueryBuilder = new SQLiteQueryBuilder();
         sNotesQueryBuilder.setTables( DatabaseContract.NotesContract.TABLE_NAME );
+
+        sTasksQueryBuilder = new SQLiteQueryBuilder();
+        sNotesQueryBuilder.setTables(DatabaseContract.TaskContract.TABLE_NAME);
     }
 
     private static UriMatcher getUriMatcher() {
@@ -67,6 +75,11 @@ public class DatabaseProvider extends ContentProvider {
         uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_NOTE + "/#" , NOTES_TABLE_ID );
 
         uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_NOTE + "/*" , NOTES_TABLE_WITH_TYPE );
+
+//        task table constants
+        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_TASK , TASKS_TABLE );
+
+        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_TASK + "/#" , TASKS_WITH_ID );
 
         return uriMatcher;
     }
@@ -156,6 +169,26 @@ public class DatabaseProvider extends ContentProvider {
 
     }
 
+//    method to return the cursor for tasks on a id from uri
+    private Cursor getTasksWithId( Uri uri , String[] projection , String sortOrder ) {
+
+        String id = DatabaseContract.TaskContract.getIdFromUri( uri );
+
+        String selection = DatabaseContract.TaskContract._ID + " = ?";
+        String[] selectionArgs = new String[] {id};
+
+        return sTasksQueryBuilder.query(
+                mOpenDbHelper.getReadableDatabase() ,
+                projection ,
+                selection ,
+                selectionArgs ,
+                null ,
+                null ,
+                sortOrder
+        );
+
+    }
+
     @Override
     public boolean onCreate() {
         mOpenDbHelper = new DatabaseHelper(getContext());
@@ -217,6 +250,26 @@ public class DatabaseProvider extends ContentProvider {
                 return  retCursor;
             }
 
+            case TASKS_TABLE : {
+
+                retCursor = mOpenDbHelper.getReadableDatabase().query(
+                        DatabaseContract.TaskContract.TABLE_NAME ,
+                        projection ,
+                        selection ,
+                        selectionArgs ,
+                        null ,
+                        null ,
+                        sortOrder
+                );
+                return retCursor;
+
+            }
+
+            case TASKS_WITH_ID : {
+                retCursor = getTasksWithId( uri , projection , sortOrder );
+                return retCursor;
+            }
+
         }
 
         return null;
@@ -242,6 +295,12 @@ public class DatabaseProvider extends ContentProvider {
             case NOTES_TABLE_ID : return NotesContract.CONTENT_ITEM_TYPE;
 
             case NOTES_TABLE_WITH_TYPE : return NotesContract.CONTENT_TYPE;
+
+//            return types for tasks table
+            case TASKS_TABLE : return DatabaseContract.TaskContract.CONTENT_TYPE;
+
+            case TASKS_WITH_ID : return DatabaseContract.TaskContract.CONTENT_ITEM_TYPE;
+
         }
 
         return null;
@@ -281,6 +340,22 @@ public class DatabaseProvider extends ContentProvider {
                     returnUri = NotesContract.buildNotesUriWithId( id );
                     return returnUri;
                 } else{
+                    return null;
+                }
+
+            }
+
+            case TASKS_TABLE : {
+
+                long id = mOpenDbHelper.getWritableDatabase().insert(
+                        DatabaseContract.TaskContract.TABLE_NAME ,
+                        null ,
+                        values
+                );
+                if ( id > 0 ) {
+                    returnUri = DatabaseContract.TaskContract.buildUriWithId(id);
+                    return returnUri;
+                }else{
                     return null;
                 }
 

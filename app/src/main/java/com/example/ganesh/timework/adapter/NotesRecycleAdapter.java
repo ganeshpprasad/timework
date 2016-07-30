@@ -1,5 +1,6 @@
 package com.example.ganesh.timework.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,12 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
 
     List<Notes> notes;
 
+    onNoteSelectListener listener;
 //    TODO This kinda includes all the adapters - implement the listener to open the detail activity
 
-    public NotesRecycleAdapter( List<Notes> _notes ) {
+    public NotesRecycleAdapter( List<Notes> _notes , onNoteSelectListener _listener ) {
         this.notes = _notes;
+        this.listener = _listener;
     }
 
     @Override
@@ -35,8 +38,20 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
 
         holder.mNotes = notes.get(position);
 
-        holder.NotesContentEt.setText( holder.mNotes.getContent() );
-        holder.NotesTitleEt.setText( holder.mNotes.getName() );
+        final String content = holder.mNotes.getContent();
+        final String name = holder.mNotes.getName();
+
+        holder.NotesContentEt.setText( name );
+        holder.NotesTitleEt.setText( content );
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( listener != null ){
+                    listener.onNoteSelect( name , content );
+                }
+            }
+        });
 
     }
 
@@ -49,14 +64,21 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
 
         TextView NotesTitleEt;
         TextView NotesContentEt;
+        View mView;
 
         Notes mNotes;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            mView = itemView;
             NotesTitleEt = (TextView) itemView.findViewById( R.id.et_notes_title_notes_list_item );
             NotesContentEt = (TextView) itemView.findViewById( R.id.et_notes_content_notes_list_item );
         }
     }
+
+    public interface onNoteSelectListener{
+        void onNoteSelect( String name , String content );
+    }
+
 }

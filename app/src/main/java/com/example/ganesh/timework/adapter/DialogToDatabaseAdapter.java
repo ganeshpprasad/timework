@@ -84,13 +84,12 @@ public class DialogToDatabaseAdapter {
 
         for ( int i = 0; i < daysArray.length; i++ ) {
             contentValues.put( daysColumnArray[i] , daysArray[i] );
-            Log.d( LOG_TAG , daysArray[i] + " " );
         }
 
         Uri insertUri = context.getContentResolver().insert(RoutineContract.CONTENT_URI , contentValues );
         long id = ContentUris.parseId( insertUri );
 
-        return false;
+        return true;
     }
 
 

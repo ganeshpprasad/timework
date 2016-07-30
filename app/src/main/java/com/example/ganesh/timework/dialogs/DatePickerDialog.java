@@ -13,6 +13,14 @@ import java.util.Calendar;
  */
 public class DatePickerDialog extends DialogFragment implements android.app.DatePickerDialog.OnDateSetListener {
 
+    setDateListener dateListener;
+
+    public static DatePickerDialog newInstance(setDateListener listener){
+        DatePickerDialog dialog = new DatePickerDialog();
+        dialog.dateListener = listener;
+        return dialog;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,6 +36,11 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
+        dateListener.setDate( year , monthOfYear , dayOfMonth );
     }
+
+    public interface setDateListener{
+        void setDate( int year , int month , int day );
+    }
+
 }

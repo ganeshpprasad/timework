@@ -1,6 +1,7 @@
 package com.example.ganesh.timework.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,19 @@ import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.ListItemTemp;
+import com.example.ganesh.timework.utils.Tasks;
+
+import java.util.List;
 
 /**
  * Created by Ganesh Prasad on 07-07-2016.
  */
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
 
-    ListItemTemp.TaskItem[] mTaskItemArray;
+    List<Tasks> tasksList;
 
-    public TaskRecycleAdapter(ListItemTemp.TaskItem[] mItems) {
-        mTaskItemArray = mItems;
+    public TaskRecycleAdapter(List<Tasks> mItems) {
+        tasksList = mItems;
     }
 
     @Override
@@ -30,15 +34,18 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     @Override
     public void onBindViewHolder(TaskRecycleAdapter.ViewHolder holder, int position) {
-        holder.mItem = mTaskItemArray[position];
+        holder.mItem = tasksList.get(position);
 
-        holder.taskName.setText(holder.mItem.taskName);
-        holder.taskTime.setText(holder.mItem.taskTime);
+        String time = holder.mItem.getHour() + ":" + holder.mItem.getMinutes();
+
+        holder.taskName.setText(holder.mItem.getTaskName());
+        holder.taskTime.setText(time);
     }
 
     @Override
     public int getItemCount() {
-        return mTaskItemArray.length;
+        Log.d( "task recycler" , " " + tasksList.size() );
+        return tasksList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -48,7 +55,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         public final TextView taskTime;
         public final ImageButton moreOptions;
 
-        public ListItemTemp.TaskItem mItem;
+        public Tasks mItem;
 
         public ViewHolder(View itemView) {
 

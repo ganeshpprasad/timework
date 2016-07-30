@@ -52,7 +52,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     TaskContract.COLUMN_TASK_NOTIFY + INTEGER_TYPE + COMMA_SEP +
                     TaskContract.COLUMN_TASK_TYPE + TEXT_TYPE + COMMA_SEP +
                     TaskContract.COLUMN_TASK_DATE + INTEGER_TYPE + COMMA_SEP +
-                    TaskContract.COLUMN_TASK_TIME + INTEGER_TYPE +
+                    TaskContract.COLUMN_TASK_MONTH + INTEGER_TYPE + COMMA_SEP +
+                    TaskContract.COLUMN_TASK_TIME_HOUR + INTEGER_TYPE + COMMA_SEP +
+                    TaskContract.COLUMN_TASK_TIME_MINUTES + INTEGER_TYPE +
                     " );";
 
      final String SQL_CREATE_NOTE_TABLE =

@@ -49,8 +49,6 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
 
     }
 
-
-
     public interface SetTimeListener {
 
         void onSetTime( int hour , int minutes );

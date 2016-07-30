@@ -128,7 +128,17 @@ public final class DatabaseContract {
         public static final String COLUMN_TASK_NOTIFY = "notify";
         public static final String COLUMN_TASK_TYPE = "type";
         public static final String COLUMN_TASK_DATE = "date";
-        public static final String COLUMN_TASK_TIME = "time";
+        public static final String COLUMN_TASK_TIME_HOUR = "hour";
+        public static final String COLUMN_TASK_MONTH = "month";
+        public static final String COLUMN_TASK_TIME_MINUTES = "minutes";
+
+        public static Uri buildUriWithId( long id ) {
+            return ContentUris.withAppendedId( CONTENT_URI , id );
+        }
+
+        public static String getIdFromUri( Uri uri ) {
+            return uri.getPathSegments().get(1);
+        }
 
     }
 

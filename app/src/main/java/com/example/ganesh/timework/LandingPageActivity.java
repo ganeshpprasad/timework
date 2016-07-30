@@ -97,7 +97,7 @@ TasksFragment.OnTasksFragmentInteractionListener{
 
             case R.id.nav_home: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, NotesFragment.newInstance()).commit();
-                getSupportActionBar().setTitle( "Home" );
+                getSupportActionBar().setTitle( "Notes" );
                 break;
             }
 

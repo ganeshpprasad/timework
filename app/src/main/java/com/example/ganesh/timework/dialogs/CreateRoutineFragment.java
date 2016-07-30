@@ -67,6 +67,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     onSaveButtonListener saveButtonListener;
 
+    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
     public static CreateRoutineFragment newInstance( onSaveButtonListener listener ) {
 
         CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
@@ -78,7 +80,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
+        final View rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
 
         setHasOptionsMenu(true);
 
@@ -108,6 +110,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if ( checkedId == R.id.radio_custom_routine_dialogfragment ) {
+
+                    moveFocusAndSoftKeyboard( imm , eventNameEt , rootView );
 
                     checkBoxContainerLl.setAlpha(1);
 
@@ -165,23 +169,25 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     private void handleTheSoftKeyboard(final EditText editView ) {
 
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput( InputMethod.SHOW_FORCED , InputMethodManager.HIDE_IMPLICIT_ONLY );
         editView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ( event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                    Log.d( LOG_TAG , "Enter key pressed" );
-                    imm.hideSoftInputFromWindow(v.getWindowToken() , 0);
-                    editView.setFocusable(false);
-                    editView.setFocusableInTouchMode(true);
-                    return true;
+                    moveFocusAndSoftKeyboard( imm , editView , v );
                 }
                 return false;
             }
         });
 
+    }
+
+    private boolean moveFocusAndSoftKeyboard( InputMethodManager imm , View view , View window ){
+        Log.d( LOG_TAG , "Enter key pressed" );
+        imm.hideSoftInputFromWindow(window.getWindowToken() , 0);
+        view.setFocusable(false);
+        view.setFocusableInTouchMode(true);
+        return true;
     }
 
     @Override
