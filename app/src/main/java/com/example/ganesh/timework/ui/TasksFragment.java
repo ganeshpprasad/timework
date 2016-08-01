@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.TaskRecycleAdapter;
@@ -47,9 +48,15 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
     int date;
     int month;
 
+    View rootView;
+
+    InputMethodManager imm;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        imm  = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Cursor cursor = getActivity().getContentResolver().query(
                 TaskContract.CONTENT_URI ,
@@ -74,8 +81,6 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
                 date = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_DATE ) );
                 month = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_MONTH ) );
 
-                Log.d( "tasks frag" , taskName );
-
 //                TODO do you need notify info here??
                 Tasks task = new Tasks( taskName , taskType , false );
                 task.setDate(date);
@@ -97,7 +102,7 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         adapter = new TaskRecycleAdapter(tasks);
 
@@ -146,6 +151,7 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
 
     @Override
     public void onTaskCreated( Tasks task ) {
+        imm.hideSoftInputFromWindow( rootView.getWindowToken() , 0 );
         tasks.add(task);
         adapter.notifyItemInserted( tasks.size() - 1 );
     }

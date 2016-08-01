@@ -24,13 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar_landing_page"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="?attr/colorPrimary"-->
-            <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
-
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
@@ -47,6 +40,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_landing_page"
-        app:menu="@menu/activity_landing_page_drawer"/>
+        app:menu="@menu/activity_landing_page_drawer">
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

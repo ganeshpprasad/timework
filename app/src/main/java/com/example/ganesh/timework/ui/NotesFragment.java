@@ -28,7 +28,7 @@ import java.util.List;
 public class NotesFragment extends Fragment implements CreateNotesFragment.onNotesCreatedListener ,
 NotesRecycleAdapter.onNoteSelectListener{
 
-    private static final String LOG_TAG = "Notes fragment";
+//    private static final String LOG_TAG = "Notes fragment";
 
     private OnNotesFragmentInteractionListener mListener;
 
@@ -62,16 +62,18 @@ NotesRecycleAdapter.onNoteSelectListener{
         assert cursor != null;
         if ( cursor.moveToFirst() ) {
             do {
+                int id = cursor.getInt( cursor.getColumnIndexOrThrow(NotesContract._ID) );
 
                 String notesName = cursor.getString( cursor.getColumnIndexOrThrow( NotesContract.COLUMN_NOTES_NAME ) );
                 String notesContent = cursor.getString( cursor.getColumnIndexOrThrow( NotesContract.COLUMN_NOTES_CONTENT ) );
                 String type = cursor.getString( cursor.getColumnIndexOrThrow( NotesContract.COLUMN_NOTES_TYPE ) );
+
                 int hour = cursor.getInt( cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_HOUR) );
                 int minutes = cursor.getInt( cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_MINUTES) );
                 int date = cursor.getInt( cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_DATE) );
                 int month = cursor.getInt( cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_MONTH) );
 
-                notes.add(new Notes( notesName , type ,  notesContent  , hour , minutes , date , month));
+                notes.add(new Notes( id , notesName , type ,  notesContent  , hour , minutes , date , month));
 
             }while ( cursor.moveToNext() );
         }
@@ -104,12 +106,6 @@ NotesRecycleAdapter.onNoteSelectListener{
         return rootView;
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.OnNotesFragmentInteraction();
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -133,19 +129,33 @@ NotesRecycleAdapter.onNoteSelectListener{
 
     @Override
     public void onNotesCreated(Notes note) {
-        Log.d( LOG_TAG , "on notes created" );
         notes.add(note);
         adapter.notifyItemInserted(notes.size()-1);
     }
 
     public static final String NOTE_NAME = "note name";
     public static final String NOTE_CONTENT = "note content";
+    public static final String NOTE_ID = "note id";
 
+    public static final int DETAIL_REQUEST_CODE = 100;
+
+//    TODO handle this with note _ID from db and new call to db. But if necessary
     @Override
-    public void onNoteSelect(String name, String content) {
+    public void onNoteSelect(String name, String content , int id) {
         Intent intent = new Intent( getActivity() , NoteDescriptionActivity.class);
         intent.putExtra( NOTE_NAME , name );
         intent.putExtra( NOTE_CONTENT , content );
-        startActivity( intent );
+        intent.putExtra( NOTE_ID , id );
+        startActivityForResult( intent , DETAIL_REQUEST_CODE );
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if ( requestCode == DETAIL_REQUEST_CODE ) {
+            adapter.notifyItemChanged(resultCode-1);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

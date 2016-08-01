@@ -13,8 +13,11 @@ public class Notes {
     private int createdDate;
     private int createdMonth;
 
-    public Notes( String _name , String _type , String _content , int _hour , int _minutes , int _date , int _month ) {
+    private int id;
 
+    public Notes( int _id, String _name , String _type , String _content , int _hour , int _minutes , int _date , int _month ) {
+
+        this.id = _id;
         this.name = _name;
         this.type = _type;
         this.content = _content;
@@ -67,5 +70,9 @@ public class Notes {
 
     public int getCreatedMonth() {
         return createdMonth;
+    }
+
+    public int getId() {
+        return id;
     }
 }

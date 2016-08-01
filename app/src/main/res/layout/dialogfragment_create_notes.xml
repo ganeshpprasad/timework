@@ -32,6 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textColor="@color/colorPrimaryDark"
+            android:background="@android:color/transparent"
+            android:paddingStart="16dp"
             android:id="@+id/title_create_notes_et"
             android:hint="Note title"/>
 
@@ -44,6 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
             android:gravity="start"
             android:hint="Note content"
             android:id="@+id/content_create_notes_et"/>

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,8 +25,9 @@ public class LandingPageActivity extends AppCompatActivity
         WeekdayFragment.OnWeekdayFragmentInteractionListener,
         RoutineFragment.OnRoutineFragmentInteractionListener,
         NotesFragment.OnNotesFragmentInteractionListener,
-TasksFragment.OnTasksFragmentInteractionListener{
+        TasksFragment.OnTasksFragmentInteractionListener{
 
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,12 @@ TasksFragment.OnTasksFragmentInteractionListener{
         toggle.syncState();
 
 //        NavigationView implementation
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, NotesFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
     }
 
     @Override
@@ -60,32 +63,17 @@ TasksFragment.OnTasksFragmentInteractionListener{
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES) || getFragmentAtTopOfBackstack() == null){
+                finish();
+            }
             super.onBackPressed();
+            setActionBarTitle();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        TODO this inflater adding stuff to dialog fragment
-//        getMenuInflater().inflate(R.menu.landing_page, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    public static final String FRAGMENT_ROUTINE = "routine";
+    public static final String FRAGMENT_TASKS = "tasks";
+    public static final String FRAGMENT_NOTES = "notes";
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -96,19 +84,19 @@ TasksFragment.OnTasksFragmentInteractionListener{
         switch (id) {
 
             case R.id.nav_home: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, NotesFragment.newInstance()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
                 getSupportActionBar().setTitle( "Notes" );
                 break;
             }
 
             case R.id.nav_routine: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, RoutineFragment.newInstance()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, RoutineFragment.newInstance()).addToBackStack(FRAGMENT_ROUTINE).commit();
                 getSupportActionBar().setTitle("Routines");
                 break;
             }
 
             case R.id.nav_tasks: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TasksFragment.newInstance()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TasksFragment.newInstance()).addToBackStack(FRAGMENT_TASKS).commit();
                 getSupportActionBar().setTitle("Tasks");
                 break;
             }
@@ -139,4 +127,33 @@ TasksFragment.OnTasksFragmentInteractionListener{
     public void onTasksFragmentInteraction(Uri uri) {
 
     }
+
+    public void setActionBarTitle(){
+        String fragmentTag = getFragmentAtTopOfBackstack();
+
+        if ( fragmentTag != null ) {
+            if ( fragmentTag.equals(FRAGMENT_NOTES) ) {
+                getSupportActionBar().setTitle( "Notes" );
+                navigationView.getMenu().getItem(0).setChecked(true);
+            } else if ( fragmentTag.equals( FRAGMENT_ROUTINE ) ){
+                getSupportActionBar().setTitle( "Routine" );
+                navigationView.getMenu().getItem(1).setChecked(true);
+            } else {
+                getSupportActionBar().setTitle( "Tasks" );
+                navigationView.getMenu().getItem(2).setChecked(true);
+            }
+        }
+
+    }
+
+    public String getFragmentAtTopOfBackstack(){
+
+        int index = this.getSupportFragmentManager().getBackStackEntryCount() - 1;
+
+        if ( index !=  -1 ){
+            return getSupportFragmentManager().getBackStackEntryAt( index ).getName();
+        }
+        return null;
+    }
+
 }

@@ -369,11 +369,43 @@ public class DatabaseProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+
+        int match = sUriMatcher.match(uri);
+
+        switch ( match ) {
+
+            case NOTES_TABLE_ID : {
+                return mOpenDbHelper.getWritableDatabase().delete(
+                  NotesContract.TABLE_NAME ,
+                  NotesContract._ID + " = ?" ,
+                  new String[] { NotesContract.getIdFromUri(uri) }
+                );
+            }
+
+        }
+
         return 0;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+
+            case NOTES_TABLE_ID : {
+                return mOpenDbHelper.getWritableDatabase().update(
+                        NotesContract.TABLE_NAME ,
+                        values ,
+                        NotesContract._ID + " = ?" ,
+                        new String[] {NotesContract.getIdFromUri(uri)}
+                );
+            }
+
+        }
+
         return 0;
+
     }
 }

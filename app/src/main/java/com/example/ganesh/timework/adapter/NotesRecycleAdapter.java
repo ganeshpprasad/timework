@@ -18,9 +18,7 @@ import java.util.List;
 public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapter.ViewHolder> {
 
     List<Notes> notes;
-
     onNoteSelectListener listener;
-//    TODO This kinda includes all the adapters - implement the listener to open the detail activity
 
     public NotesRecycleAdapter( List<Notes> _notes , onNoteSelectListener _listener ) {
         this.notes = _notes;
@@ -34,21 +32,23 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mNotes = notes.get(position);
+
+        holder.id = holder.mNotes.getId();
 
         final String content = holder.mNotes.getContent();
         final String name = holder.mNotes.getName();
 
-        holder.NotesContentEt.setText( name );
-        holder.NotesTitleEt.setText( content );
+        holder.NotesContentEt.setText( content );
+        holder.NotesTitleEt.setText( name );
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ( listener != null ){
-                    listener.onNoteSelect( name , content );
+                    listener.onNoteSelect( name , content , holder.id);
                 }
             }
         });
@@ -66,6 +66,8 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
         TextView NotesContentEt;
         View mView;
 
+        int id;
+
         Notes mNotes;
 
         public ViewHolder(View itemView) {
@@ -78,7 +80,7 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
     }
 
     public interface onNoteSelectListener{
-        void onNoteSelect( String name , String content );
+        void onNoteSelect( String name , String content , int id );
     }
 
 }

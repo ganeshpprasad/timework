@@ -47,6 +47,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     private static final String LOG_TAG = "create routine dialog";
 
+    View rootView;
+
     RadioGroup radioDaysGroup;
     LinearLayout checkBoxContainerLl;
     EditText eventNameEt;
@@ -67,7 +69,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     onSaveButtonListener saveButtonListener;
 
-    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    InputMethodManager imm;
 
     public static CreateRoutineFragment newInstance( onSaveButtonListener listener ) {
 
@@ -80,7 +82,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
+        rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
 
         setHasOptionsMenu(true);
 
@@ -94,6 +96,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             actionBar.setHomeButtonEnabled(true);
             actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
         }
+
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
 //        Spinner for Type of routine selection
         spinnerTypeCreateRoutine = (Spinner) rootView.findViewById(R.id.spinner_type_routine_dialogfragment);
@@ -213,6 +217,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             return true;
         }else if (id == android.R.id.home) {
             dismiss();
+            imm.hideSoftInputFromWindow(rootView.getWindowToken() , 0);
             return true;
         }
 
@@ -232,7 +237,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         DialogToDatabaseAdapter adapter;
 
-        if ( !eventNameString.equals("") ) {
+        if ( !eventNameString.isEmpty() ) {
 
             if ( idRadioDays == R.id.radio_custom_routine_dialogfragment ) {
 

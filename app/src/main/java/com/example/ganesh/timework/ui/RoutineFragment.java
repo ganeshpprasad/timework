@@ -74,12 +74,6 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
 
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onRoutineFragmentInteraction();
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
