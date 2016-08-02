@@ -1,7 +1,6 @@
 package com.example.ganesh.timework.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
-import com.example.ganesh.timework.data.ListItemTemp;
 import com.example.ganesh.timework.utils.Tasks;
 
 import java.util.List;

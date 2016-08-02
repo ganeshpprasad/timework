@@ -30,10 +30,13 @@ public class DialogToDatabaseAdapter {
     int minutes;
 
     boolean[] custom = null;
-
+    boolean isUpdate;
     Context context;
 
-    public DialogToDatabaseAdapter(Context _context , String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , int _hour , int _minutes ) {
+    int id;
+
+    public DialogToDatabaseAdapter(Context _context , String _routineName , int _dayGroup , int _typeSelected ,
+                                   Boolean _notify , boolean[] _custom , int _hour , int _minutes , boolean _isUpdate ) {
 
         this.routineName = _routineName;
         this.dayGroup = _dayGroup;
@@ -44,14 +47,8 @@ public class DialogToDatabaseAdapter {
         this.minutes = _minutes;
 
         this.context = _context;
-    }
-
-    public DialogToDatabaseAdapter( Context _context , String _routineName , int _dayGroup , int _typeSelected , Boolean _notify , boolean[] _custom , int _hour , int _minutes) {
-
-        this( _context , _routineName , _dayGroup ,_typeSelected , _notify , _hour , _minutes );
-
         this.custom = _custom;
-
+        this.isUpdate = _isUpdate;
     }
 
     int notifyInt;
@@ -86,12 +83,16 @@ public class DialogToDatabaseAdapter {
             contentValues.put( daysColumnArray[i] , daysArray[i] );
         }
 
-        Uri insertUri = context.getContentResolver().insert(RoutineContract.CONTENT_URI , contentValues );
-        long id = ContentUris.parseId( insertUri );
-
+        if (isUpdate){
+            int rows = context.getContentResolver().update( RoutineContract.buildRoutineUri(id) , contentValues ,null,null );
+        } else {
+            Uri insertUri = context.getContentResolver().insert(RoutineContract.CONTENT_URI, contentValues);
+            long id = ContentUris.parseId(insertUri);
+        }
         return true;
     }
 
-
-
+    public void setId(int id) {
+        this.id = id;
+    }
 }

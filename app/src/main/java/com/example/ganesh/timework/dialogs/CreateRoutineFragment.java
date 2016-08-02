@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.DialogToDatabaseAdapter;
+import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.utils.Constants;
 
 import java.lang.reflect.Array;
@@ -59,23 +60,39 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     int timeHour;
     int timeMinutes;
 
-    CheckBox mon;
-    CheckBox tue;
-    CheckBox wed;
-    CheckBox thu;
-    CheckBox fri;
-    CheckBox sat;
-    CheckBox sun;
+    boolean isUpdate = false;
+
+    CheckBox[] daysCbArray = new CheckBox[7];
+    int[] daysCbViewArray = new int[]{
+            R.id.check_box_m_routine_dialogfragment ,
+            R.id.check_box_tu_routine_dialogfragment ,
+            R.id.check_box_w_routine_dialogfragment ,
+            R.id.check_box_th_routine_dialogfragment ,
+            R.id.check_box_f_routine_dialogfragment ,
+            R.id.check_box_sa_routine_dialogfragment ,
+            R.id.check_box_su_routine_dialogfragment
+    };
 
     onSaveButtonListener saveButtonListener;
 
     InputMethodManager imm;
+
+    RoutineItem.Item mItem;
+    int routineId;
 
     public static CreateRoutineFragment newInstance( onSaveButtonListener listener ) {
 
         CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
         createRoutineFragment.saveButtonListener = listener;
         return createRoutineFragment;
+    }
+
+//    another new instance to edit an existing routine
+    public static CreateRoutineFragment newInstance(RoutineItem.Item _item , onSaveButtonListener listener){
+        CreateRoutineFragment fragment = new CreateRoutineFragment();
+        fragment.mItem = _item;
+        fragment.saveButtonListener = listener;
+        return fragment;
     }
 
     @Nullable
@@ -145,20 +162,16 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         notifyCb = (CheckBox) rootView.findViewById( R.id.checkbox_notify_routine_dialogfragment );
 
-        mon = (CheckBox) rootView.findViewById( R.id.check_box_m_routine_dialogfragment );
-        tue = (CheckBox) rootView.findViewById( R.id.check_box_tu_routine_dialogfragment );
-        wed = (CheckBox) rootView.findViewById( R.id.check_box_w_routine_dialogfragment );
-        thu = (CheckBox) rootView.findViewById( R.id.check_box_th_routine_dialogfragment );
-        fri = (CheckBox) rootView.findViewById( R.id.check_box_f_routine_dialogfragment );
-        sat = (CheckBox) rootView.findViewById( R.id.check_box_sa_routine_dialogfragment );
-        sun = (CheckBox) rootView.findViewById( R.id.check_box_su_routine_dialogfragment );
+        for ( int i = 0; i < daysCbArray.length; i++ ){
+            daysCbArray[i] = (CheckBox) rootView.findViewById(daysCbViewArray[i]);
+        }
 
         timePickerTv = (TextView) rootView.findViewById( R.id.time_picker_tv_routine_dialogfragment );
 
         Calendar c = Calendar.getInstance();
-        int currentHour = c.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = c.get( Calendar.MINUTE );
-        updateTimeTv( currentHour , currentMinute );
+        timeHour = c.get(Calendar.HOUR_OF_DAY);
+        timeMinutes = c.get( Calendar.MINUTE );
+        updateTimeTv( timeHour , timeHour );
 
         timePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +181,31 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             }
         });
 
+        if (mItem != null){
+            isUpdate = true;
+            fillRoutineFragment();
+        }
+
         return rootView;
+    }
+
+    public void fillRoutineFragment(){
+
+        eventNameEt.setText(mItem.eventName);
+        routineId = mItem.id;
+
+        for (int i = 0; i < daysCbArray.length; i++){
+            daysCbArray[i].setChecked(mItem.getRepeatDays()[i]);
+        }
+
+        spinnerTypeCreateRoutine.setSelection(Constants.getIntForTypeOfRoutine(mItem.type));
+
+        String time = mItem.timeHour + ":" + mItem.timeMinutes;
+
+        timePickerTv.setText(time);
+
+        notifyCb.setChecked( mItem.notify );
+
     }
 
     private void handleTheSoftKeyboard(final EditText editView ) {
@@ -229,6 +266,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         boolean custom[] = new boolean[7];
 
+        RoutineItem.Item item;
+
         int dayGroup;
         String eventNameString = eventNameEt.getText().toString();
         int idRadioDays = radioDaysGroup.getCheckedRadioButtonId();
@@ -243,44 +282,53 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
                 dayGroup = Constants.DayGroups.CUSTOM;
 
-                custom[0] = mon.isChecked();
-                custom[1] = tue.isChecked();
-                custom[2] = wed.isChecked();
-                custom[3] = thu.isChecked();
-                custom[4] = fri.isChecked();
-                custom[5] = sat.isChecked();
-                custom[6] = sun.isChecked();
+                for (int i = 0; i < custom.length; i++){
+                    custom[i] = daysCbArray[i].isChecked();
+                }
 
-
-                adapter = new DialogToDatabaseAdapter(getContext() , eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , custom , timeHour , timeMinutes);
+                adapter = adapterInitialise( eventNameString , dayGroup ,
+                        idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate);
 
             } else if ( idRadioDays == R.id.radio_alldays_routine_dialogfragment ) {
                 dayGroup = Constants.DayGroups.ALLDAYS;
 
-                adapter = new DialogToDatabaseAdapter( getContext() , eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , timeHour , timeMinutes);
+                adapter = adapterInitialise( eventNameString , dayGroup ,
+                        idTypeSelection , notifyBool , null , timeHour , timeMinutes , isUpdate);
 
             } else {
                 dayGroup = Constants.DayGroups.WEEKDAYS;
 
-                adapter = new DialogToDatabaseAdapter( getContext() , eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , timeHour , timeMinutes);
+                adapter = adapterInitialise( eventNameString , dayGroup ,
+                        idTypeSelection , notifyBool , null , timeHour , timeMinutes , isUpdate);
             }
 
             adapter.addValuesToDb();
-
             saveButtonListener.onSaveButton();
-
             dismiss();
-
-
         }else {
-            CoordinatorLayout coordinatorLayout = new CoordinatorLayout(getContext());
-            Snackbar.make( coordinatorLayout , " Event must have a name?! Isn't it? " , Snackbar.LENGTH_LONG );
             eventNameEt.requestFocus();
             handleTheSoftKeyboard( eventNameEt );
         }
+    }
+
+    private DialogToDatabaseAdapter adapterInitialise(
+            String eventName ,
+            int day,
+            int type,
+            boolean notify,
+            boolean[] daysSelectedArray,
+            int hour,
+            int minutes,
+            boolean isUpdate
+    ){
+        DialogToDatabaseAdapter adapter = new DialogToDatabaseAdapter(getContext() ,
+                eventName , day , type , notify , daysSelectedArray , hour , minutes , isUpdate);
+
+        if ( isUpdate ){
+            adapter.setId(routineId);
+        }
+
+        return adapter;
     }
 
     @Override

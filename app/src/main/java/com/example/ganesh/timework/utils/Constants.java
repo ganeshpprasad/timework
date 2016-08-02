@@ -68,6 +68,13 @@ public class Constants {
         }
     }
 
+    public static int getIntForTypeOfRoutine( String type ){
+        if ( type.equals(RoutineTypes.HOBBY) ) return 0;
+        else if (type.equals(RoutineTypes.PERSONAL)) return 1;
+        else if (type.equals(RoutineTypes.WORK)) return 2;
+        else return -1;
+    }
+
     public static int booleanToInt( boolean bool ) {
 
         if ( bool ) return 1;

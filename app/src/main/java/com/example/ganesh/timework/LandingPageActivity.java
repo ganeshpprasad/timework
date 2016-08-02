@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.ganesh.timework.data.DatabaseHelper;
+import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.ui.NotesFragment;
 import com.example.ganesh.timework.ui.RoutineFragment;
 import com.example.ganesh.timework.ui.TasksFragment;
@@ -22,7 +23,6 @@ import com.example.ganesh.timework.ui.WeekdayFragment;
 
 public class LandingPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        WeekdayFragment.OnWeekdayFragmentInteractionListener,
         RoutineFragment.OnRoutineFragmentInteractionListener,
         NotesFragment.OnNotesFragmentInteractionListener,
         TasksFragment.OnTasksFragmentInteractionListener{
@@ -108,10 +108,6 @@ public class LandingPageActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onWeekdayFragmentInteraction(Uri uri) {
-
-    }
 
     @Override
     public void onRoutineFragmentInteraction() {

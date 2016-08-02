@@ -16,14 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ganesh.timework.R;
+import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 
-public class RoutineFragment extends Fragment implements  CreateRoutineFragment.onSaveButtonListener{
+public class RoutineFragment extends Fragment implements  CreateRoutineFragment.onSaveButtonListener ,
+WeekdayFragment.OnWeekdayFragmentInteractionListener{
 
     private OnRoutineFragmentInteractionListener mListener;
     SectionsPagerAdapter sectionsPagerAdapter;
-
-    CoordinatorLayout coordinatorLayout;
 
     public RoutineFragment() {
         // Required empty public constructor
@@ -68,8 +68,6 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
             }
         });
 
-        coordinatorLayout = ( CoordinatorLayout ) rootView.findViewById( R.id.coordinator_layout_routine_fragment );
-
         return rootView;
 
     }
@@ -107,21 +105,21 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 1:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 2:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 3:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 4:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 5:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 case 6:
-                    return WeekdayFragment.newInstance(position + 1);
+                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
                 default:
-                    return WeekdayFragment.newInstance(-1);
+                    return WeekdayFragment.newInstance(-1 , RoutineFragment.this);
             }
         }
 
@@ -166,6 +164,16 @@ public class RoutineFragment extends Fragment implements  CreateRoutineFragment.
     @Override
     public void onSaveButton() {
         sectionsPagerAdapter.notifyDataSetChanged();
-        Snackbar.make( coordinatorLayout , " Routine created " , Snackbar.LENGTH_SHORT );
+    }
+
+    @Override
+    public void onWeekdayFragmentInteractionDeleteRoutine(int position) {
+
+    }
+
+    @Override
+    public void onWeekdayFragmentInteractionEditRoutine(RoutineItem.Item item) {
+        getActivity().getSupportFragmentManager().beginTransaction().add( android.R.id.content , CreateRoutineFragment.newInstance(item ,
+                this) ).commit();
     }
 }

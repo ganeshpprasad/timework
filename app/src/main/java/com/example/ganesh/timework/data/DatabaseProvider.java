@@ -382,6 +382,22 @@ public class DatabaseProvider extends ContentProvider {
                 );
             }
 
+            case ROUTINE_TABLE_ID : {
+                return mOpenDbHelper.getWritableDatabase().delete(
+                        DatabaseContract.RoutineContract.TABLE_NAME ,
+                        DatabaseContract.RoutineContract._ID + " = ?" ,
+                        new String[] { DatabaseContract.RoutineContract.getIdFromUri(uri) }
+                );
+            }
+
+            case TASKS_WITH_ID : {
+                return mOpenDbHelper.getWritableDatabase().delete(
+                        DatabaseContract.TaskContract.TABLE_NAME ,
+                        DatabaseContract.TaskContract._ID + " = ?" ,
+                        new String[] { DatabaseContract.TaskContract.getIdFromUri(uri) }
+                );
+            }
+
         }
 
         return 0;
@@ -400,6 +416,24 @@ public class DatabaseProvider extends ContentProvider {
                         values ,
                         NotesContract._ID + " = ?" ,
                         new String[] {NotesContract.getIdFromUri(uri)}
+                );
+            }
+
+            case ROUTINE_TABLE_ID : {
+                return mOpenDbHelper.getWritableDatabase().update(
+                        DatabaseContract.RoutineContract.TABLE_NAME ,
+                        values ,
+                        DatabaseContract.RoutineContract._ID + " = ?" ,
+                        new String[] {DatabaseContract.RoutineContract.getIdFromUri(uri)}
+                );
+            }
+
+            case TASKS_WITH_ID : {
+                return mOpenDbHelper.getWritableDatabase().update(
+                        DatabaseContract.TaskContract.TABLE_NAME ,
+                        values ,
+                        DatabaseContract.TaskContract._ID + " = ?" ,
+                        new String[] {DatabaseContract.TaskContract.getIdFromUri(uri)}
                 );
             }
 
