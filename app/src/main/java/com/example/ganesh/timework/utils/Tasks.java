@@ -5,6 +5,7 @@ package com.example.ganesh.timework.utils;
  */
 public class Tasks {
 
+    private int id;
     private String taskName;
     private String taskType;
     private boolean notify;
@@ -66,4 +67,13 @@ public class Tasks {
     public void setMonth(int month) {
         this.month = month;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

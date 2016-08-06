@@ -168,7 +168,7 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
 
     @Override
     public void onWeekdayFragmentInteractionDeleteRoutine(int position) {
-
+        sectionsPagerAdapter.notifyDataSetChanged();
     }
 
     @Override

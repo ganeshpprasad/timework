@@ -37,8 +37,8 @@ import java.util.Calendar;
 /**
  * Created by Ganesh Prasad on 13-07-2016.
  */
-public class CreateTasksFragment extends DialogFragment implements TimePickerDialog.SetTimeListener ,
-DatePickerDialog.setDateListener{
+public class CreateTasksFragment extends DialogFragment implements TimePickerDialog.SetTimeListener,
+        DatePickerDialog.setDateListener {
 
     private static final String LOG_TAG = "create task";
 
@@ -48,7 +48,7 @@ DatePickerDialog.setDateListener{
     OnTaskCreatedListener listener;
     Spinner spinnerTypeCreateTask;
     String taskName;
-    int taskType;
+    int taskType = 0;
     boolean notify;
     TextView datePickerTv;
     TextView timePickerTv;
@@ -61,18 +61,18 @@ DatePickerDialog.setDateListener{
     EditText taskNameEt;
     CheckBox notifyCb;
 
-    public static CreateTasksFragment newInstance( OnTaskCreatedListener listener ){
+    Tasks task = null;
 
+    public static CreateTasksFragment newInstance(OnTaskCreatedListener _listener){
         CreateTasksFragment fragment = new CreateTasksFragment();
-        fragment.listener = listener;
+        fragment.listener = _listener;
         return fragment;
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.dialogfragment_create_tasks , container , false);
+        rootView = inflater.inflate(R.layout.dialogfragment_create_tasks, container, false);
 
 //        TOOLBAR
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_task_dialog_fragment);
@@ -88,17 +88,16 @@ DatePickerDialog.setDateListener{
             actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
         }
 
-        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE );
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
 //        DATE AND TIME PICKERS
         Calendar calendar = Calendar.getInstance();
-        int date = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-
+        date = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
         String datePicker = date + "/" + month;
 
         datePickerTv = (TextView) rootView.findViewById(R.id.select_date_task_dialog_fragment);
-        datePickerTv.setText( datePicker );
+        datePickerTv.setText(datePicker);
         datePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,8 +105,8 @@ DatePickerDialog.setDateListener{
             }
         });
 
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minutes = calendar.get(Calendar.MINUTE);
         String timePicker = hour + ":" + minutes;
 
         timePickerTv = (TextView) rootView.findViewById(R.id.select_time_task_dialog_fragment);
@@ -115,14 +114,14 @@ DatePickerDialog.setDateListener{
         timePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment timefragment = TimePickerDialog.newInstance( CreateTasksFragment.this );
-                timefragment.show( getFragmentManager() , "time fragment" );
+                DialogFragment timefragment = TimePickerDialog.newInstance(CreateTasksFragment.this);
+                timefragment.show(getFragmentManager(), "time fragment");
             }
         });
 
 //        SPINNER FOR TYPE
         spinnerTypeCreateTask = (Spinner) rootView.findViewById(R.id.spinner_type_task_dialog_fragment);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity() ,R.array.type_create_routine ,
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.type_create_routine,
                 android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypeCreateTask.setAdapter(arrayAdapter);
@@ -134,9 +133,9 @@ DatePickerDialog.setDateListener{
         return rootView;
     }
 
-    public void showDatePicker(View v){
-        DatePickerDialog dateFragment = DatePickerDialog.newInstance( this );
-        dateFragment.show(getActivity().getSupportFragmentManager() , "Date Picker");
+    public void showDatePicker(View v) {
+        DatePickerDialog dateFragment = DatePickerDialog.newInstance(this);
+        dateFragment.show(getActivity().getSupportFragmentManager(), "Date Picker");
     }
 
     @Override
@@ -148,7 +147,7 @@ DatePickerDialog.setDateListener{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.dialogfragment_menu_create_routine , menu);
+        inflater.inflate(R.menu.dialogfragment_menu_create_routine, menu);
     }
 
     @Override
@@ -158,62 +157,67 @@ DatePickerDialog.setDateListener{
 
         if (id == android.R.id.home) {
             dismiss();
-            imm.hideSoftInputFromWindow(rootView.getWindowToken() , 0);
+            hideSoftKeyboard();
             return true;
         }
 
         if (id == R.id.create_routine_menu_save) {
             saveTask();
             dismiss();
-            return true;
+            hideSoftKeyboard();
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveTask(){
+    public void hideSoftKeyboard() {
+        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+    }
+
+    private void saveTask() {
 
         taskName = taskNameEt.getText().toString();
         taskType = spinnerTypeCreateTask.getSelectedItemPosition();
         notify = notifyCb.isChecked();
-        long id = -1;
-        Tasks task = null;
+        long id;
 
         int notifyInt;
         String typeString;
 
         //        storing the int value in database.
-        notifyInt = Constants.booleanToInt( notify );
+        notifyInt = Constants.booleanToInt(notify);
 
 //        getting the type string based on typeSelected
-        typeString = Constants.getTypeOfRoutine( taskType );
+        typeString = Constants.getTypeOfRoutine(taskType);
 
-        if ( !taskName.isEmpty() ){
+        ContentValues values = new ContentValues();
+        values.put(TaskContract.COLUMN_TASK_NAME, taskName);
+        values.put(TaskContract.COLUMN_TASK_TYPE, typeString);
+        values.put(TaskContract.COLUMN_TASK_NOTIFY, notifyInt);
+        values.put(TaskContract.COLUMN_TASK_DATE, date);
+        values.put(TaskContract.COLUMN_TASK_MONTH, month);
+        values.put(TaskContract.COLUMN_TASK_TIME_HOUR, hour);
+        values.put(TaskContract.COLUMN_TASK_TIME_MINUTES, minutes);
 
-            ContentValues values = new ContentValues();
+        if (!taskName.isEmpty()) {
 
-            values.put( TaskContract.COLUMN_TASK_NAME , taskName );
-            values.put( TaskContract.COLUMN_TASK_TYPE , typeString );
-            values.put( TaskContract.COLUMN_TASK_NOTIFY , notifyInt );
-            values.put( TaskContract.COLUMN_TASK_DATE , date );
-            values.put( TaskContract.COLUMN_TASK_MONTH , month );
-            values.put( TaskContract.COLUMN_TASK_TIME_HOUR , hour );
-            values.put( TaskContract.COLUMN_TASK_TIME_MINUTES , minutes );
+            task = new Tasks(taskName, typeString, notify);
+            task.setDate(date);
+            task.setMonth(month);
+            task.setHour(hour);
+            task.setMinutes(minutes);
 
-            task = new Tasks( taskName , typeString , notify );
+            Uri uri = getActivity().getContentResolver().insert(TaskContract.CONTENT_URI, values);
+            id = ContentUris.parseId(uri);
+            if (id > 0) {
+                task.setId((int)id);
+                listener.onTaskCreated(task);
+            }
 
-            Uri uri = getActivity().getContentResolver().insert( TaskContract.CONTENT_URI , values );
-            id = ContentUris.parseId( uri );
-
-        }else {
+        } else {
             taskNameEt.requestFocus();
         }
-
-        if ( id > 0 ) {
-            listener.onTaskCreated(task);
-            Log.d( LOG_TAG , " after insertion" + id);
-        }
-
     }
 
     @Override
@@ -223,7 +227,7 @@ DatePickerDialog.setDateListener{
 
         String time = hour + ":" + minutes;
 
-        timePickerTv.setText( time );
+        timePickerTv.setText(time);
 
     }
 
@@ -238,7 +242,7 @@ DatePickerDialog.setDateListener{
 
     }
 
-    public interface OnTaskCreatedListener{
+    public interface OnTaskCreatedListener {
         void onTaskCreated(Tasks task);
     }
 }

@@ -48,7 +48,7 @@ public class DatabaseProvider extends ContentProvider {
         sNotesQueryBuilder.setTables( DatabaseContract.NotesContract.TABLE_NAME );
 
         sTasksQueryBuilder = new SQLiteQueryBuilder();
-        sNotesQueryBuilder.setTables(DatabaseContract.TaskContract.TABLE_NAME);
+        sTasksQueryBuilder.setTables(DatabaseContract.TaskContract.TABLE_NAME);
     }
 
     private static UriMatcher getUriMatcher() {

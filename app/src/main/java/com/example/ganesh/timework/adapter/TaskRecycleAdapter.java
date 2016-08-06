@@ -1,27 +1,35 @@
 package com.example.ganesh.timework.adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
+import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.utils.Tasks;
 
 import java.util.List;
 
-/**
- * Created by Ganesh Prasad on 07-07-2016.
- */
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
 
+    private static final String LOG_TAG = "task adapter";
     List<Tasks> tasksList;
+    Context mContext;
+    OnTasksClickListener listener;
 
-    public TaskRecycleAdapter(List<Tasks> mItems) {
+    public TaskRecycleAdapter(List<Tasks> mItems , Context context , OnTasksClickListener listener) {
         tasksList = mItems;
+        mContext = context;
+        this.listener = listener;
     }
 
     @Override
@@ -33,11 +41,19 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     @Override
     public void onBindViewHolder(TaskRecycleAdapter.ViewHolder holder, int position) {
         holder.mItem = tasksList.get(position);
-
         String time = holder.mItem.getHour() + ":" + holder.mItem.getMinutes();
 
+        final int taskDbId = holder.mItem.getId();
         holder.taskName.setText(holder.mItem.getTaskName());
         holder.taskTime.setText(time);
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onTaskClick(taskDbId);
+            }
+        });
+
     }
 
     @Override
@@ -50,7 +66,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         public final ImageView typeImage;
         public final TextView taskName;
         public final TextView taskTime;
-        public final ImageButton moreOptions;
+        public final View mView;
 
         public Tasks mItem;
 
@@ -58,11 +74,15 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
             super(itemView);
 
+            mView = itemView;
             typeImage = (ImageView) itemView.findViewById(R.id.image_task_list_item);
             taskName = (TextView) itemView.findViewById(R.id.task_name_task_list_item);
             taskTime = (TextView) itemView.findViewById(R.id.task_time_list_item);
-            moreOptions = (ImageButton) itemView.findViewById(R.id.more_options_btn_task_list_item);
 
         }
+    }
+
+    public interface OnTasksClickListener{
+        void onTaskClick(int taskDbId);
     }
 }

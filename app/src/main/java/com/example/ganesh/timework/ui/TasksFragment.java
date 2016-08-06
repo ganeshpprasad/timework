@@ -1,6 +1,7 @@
 package com.example.ganesh.timework.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.ganesh.timework.R;
+import com.example.ganesh.timework.TaskDescriptionActivity;
 import com.example.ganesh.timework.adapter.TaskRecycleAdapter;
 import com.example.ganesh.timework.data.DatabaseContract.TaskContract;
 import com.example.ganesh.timework.dialogs.CreateTasksFragment;
@@ -23,9 +25,12 @@ import com.example.ganesh.timework.utils.Tasks;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasksFragment extends Fragment implements CreateTasksFragment.OnTaskCreatedListener{
+public class TasksFragment extends Fragment implements CreateTasksFragment.OnTaskCreatedListener ,
+TaskRecycleAdapter.OnTasksClickListener{
 
     private OnTasksFragmentInteractionListener mListener;
+
+    private static final String LOG_TAG = "task fragment";
 
     List<Tasks> tasks;
     TaskRecycleAdapter adapter;
@@ -42,6 +47,7 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
     String taskName;
     String taskType;
     boolean notify;
+    int id;
 
     int hour;
     int minutes;
@@ -81,8 +87,13 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
                 date = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_DATE ) );
                 month = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_MONTH ) );
 
+                notify = cursor.getInt(cursor.getColumnIndexOrThrow(TaskContract.COLUMN_TASK_NOTIFY)) == 1;
+                id = cursor.getInt( cursor.getColumnIndexOrThrow(TaskContract._ID) );
+
 //                TODO do you need notify info here??
-                Tasks task = new Tasks( taskName , taskType , false );
+                Tasks task = new Tasks( taskName , taskType , notify );
+
+                task.setId(id);
                 task.setDate(date);
                 task.setMonth(month);
                 task.setHour(hour);
@@ -98,15 +109,17 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
 
     }
 
+    RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
 
-        adapter = new TaskRecycleAdapter(tasks);
+        adapter = new TaskRecycleAdapter(tasks , getContext() , this);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -151,8 +164,16 @@ public class TasksFragment extends Fragment implements CreateTasksFragment.OnTas
 
     @Override
     public void onTaskCreated( Tasks task ) {
-        imm.hideSoftInputFromWindow( rootView.getWindowToken() , 0 );
         tasks.add(task);
         adapter.notifyItemInserted( tasks.size() - 1 );
+    }
+
+    public static final String TASK_DB_ID = "task db id";
+
+    @Override
+    public void onTaskClick(int taskDbId) {
+        Intent intent = new Intent(getActivity() , TaskDescriptionActivity.class);
+        intent.putExtra( TASK_DB_ID , taskDbId );
+        startActivity(intent);
     }
 }

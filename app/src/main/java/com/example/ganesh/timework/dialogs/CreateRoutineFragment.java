@@ -266,8 +266,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         boolean custom[] = new boolean[7];
 
-        RoutineItem.Item item;
-
         int dayGroup;
         String eventNameString = eventNameEt.getText().toString();
         int idRadioDays = radioDaysGroup.getCheckedRadioButtonId();
@@ -279,28 +277,21 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         if ( !eventNameString.isEmpty() ) {
 
             if ( idRadioDays == R.id.radio_custom_routine_dialogfragment ) {
-
                 dayGroup = Constants.DayGroups.CUSTOM;
 
                 for (int i = 0; i < custom.length; i++){
                     custom[i] = daysCbArray[i].isChecked();
                 }
-
-                adapter = adapterInitialise( eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate);
-
             } else if ( idRadioDays == R.id.radio_alldays_routine_dialogfragment ) {
                 dayGroup = Constants.DayGroups.ALLDAYS;
-
-                adapter = adapterInitialise( eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , null , timeHour , timeMinutes , isUpdate);
-
+                custom = null;
             } else {
                 dayGroup = Constants.DayGroups.WEEKDAYS;
-
-                adapter = adapterInitialise( eventNameString , dayGroup ,
-                        idTypeSelection , notifyBool , null , timeHour , timeMinutes , isUpdate);
+                custom = null;
             }
+
+            adapter = adapterInitialise( eventNameString , dayGroup ,
+                    idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate);
 
             adapter.addValuesToDb();
             saveButtonListener.onSaveButton();

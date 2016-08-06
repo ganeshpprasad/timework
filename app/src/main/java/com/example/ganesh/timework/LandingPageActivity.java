@@ -53,7 +53,17 @@ public class LandingPageActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
+        Intent intent = getIntent();
+        int fragment = intent.getIntExtra(TaskDescriptionActivity.ACTIVITY_TO_LANDING_PAGE , -1);
+
+        if ( fragment == TaskDescriptionActivity.TASK_FRAGMENT ){
+            getSupportFragmentManager().beginTransaction().add( R.id.container_landing_page ,
+                    TasksFragment.newInstance() ).addToBackStack(FRAGMENT_TASKS).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page,
+                    NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
+        }
+
     }
 
     @Override
@@ -63,7 +73,9 @@ public class LandingPageActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES) || getFragmentAtTopOfBackstack() == null){
+            if ( getFragmentAtTopOfBackstack() == null){
+                finish();
+            } else if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES)){
                 finish();
             }
             super.onBackPressed();
