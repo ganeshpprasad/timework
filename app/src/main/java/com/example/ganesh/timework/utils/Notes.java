@@ -1,5 +1,9 @@
 package com.example.ganesh.timework.utils;
 
+import android.database.Cursor;
+
+import com.example.ganesh.timework.data.DatabaseContract.NotesContract;
+
 /**
  * Created by Ganesh Prasad on 28-07-2016.
  */
@@ -15,16 +19,12 @@ public class Notes {
 
     private int id;
 
-    public Notes( int _id, String _name , String _type , String _content , int _hour , int _minutes , int _date , int _month ) {
+    public Notes(int _id, String _name, String _type, String _content) {
 
         this.id = _id;
         this.name = _name;
         this.type = _type;
         this.content = _content;
-        this.createdHour = _hour;
-        this.createdMinutes = _minutes;
-        this.createdDate = _date;
-        this.createdMonth = _month;
 
     }
 
@@ -75,4 +75,36 @@ public class Notes {
     public int getId() {
         return id;
     }
+
+    //    method to convert cursor into a Notes item / object
+    public static Notes getNotesFromCursor(Cursor cursor) {
+
+        Notes notes = null;
+
+        if (cursor != null) {
+
+            if (cursor.moveToNext()) {
+
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract._ID));
+
+                String notesName = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_NAME));
+                String notesContent = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CONTENT));
+                String type = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_TYPE));
+
+                int hour = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_HOUR));
+                int minutes = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_MINUTES));
+                int date = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_DATE));
+                int month = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.COLUMN_NOTES_CREATED_MONTH));
+
+                notes = new Notes(id, notesName, type, notesContent);
+                notes.setCreatedHour(hour);
+                notes.setCreatedMinutes(minutes);
+                notes.setCreatedDate(date);
+                notes.setCreatedMonth(month);
+
+            }
+        }
+        return notes;
+    }
+
 }

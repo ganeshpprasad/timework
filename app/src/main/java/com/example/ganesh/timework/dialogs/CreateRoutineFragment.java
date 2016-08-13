@@ -2,15 +2,11 @@ package com.example.ganesh.timework.dialogs;
 
 import android.app.*;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,25 +32,28 @@ import com.example.ganesh.timework.adapter.DialogToDatabaseAdapter;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.utils.Constants;
 
-import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.Locale;
 
 /**
  * Created by Ganesh Prasad on 06-07-2016.
+ * This fragment is used to create new routines
  */
 public class CreateRoutineFragment extends DialogFragment implements TimePickerDialog.SetTimeListener {
 
     private static final String LOG_TAG = "create routine dialog";
 
     View rootView;
+    InputMethodManager imm;
 
     RadioGroup radioDaysGroup;
     LinearLayout checkBoxContainerLl;
     EditText eventNameEt;
-    Spinner spinnerTypeCreateRoutine;
+    Spinner spinnerType;
     CheckBox notifyCb;
     TextView timePickerTv;
+
+    OnNewRoutineCreatedListener saveRoutineListener;
 
     int timeHour;
     int timeMinutes;
@@ -73,25 +71,19 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             R.id.check_box_su_routine_dialogfragment
     };
 
-    onSaveButtonListener saveButtonListener;
-
-    InputMethodManager imm;
-
     RoutineItem.Item mItem;
     int routineId;
 
-    public static CreateRoutineFragment newInstance( onSaveButtonListener listener ) {
-
+    public static CreateRoutineFragment newInstance( OnNewRoutineCreatedListener listener ) {
         CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
-        createRoutineFragment.saveButtonListener = listener;
+        createRoutineFragment.saveRoutineListener = listener;
         return createRoutineFragment;
     }
 
 //    another new instance to edit an existing routine
-    public static CreateRoutineFragment newInstance(RoutineItem.Item _item , onSaveButtonListener listener){
-        CreateRoutineFragment fragment = new CreateRoutineFragment();
+    public static CreateRoutineFragment newInstance(RoutineItem.Item _item , OnNewRoutineCreatedListener listener){
+        CreateRoutineFragment fragment = CreateRoutineFragment.newInstance(listener);
         fragment.mItem = _item;
-        fragment.saveButtonListener = listener;
         return fragment;
     }
 
@@ -100,7 +92,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
-
         setHasOptionsMenu(true);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_routine_dialogfragment);
@@ -116,17 +107,13 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-//        Spinner for Type of routine selection
-        spinnerTypeCreateRoutine = (Spinner) rootView.findViewById(R.id.spinner_type_routine_dialogfragment);
+        spinnerType = (Spinner) rootView.findViewById(R.id.spinner_type_routine_dialogfragment);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity() ,R.array.type_create_routine ,
                 android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTypeCreateRoutine.setAdapter(arrayAdapter);
+        spinnerType.setAdapter(arrayAdapter);
 
-//        Implementing radio button read
         radioDaysGroup = (RadioGroup) rootView.findViewById( R.id.radio_group_days_routine_dialogfragment );
-        checkBoxContainerLl = (LinearLayout) rootView.findViewById( R.id.check_box_container_routine_dialogfragment );
-
         radioDaysGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -154,6 +141,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 }
             }
         });
+
+        checkBoxContainerLl = (LinearLayout) rootView.findViewById( R.id.check_box_container_routine_dialogfragment );
 
 //        Initialise Views that return event data
         eventNameEt = (EditText) rootView.findViewById( R.id.event_name_routine_dialogfragment );
@@ -198,18 +187,13 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             daysCbArray[i].setChecked(mItem.getRepeatDays()[i]);
         }
 
-        spinnerTypeCreateRoutine.setSelection(Constants.getIntForTypeOfRoutine(mItem.type));
-
+        spinnerType.setSelection(Constants.getIntForTypeOfRoutine(mItem.type));
         String time = mItem.timeHour + ":" + mItem.timeMinutes;
-
         timePickerTv.setText(time);
-
         notifyCb.setChecked( mItem.notify );
-
     }
 
     private void handleTheSoftKeyboard(final EditText editView ) {
-
         imm.toggleSoftInput( InputMethod.SHOW_FORCED , InputMethodManager.HIDE_IMPLICIT_ONLY );
         editView.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -220,7 +204,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 return false;
             }
         });
-
     }
 
     private boolean moveFocusAndSoftKeyboard( InputMethodManager imm , View view , View window ){
@@ -233,7 +216,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
@@ -246,39 +228,38 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == R.id.create_routine_menu_save) {
-            saveButtonRoutine();
-            return true;
+            saveRoutine();
+            dismiss();
+            hideSoftKeyboard();
         }else if (id == android.R.id.home) {
             dismiss();
-            imm.hideSoftInputFromWindow(rootView.getWindowToken() , 0);
-            return true;
+            hideSoftKeyboard();
         }
-
         return super.onOptionsItemSelected(item);
-
     }
 
-    private void saveButtonRoutine() {
+    public void hideSoftKeyboard(){
+        imm.hideSoftInputFromWindow(rootView.getWindowToken() , 0);
+    }
+
+    private void saveRoutine() {
 
         boolean custom[] = new boolean[7];
 
         int dayGroup;
-        String eventNameString = eventNameEt.getText().toString();
         int idRadioDays = radioDaysGroup.getCheckedRadioButtonId();
-        int idTypeSelection = spinnerTypeCreateRoutine.getSelectedItemPosition();
+        int idTypeSelection = spinnerType.getSelectedItemPosition();
         boolean notifyBool = notifyCb.isChecked();
+        String eventNameString = eventNameEt.getText().toString();
 
         DialogToDatabaseAdapter adapter;
 
         if ( !eventNameString.isEmpty() ) {
-
             if ( idRadioDays == R.id.radio_custom_routine_dialogfragment ) {
                 dayGroup = Constants.DayGroups.CUSTOM;
-
                 for (int i = 0; i < custom.length; i++){
                     custom[i] = daysCbArray[i].isChecked();
                 }
@@ -292,16 +273,18 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
             adapter = adapterInitialise( eventNameString , dayGroup ,
                     idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate);
-
             adapter.addValuesToDb();
-            saveButtonListener.onSaveButton();
-            dismiss();
+            saveRoutineListener.onNewRoutineCreated();
         }else {
             eventNameEt.requestFocus();
             handleTheSoftKeyboard( eventNameEt );
         }
     }
 
+    /**
+     * method to create an instance of the adapter
+     * initialises @id in adapter if the routine is being updated
+     */
     private DialogToDatabaseAdapter adapterInitialise(
             String eventName ,
             int day,
@@ -314,31 +297,24 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     ){
         DialogToDatabaseAdapter adapter = new DialogToDatabaseAdapter(getContext() ,
                 eventName , day , type , notify , daysSelectedArray , hour , minutes , isUpdate);
-
         if ( isUpdate ){
             adapter.setId(routineId);
         }
-
         return adapter;
     }
 
     @Override
     public void onSetTime(int hour, int minutes) {
-
         updateTimeTv( hour , minutes );
-
         timeHour = hour;
         timeMinutes = minutes;
-
     }
 
     private void updateTimeTv( int hour , int minutes ) {
-
         timePickerTv.setText( String.format(Locale.getDefault() , " %d : %d " , hour , minutes ) );
-
     }
 
-    public interface onSaveButtonListener{
-        void onSaveButton();
+    public interface OnNewRoutineCreatedListener{
+        void onNewRoutineCreated();
     }
 }

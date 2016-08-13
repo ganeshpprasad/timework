@@ -26,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.utils.Constants;
@@ -42,14 +43,17 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
     private static final String LOG_TAG = "create task";
 
+    /**
+     * variables initialised here to handle the soft keyboard
+     */
     View rootView;
     InputMethodManager imm;
 
-    OnTaskCreatedListener listener;
+    OnNewTaskCreatedListener listener;
+
+    EditText taskNameEt;
+    CheckBox notifyCb;
     Spinner spinnerTypeCreateTask;
-    String taskName;
-    int taskType = 0;
-    boolean notify;
     TextView datePickerTv;
     TextView timePickerTv;
 
@@ -58,12 +62,7 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
     int date;
     int month;
 
-    EditText taskNameEt;
-    CheckBox notifyCb;
-
-    Tasks task = null;
-
-    public static CreateTasksFragment newInstance(OnTaskCreatedListener _listener){
+    public static CreateTasksFragment newInstance(OnNewTaskCreatedListener _listener){
         CreateTasksFragment fragment = new CreateTasksFragment();
         fragment.listener = _listener;
         return fragment;
@@ -74,7 +73,6 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.dialogfragment_create_tasks, container, false);
 
-//        TOOLBAR
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_task_dialog_fragment);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Create new Task");
@@ -90,7 +88,6 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-//        DATE AND TIME PICKERS
         Calendar calendar = Calendar.getInstance();
         date = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
@@ -119,14 +116,12 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
             }
         });
 
-//        SPINNER FOR TYPE
         spinnerTypeCreateTask = (Spinner) rootView.findViewById(R.id.spinner_type_task_dialog_fragment);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.type_create_routine,
                 android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypeCreateTask.setAdapter(arrayAdapter);
 
-//        EDITTEXT FOR TASK NAME
         taskNameEt = (EditText) rootView.findViewById(R.id.task_name_task_dialog_fragment);
         notifyCb = (CheckBox) rootView.findViewById(R.id.reminder_task_dialog_fragment);
 
@@ -158,14 +153,12 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         if (id == android.R.id.home) {
             dismiss();
             hideSoftKeyboard();
-            return true;
         }
 
         if (id == R.id.create_routine_menu_save) {
             saveTask();
             dismiss();
             hideSoftKeyboard();
-            return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -177,13 +170,19 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
     private void saveTask() {
 
-        taskName = taskNameEt.getText().toString();
-        taskType = spinnerTypeCreateTask.getSelectedItemPosition();
-        notify = notifyCb.isChecked();
+        Tasks task;
+
         long id;
+        String taskName;
+        int taskType;
+        boolean notify;
 
         int notifyInt;
         String typeString;
+
+        taskName = taskNameEt.getText().toString();
+        taskType = spinnerTypeCreateTask.getSelectedItemPosition();
+        notify = notifyCb.isChecked();
 
         //        storing the int value in database.
         notifyInt = Constants.booleanToInt(notify);
@@ -212,11 +211,12 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
             id = ContentUris.parseId(uri);
             if (id > 0) {
                 task.setId((int)id);
-                listener.onTaskCreated(task);
+                listener.onNewTaskCreated(task);
             }
 
         } else {
             taskNameEt.requestFocus();
+            Toast.makeText( getActivity() , "The task name cannot be empty" , Toast.LENGTH_SHORT ).show();
         }
     }
 
@@ -224,25 +224,19 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
     public void onSetTime(int hour, int minutes) {
         this.hour = hour;
         this.minutes = minutes;
-
         String time = hour + ":" + minutes;
-
         timePickerTv.setText(time);
-
     }
 
     @Override
     public void setDate(int year, int month, int day) {
         this.date = day;
         this.month = month;
-
         String date = day + "/" + month;
-
         datePickerTv.setText(date);
-
     }
 
-    public interface OnTaskCreatedListener {
-        void onTaskCreated(Tasks task);
+    public interface OnNewTaskCreatedListener {
+        void onNewTaskCreated(Tasks task);
     }
 }

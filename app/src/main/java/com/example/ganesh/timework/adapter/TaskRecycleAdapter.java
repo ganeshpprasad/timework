@@ -21,14 +21,13 @@ import java.util.List;
 
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
 
-    private static final String LOG_TAG = "task adapter";
-    List<Tasks> tasksList;
-    Context mContext;
-    OnTasksClickListener listener;
+//    private static final String LOG_TAG = "task adapter";
 
-    public TaskRecycleAdapter(List<Tasks> mItems , Context context , OnTasksClickListener listener) {
+    List<Tasks> tasksList;
+    OnTasksSelectListener listener;
+
+    public TaskRecycleAdapter(List<Tasks> mItems , OnTasksSelectListener listener) {
         tasksList = mItems;
-        mContext = context;
         this.listener = listener;
     }
 
@@ -39,7 +38,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     }
 
     @Override
-    public void onBindViewHolder(TaskRecycleAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final TaskRecycleAdapter.ViewHolder holder, int position) {
         holder.mItem = tasksList.get(position);
         String time = holder.mItem.getHour() + ":" + holder.mItem.getMinutes();
 
@@ -50,7 +49,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onTaskClick(taskDbId);
+                listener.onTaskSelect(taskDbId , holder.getAdapterPosition());
             }
         });
 
@@ -82,7 +81,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         }
     }
 
-    public interface OnTasksClickListener{
-        void onTaskClick(int taskDbId);
+    public interface OnTasksSelectListener{
+        void onTaskSelect(int taskDbId , int taskRvPosition);
     }
 }

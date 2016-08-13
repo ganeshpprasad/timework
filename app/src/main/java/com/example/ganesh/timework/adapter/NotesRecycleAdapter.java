@@ -35,12 +35,10 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mNotes = notes.get(position);
-
         holder.id = holder.mNotes.getId();
 
         final String content = holder.mNotes.getContent();
         final String name = holder.mNotes.getName();
-
         holder.NotesContentEt.setText( content );
         holder.NotesTitleEt.setText( name );
 
@@ -48,7 +46,7 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
             @Override
             public void onClick(View v) {
                 if ( listener != null ){
-                    listener.onNoteSelect( name , content , holder.id);
+                    listener.onNoteSelect( name , content , holder.id , holder.getAdapterPosition());
                 }
             }
         });
@@ -80,7 +78,7 @@ public class NotesRecycleAdapter extends RecyclerView.Adapter<NotesRecycleAdapte
     }
 
     public interface onNoteSelectListener{
-        void onNoteSelect( String name , String content , int id );
+        void onNoteSelect( String name , String content , int id , int notePosition );
     }
 
 }

@@ -20,17 +20,20 @@ import com.example.ganesh.timework.TaskDescriptionActivity;
 import com.example.ganesh.timework.adapter.TaskRecycleAdapter;
 import com.example.ganesh.timework.data.DatabaseContract.TaskContract;
 import com.example.ganesh.timework.dialogs.CreateTasksFragment;
+import com.example.ganesh.timework.utils.DescriptionTaskListenerModel;
 import com.example.ganesh.timework.utils.Tasks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasksFragment extends Fragment implements CreateTasksFragment.OnTaskCreatedListener ,
-TaskRecycleAdapter.OnTasksClickListener{
+public class TasksFragment extends Fragment implements
+        CreateTasksFragment.OnNewTaskCreatedListener ,
+        TaskRecycleAdapter.OnTasksSelectListener ,
+        DescriptionTaskListenerModel.OnDescriptionTaskDeleteListener{
 
     private OnTasksFragmentInteractionListener mListener;
 
-    private static final String LOG_TAG = "task fragment";
+//    private static final String LOG_TAG = "task fragment";
 
     List<Tasks> tasks;
     TaskRecycleAdapter adapter;
@@ -40,29 +43,17 @@ TaskRecycleAdapter.OnTasksClickListener{
     }
 
     public static TasksFragment newInstance() {
-        TasksFragment fragment = new TasksFragment();
-        return fragment;
+        return new TasksFragment();
     }
 
-    String taskName;
-    String taskType;
-    boolean notify;
-    int id;
-
-    int hour;
-    int minutes;
-    int date;
-    int month;
-
-    View rootView;
-
-    InputMethodManager imm;
-
+    /**
+     * Database call and fill the tasks list with rows
+     * Initialise the singleton listener class for description delete callback
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        imm  = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Cursor cursor = getActivity().getContentResolver().query(
                 TaskContract.CONTENT_URI ,
@@ -75,51 +66,32 @@ TaskRecycleAdapter.OnTasksClickListener{
         tasks = new ArrayList<>();
 
         assert cursor != null;
-
-        if ( cursor.moveToFirst() ){
-            do {
-
-                taskName = cursor.getString( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_NAME ) );
-                taskType = cursor.getString( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TYPE ) );
-
-                hour = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TIME_HOUR ) );
-                minutes = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TIME_MINUTES ) );
-                date = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_DATE ) );
-                month = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_MONTH ) );
-
-                notify = cursor.getInt(cursor.getColumnIndexOrThrow(TaskContract.COLUMN_TASK_NOTIFY)) == 1;
-                id = cursor.getInt( cursor.getColumnIndexOrThrow(TaskContract._ID) );
-
-//                TODO do you need notify info here??
-                Tasks task = new Tasks( taskName , taskType , notify );
-
-                task.setId(id);
-                task.setDate(date);
-                task.setMonth(month);
-                task.setHour(hour);
-                task.setMinutes(minutes);
-
-                tasks.add( task );
-
-            }while (cursor.moveToNext());
-        }else {
-            Log.d( "task frag" , " empty db" );
+        Tasks task;
+        for ( int i = cursor.getCount(); i > 0; i -- ){
+            task = Tasks.getTaskFromCursor(cursor);
+            tasks.add(task);
         }
         cursor.close();
+        DescriptionTaskListenerModel.getInstance().setListener(this);
 
     }
 
-    RecyclerView recyclerView;
-
+    /**
+     * Recycle View and floating button initialisation
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
 
-        adapter = new TaskRecycleAdapter(tasks , getContext() , this);
+        adapter = new TaskRecycleAdapter(tasks , this);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -133,12 +105,6 @@ TaskRecycleAdapter.OnTasksClickListener{
         });
 
         return rootView;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onTasksFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -163,17 +129,53 @@ TaskRecycleAdapter.OnTasksClickListener{
     }
 
     @Override
-    public void onTaskCreated( Tasks task ) {
+    public void onNewTaskCreated( Tasks task ) {
         tasks.add(task);
         adapter.notifyItemInserted( tasks.size() - 1 );
     }
 
     public static final String TASK_DB_ID = "task db id";
+    public static final String TASK_RECYCLERVIEW_POSITION = "position";
+
+    public static final int DETAIL_REQUEST_NOTES_CODE = 200;
 
     @Override
-    public void onTaskClick(int taskDbId) {
+    public void onTaskSelect(int taskDbId , int taskRvPosition ) {
         Intent intent = new Intent(getActivity() , TaskDescriptionActivity.class);
         intent.putExtra( TASK_DB_ID , taskDbId );
-        startActivity(intent);
+        intent.putExtra( TASK_RECYCLERVIEW_POSITION , taskRvPosition );
+        startActivityForResult(intent , DETAIL_REQUEST_NOTES_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
+            updateItem(resultCode);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateItem(int updatedItemPosition){
+        int id = tasks.get(updatedItemPosition).getId();
+        if ( id > 0 ){
+            tasks.remove(updatedItemPosition);
+            Tasks task = Tasks.getTaskFromCursor( getActivity().getContentResolver().query(
+                    TaskContract.buildUriWithId(id),
+                    null ,
+                    null ,
+                    null ,
+                    null
+            ) );
+
+            tasks.add(updatedItemPosition , task);
+            adapter.notifyItemChanged(updatedItemPosition);
+        }
+    }
+
+    @Override
+    public void onDescriptionTaskDelete(int itemPosition) {
+        tasks.remove(itemPosition);
+        adapter.notifyItemRemoved(itemPosition);
     }
 }

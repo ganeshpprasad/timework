@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,6 +30,8 @@ public class LandingPageActivity extends AppCompatActivity
 
     NavigationView navigationView;
 
+//    private static final String LOG_TAG = "Landing page";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class LandingPageActivity extends AppCompatActivity
 //        Toolbar implementation
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_landing_page);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Notes");
 
 //        Drawer implementation
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -59,6 +62,8 @@ public class LandingPageActivity extends AppCompatActivity
         if ( fragment == TaskDescriptionActivity.TASK_FRAGMENT ){
             getSupportFragmentManager().beginTransaction().add( R.id.container_landing_page ,
                     TasksFragment.newInstance() ).addToBackStack(FRAGMENT_TASKS).commit();
+            getSupportActionBar().setTitle("Tasks");
+            navigationView.getMenu().getItem(2).setChecked(true);
         } else {
             getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page,
                     NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();

@@ -1,5 +1,9 @@
 package com.example.ganesh.timework.utils;
 
+import android.database.Cursor;
+
+import com.example.ganesh.timework.data.DatabaseContract.TaskContract;
+
 /**
  * Created by Ganesh Prasad on 30-07-2016.
  */
@@ -74,6 +78,40 @@ public class Tasks {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    //    method to convert cursor into a Notes item / object
+    public static Tasks getTaskFromCursor(Cursor cursor) {
+
+      Tasks tasks = null;
+
+        if (cursor != null) {
+
+            if (cursor.moveToNext()) {
+
+                String taskName = cursor.getString( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_NAME ) );
+                String taskType = cursor.getString( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TYPE ) );
+
+                int hour = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TIME_HOUR ) );
+                int minutes = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TIME_MINUTES ) );
+                int date = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_DATE ) );
+                int month = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_MONTH ) );
+
+                boolean notify = cursor.getInt(cursor.getColumnIndexOrThrow(TaskContract.COLUMN_TASK_NOTIFY)) == 1;
+                int id = cursor.getInt( cursor.getColumnIndexOrThrow(TaskContract._ID) );
+
+//                TODO do you need notify info here??
+                tasks = new Tasks( taskName , taskType , notify );
+
+                tasks.setId(id);
+                tasks.setDate(date);
+                tasks.setMonth(month);
+                tasks.setHour(hour);
+                tasks.setMinutes(minutes);
+
+            }
+        }
+        return tasks;
     }
 
 }

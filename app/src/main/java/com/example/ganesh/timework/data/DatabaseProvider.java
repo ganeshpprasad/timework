@@ -391,6 +391,8 @@ public class DatabaseProvider extends ContentProvider {
             }
 
             case TASKS_WITH_ID : {
+                Log.d(LOG_TAG , DatabaseContract.TaskContract.getIdFromUri(uri));
+
                 return mOpenDbHelper.getWritableDatabase().delete(
                         DatabaseContract.TaskContract.TABLE_NAME ,
                         DatabaseContract.TaskContract._ID + " = ?" ,

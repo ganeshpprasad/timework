@@ -23,12 +23,11 @@ import java.util.List;
 
 public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.OnExtraRoutineListener{
 
-    private static final String LOG_TAG = "Weekday fragment";
+//    private static final String LOG_TAG = "Weekday fragment";
     private static final String ARG_DAY = "day";
 
     private OnWeekdayFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
     List<RoutineItem.Item> mItemArray;
 
     public WeekdayFragment() {
@@ -44,11 +43,10 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
         return fragment;
     }
 
-    private int dayNo;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int dayNo = -1;
 
         if (getArguments() != null) {
             dayNo = getArguments().getInt(ARG_DAY);
@@ -138,21 +136,17 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
 
     }
 
-    WeekDayRecycleAdapter recyclerAdapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weekday, container, false);
 
-        recyclerAdapter = new WeekDayRecycleAdapter(mItemArray , getActivity() , this);
-
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(recyclerAdapter);
+            recyclerView.setAdapter(new WeekDayRecycleAdapter(mItemArray , getActivity() , this));
         }
 
         return view;

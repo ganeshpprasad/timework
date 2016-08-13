@@ -80,7 +80,7 @@ public class TestUtils extends AndroidTestCase {
 
         ContentValues contentValues = new ContentValues();
 
-        Notes notes = new Notes( "note1" , Constants.RoutineTypes.HOBBY , "note to check things" , 5 , 6 , 8 , 10 );
+        Notes notes = new Notes( 01, "note1" , Constants.RoutineTypes.HOBBY , "note to check things");
 
         contentValues.put( NotesContract.COLUMN_NOTES_NAME , notes.getName() );
         contentValues.put( NotesContract.COLUMN_NOTES_TYPE , notes.getType() );

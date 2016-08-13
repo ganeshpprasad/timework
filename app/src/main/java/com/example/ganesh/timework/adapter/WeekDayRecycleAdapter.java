@@ -20,13 +20,14 @@ import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Ganesh Prasad on 05-07-2016.
  */
 public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAdapter.ViewHolder> {
 
-    private static final String LOG_TAG = "weekday adapter";
+//    private static final String LOG_TAG = "weekday adapter";
 
     public List<RoutineItem.Item> mItemsArray;
     Context mContext;
@@ -45,13 +46,15 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
     }
 
     @Override
-    public void onBindViewHolder(final WeekDayRecycleAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final WeekDayRecycleAdapter.ViewHolder holder, int position) {
         holder.mItem = mItemsArray.get(position);
 
         holder.mEventName.setText( holder.mItem.eventName );
-        String time = holder.mItem.timeHour + ":" + holder.mItem.timeMinutes;
+        String time = String.format( Locale.getDefault() , "%02d : %02d" , holder.mItem.timeHour , holder.mItem.timeMinutes );
         holder.mTime.setText( time );
         final int routineId = holder.mItem.id;
+
+        holder.mType.setText(holder.mItem.type);
 
         holder.mOptionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +77,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
                         int deleteRow = mContext.getContentResolver().delete(DatabaseContract.RoutineContract.buildRoutineUri(routineId) ,
                                 null , null);
                         if (deleteRow > 0){
-                            listener.onDeleteRoutine(position);
+                            listener.onDeleteRoutine(holder.getAdapterPosition());
                         }
                     }
                 });
@@ -118,6 +121,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
         public final ImageView mImageView;
         public final TextView mEventName;
         public final TextView mTime;
+        public final TextView mType;
         public final ImageButton mOptionsButton;
 
         public final LinearLayout extraOptions;
@@ -133,6 +137,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
             mImageView = (ImageView) mView.findViewById(R.id.image_weekday_routine_item);
             mEventName = (TextView) mView.findViewById(R.id.event_name_weekday_routine_item);
             mTime = (TextView) mView.findViewById(R.id.time_weekday_routine_item);
+            mType = (TextView) mView.findViewById(R.id.type_weekday_routine_item);
             mOptionsButton = (ImageButton) mView.findViewById(R.id.more_options_btn_weekday_routine_item);
 
             extraOptions = (LinearLayout) mView.findViewById( R.id.extra_options_routine_list_item );

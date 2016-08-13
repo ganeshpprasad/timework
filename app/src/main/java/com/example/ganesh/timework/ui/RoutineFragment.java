@@ -1,11 +1,8 @@
 package com.example.ganesh.timework.ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +16,7 @@ import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 
-public class RoutineFragment extends Fragment implements  CreateRoutineFragment.onSaveButtonListener ,
+public class RoutineFragment extends Fragment implements  CreateRoutineFragment.OnNewRoutineCreatedListener ,
 WeekdayFragment.OnWeekdayFragmentInteractionListener{
 
     private OnRoutineFragmentInteractionListener mListener;
@@ -30,8 +27,7 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
     }
 
     public static RoutineFragment newInstance() {
-        RoutineFragment fragment = new RoutineFragment();
-        return fragment;
+        return new RoutineFragment();
     }
 
     @Override
@@ -105,22 +101,26 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 1:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 2:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 3:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 4:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 5:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 case 6:
-                    return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
+                    return getWeekdayInstance(position);
                 default:
-                    return WeekdayFragment.newInstance(-1 , RoutineFragment.this);
+                    return getWeekdayInstance(-1);
             }
+        }
+
+        private WeekdayFragment getWeekdayInstance(int position){
+            return WeekdayFragment.newInstance(position + 1 , RoutineFragment.this);
         }
 
         @Override
@@ -151,18 +151,13 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
         }
 
         @Override
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
-        }
-
-        @Override
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
     }
 
     @Override
-    public void onSaveButton() {
+    public void onNewRoutineCreated() {
         sectionsPagerAdapter.notifyDataSetChanged();
     }
 
@@ -173,7 +168,7 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
 
     @Override
     public void onWeekdayFragmentInteractionEditRoutine(RoutineItem.Item item) {
-        getActivity().getSupportFragmentManager().beginTransaction().add( android.R.id.content , CreateRoutineFragment.newInstance(item ,
-                this) ).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add( android.R.id.content ,
+                CreateRoutineFragment.newInstance(item , this) ).commit();
     }
 }

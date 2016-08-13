@@ -8,13 +8,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +31,7 @@ import com.example.ganesh.timework.utils.Notes;
  */
 public class CreateNotesFragment extends DialogFragment {
 
-    private static final String LOG_TAG = "Create notes frag";
+//    private static final String LOG_TAG = "Create notes frag";
 
     View rootView;
     InputMethodManager imm;
@@ -42,9 +39,9 @@ public class CreateNotesFragment extends DialogFragment {
     EditText titleEt;
     EditText contentEt;
 
-    onNotesCreatedListener listener;
+    OnNewNoteCreatedListener listener;
 
-    public static CreateNotesFragment newInstance(onNotesCreatedListener _listener) {
+    public static CreateNotesFragment newInstance(OnNewNoteCreatedListener _listener) {
         CreateNotesFragment fragment = new CreateNotesFragment();
         fragment.listener = _listener;
         return fragment;
@@ -94,16 +91,20 @@ public class CreateNotesFragment extends DialogFragment {
 
         if (id == android.R.id.home) {
             dismiss();
-            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+            hideSoftKeyboard();
         }
 
         if (id == R.id.create_routine_menu_save) {
             saveNote();
             dismiss();
-            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+            hideSoftKeyboard();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void hideSoftKeyboard(){
+        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
 
     private void saveNote() {
@@ -126,13 +127,13 @@ public class CreateNotesFragment extends DialogFragment {
         }
 
         if (id != -1) {
-            listener.onNotesCreated(new Notes((int) id, noteName, null, noteContent, 0, 0, 0, 0));
+            listener.onNewNoteCreated(new Notes((int) id, noteName, null, noteContent));
+//            TODO the note time and date is ignored. Change
         }
 
     }
 
-    public interface onNotesCreatedListener {
-        void onNotesCreated(Notes note);
+    public interface OnNewNoteCreatedListener {
+        void onNewNoteCreated(Notes note);
     }
-
 }
