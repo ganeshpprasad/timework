@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
+import com.example.ganesh.timework.utils.Routines;
 
 public class RoutineFragment extends Fragment implements  CreateRoutineFragment.OnNewRoutineCreatedListener ,
 WeekdayFragment.OnWeekdayFragmentInteractionListener{
@@ -167,7 +168,7 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
     }
 
     @Override
-    public void onWeekdayFragmentInteractionEditRoutine(RoutineItem.Item item) {
+    public void onWeekdayFragmentInteractionEditRoutine(Routines item) {
         getActivity().getSupportFragmentManager().beginTransaction().add( android.R.id.content ,
                 CreateRoutineFragment.newInstance(item , this) ).commit();
     }

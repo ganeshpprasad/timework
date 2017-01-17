@@ -17,6 +17,7 @@ import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Constants.Days;
+import com.example.ganesh.timework.utils.Routines;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
 
     private OnWeekdayFragmentInteractionListener mListener;
 
-    List<RoutineItem.Item> mItemArray;
+    List<Routines> mItemArray;
 
     public WeekdayFragment() {
         // Required empty public constructor
@@ -110,24 +111,7 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
         if ( cursor.moveToFirst() ) {
             do {
 
-                int id = cursor.getInt( cursor.getColumnIndexOrThrow(RoutineContract._ID) );
-                String eventName = cursor.getString(cursor.getColumnIndexOrThrow(RoutineContract.COLUMN_ROUTINE_NAME));
-                int eventHour = cursor.getInt(cursor.getColumnIndexOrThrow(RoutineContract.COLUMN_ROUTINE_TIME_HOUR));
-                int eventMinutes = cursor.getInt(cursor.getColumnIndexOrThrow(RoutineContract.COLUMN_ROUTINE_TIME_MINUTES));
-                String type = cursor.getString(cursor.getColumnIndexOrThrow(RoutineContract.COLUMN_ROUTINE_TYPE));
-                int repeat = cursor.getInt(cursor.getColumnIndexOrThrow(RoutineContract.COLUMN_ROUTINE_NOTIFY));
-
-                RoutineItem.Item mItem = new RoutineItem.Item( id , eventName , eventHour ,eventMinutes , type ,
-                        repeat == 1 );
-
-                boolean[] daysBoolArray = new boolean[7];
-                String[] daysColumnArray = RoutineContract.getColumnNameDaysArray();
-
-                for ( int i = 0; i < 7; i++ ){
-                    daysBoolArray[i] =  cursor.getInt(cursor.getColumnIndexOrThrow(daysColumnArray[i])) == 1 ;
-                }
-                mItem.setRepeatDays(daysBoolArray);
-
+                Routines mItem = Routines.getRoutinesFromCursor(cursor);
                 mItemArray.add(mItem);
 
             }while ( cursor.moveToNext() );
@@ -165,7 +149,7 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
 
     public interface OnWeekdayFragmentInteractionListener {
         void onWeekdayFragmentInteractionDeleteRoutine(int position);
-        void onWeekdayFragmentInteractionEditRoutine(RoutineItem.Item item);
+        void onWeekdayFragmentInteractionEditRoutine(Routines item);
     }
 
     @Override
@@ -174,7 +158,7 @@ public class WeekdayFragment extends Fragment implements WeekDayRecycleAdapter.O
     }
 
     @Override
-    public void onEditRoutine(RoutineItem.Item item) {
+    public void onEditRoutine(Routines item) {
         mListener.onWeekdayFragmentInteractionEditRoutine(item);
     }
 }

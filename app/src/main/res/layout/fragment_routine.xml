@@ -16,6 +16,8 @@
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
+            <!--<include layout="@layout/toolbar_landing_page"/>-->
+
             <com.example.ganesh.timework.views.CustomTabLayout
                 android:id="@+id/tabs_routine_fragment"
                 style="@style/AppTabLayout"

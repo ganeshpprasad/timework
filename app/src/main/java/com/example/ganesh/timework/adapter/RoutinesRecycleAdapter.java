@@ -3,10 +3,8 @@ package com.example.ganesh.timework.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.RoutineItem;
-import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Routines;
 
 import java.util.List;
@@ -26,28 +23,29 @@ import java.util.Locale;
 /**
  * Created by Ganesh Prasad on 05-07-2016.
  */
-public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAdapter.ViewHolder> {
+public class RoutinesRecycleAdapter extends RecyclerView.Adapter<RoutinesRecycleAdapter.ViewHolder> {
 
 //    private static final String LOG_TAG = "weekday adapter";
 
-    public List<Routines> mItemsArray;
-    Context mContext;
-    OnExtraRoutineListener listener;
+    // TODO delete routine item
+    private List<Routines> mItemsArray;
+    private Context mContext;
+    private OnExtraRoutineListener listener;
 
-    public WeekDayRecycleAdapter(List<Routines> _mitems , Context context , OnExtraRoutineListener _listener ) {
-        mItemsArray = _mitems;
+    public RoutinesRecycleAdapter(List<Routines> _mRoutines , Context context , OnExtraRoutineListener _listener ) {
+        mItemsArray = _mRoutines;
         mContext = context;
         listener = _listener;
     }
 
     @Override
-    public WeekDayRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RoutinesRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.weekday_routine_item_layout , parent , false );
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final WeekDayRecycleAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RoutinesRecycleAdapter.ViewHolder holder, int position) {
         holder.mItem = mItemsArray.get(position);
 
         holder.mEventName.setText( holder.mItem.getRoutineName() );
@@ -68,6 +66,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
             }
         });
 
+//TODO ignored for now
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +87,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
 
                     }
                 });
+                // TODO ask if they want to remove the routine or that task
                 builder.setTitle( "Are you sure ?" );
                 builder.setMessage( " It will delete the routine. To remove it from this day use edit. " );
                 AlertDialog dlg = builder.create();
@@ -95,6 +95,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
             }
         });
 
+        // TODO ignored for now
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,10 +148,10 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
             notificationButton = (ImageButton) mView.findViewById(R.id.extra_options_routine_list_item_notification);
         }
     }
-
+// TODO ignore for now
     public interface OnExtraRoutineListener{
         void onDeleteRoutine(int position);
-        void onEditRoutine( Routines item );
+        void onEditRoutine(Routines item);
     }
 
 }

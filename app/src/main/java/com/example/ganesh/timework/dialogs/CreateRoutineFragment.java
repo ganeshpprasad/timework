@@ -31,6 +31,7 @@ import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.DialogToDatabaseAdapter;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.utils.Constants;
+import com.example.ganesh.timework.utils.Routines;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -71,7 +72,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             R.id.check_box_su_routine_dialogfragment
     };
 
-    RoutineItem.Item mItem;
+    Routines mItem;
     int routineId;
 
     public static CreateRoutineFragment newInstance( OnNewRoutineCreatedListener listener ) {
@@ -81,7 +82,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     }
 
 //    another new instance to edit an existing routine
-    public static CreateRoutineFragment newInstance(RoutineItem.Item _item , OnNewRoutineCreatedListener listener){
+    public static CreateRoutineFragment newInstance(Routines _item , OnNewRoutineCreatedListener listener){
         CreateRoutineFragment fragment = CreateRoutineFragment.newInstance(listener);
         fragment.mItem = _item;
         return fragment;
@@ -180,17 +181,17 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     public void fillRoutineFragment(){
 
-        eventNameEt.setText(mItem.eventName);
-        routineId = mItem.id;
+        eventNameEt.setText(mItem.getRoutineName());
+        routineId = mItem.getRoutineid();
 
         for (int i = 0; i < daysCbArray.length; i++){
-            daysCbArray[i].setChecked(mItem.getRepeatDays()[i]);
+            daysCbArray[i].setChecked(mItem.getDaysToRepeat()[i]);
         }
 
-        spinnerType.setSelection(Constants.getIntForTypeOfRoutine(mItem.type));
-        String time = mItem.timeHour + ":" + mItem.timeMinutes;
+        spinnerType.setSelection(Constants.getIntForTypeOfRoutine(mItem.getRoutineType()));
+        String time = mItem.getHour() + ":" + mItem.getMinutes();
         timePickerTv.setText(time);
-        notifyCb.setChecked( mItem.notify );
+        notifyCb.setChecked( mItem.isNotify() );
     }
 
     private void handleTheSoftKeyboard(final EditText editView ) {

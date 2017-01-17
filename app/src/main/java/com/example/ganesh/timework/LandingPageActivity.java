@@ -1,31 +1,30 @@
 package com.example.ganesh.timework;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.ganesh.timework.data.DatabaseHelper;
-import com.example.ganesh.timework.data.RoutineItem;
-import com.example.ganesh.timework.ui.NotesFragment;
+import com.example.ganesh.timework.ui.TodayFragment;
 import com.example.ganesh.timework.ui.RoutineFragment;
 import com.example.ganesh.timework.ui.TasksFragment;
-import com.example.ganesh.timework.ui.WeekdayFragment;
+
+/**
+ * Landing page contains
+ * 1. Notes - still debatable feature. Hoping to make tasks without reminders as Notes
+ * 2. The dashboard page. But dashboard page is not designed. Yet.
+ * THE DRAWER IS NOT WORKING
+ */
 
 public class LandingPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         RoutineFragment.OnRoutineFragmentInteractionListener,
-        NotesFragment.OnNotesFragmentInteractionListener,
+        TodayFragment.OnNotesFragmentInteractionListener,
         TasksFragment.OnTasksFragmentInteractionListener{
 
     NavigationView navigationView;
@@ -37,10 +36,31 @@ public class LandingPageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
 
+//        NavigationView implementation
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        assert navigationView != null;
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, TodayFragment.newInstance() ).commit();
+
+//        Intent intent = getIntent();
+//        int fragment = intent.getIntExtra(TaskDescriptionActivity.ACTIVITY_TO_LANDING_PAGE , -1);
+//
+//        if ( fragment == TaskDescriptionActivity.TASK_FRAGMENT ){
+//            getSupportFragmentManager().beginTransaction().add( R.id.container_landing_page ,
+//                    TasksFragment.newInstance() ).commit();
+////            getSupportActionBar().setTitle("Tasks");
+//            navigationView.getMenu().getItem(2).setChecked(true);
+//        } else {
+//            getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page,
+//                    TodayFragment.newInstance()).commit();
+//        }
+
 //        Toolbar implementation
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_landing_page);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Notes");
+        getSupportActionBar().setTitle("Today");
 
 //        Drawer implementation
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -49,25 +69,6 @@ public class LandingPageActivity extends AppCompatActivity
         assert drawer != null;
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-//        NavigationView implementation
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        assert navigationView != null;
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
-
-        Intent intent = getIntent();
-        int fragment = intent.getIntExtra(TaskDescriptionActivity.ACTIVITY_TO_LANDING_PAGE , -1);
-
-        if ( fragment == TaskDescriptionActivity.TASK_FRAGMENT ){
-            getSupportFragmentManager().beginTransaction().add( R.id.container_landing_page ,
-                    TasksFragment.newInstance() ).addToBackStack(FRAGMENT_TASKS).commit();
-            getSupportActionBar().setTitle("Tasks");
-            navigationView.getMenu().getItem(2).setChecked(true);
-        } else {
-            getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page,
-                    NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
-        }
 
     }
 
@@ -78,13 +79,13 @@ public class LandingPageActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if ( getFragmentAtTopOfBackstack() == null){
-                finish();
-            } else if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES)){
-                finish();
-            }
+//            if ( getFragmentAtTopOfBackstack() == null){
+//                finish();
+//            } else if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES)){
+//                finish();
+//            }
             super.onBackPressed();
-            setActionBarTitle();
+//            setActionBarTitle();
         }
     }
 
@@ -101,20 +102,26 @@ public class LandingPageActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.nav_home: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, NotesFragment.newInstance()).addToBackStack(FRAGMENT_NOTES).commit();
-                getSupportActionBar().setTitle( "Notes" );
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TodayFragment.newInstance() ).commit();
+                getSupportActionBar().setTitle( "Today" );
                 break;
             }
 
             case R.id.nav_routine: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, RoutineFragment.newInstance()).addToBackStack(FRAGMENT_ROUTINE).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, RoutineFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Routines");
                 break;
             }
 
             case R.id.nav_tasks: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TasksFragment.newInstance()).addToBackStack(FRAGMENT_TASKS).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TasksFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Tasks");
+                break;
+            }
+
+            case R.id.nav_tags: {
+//                getSupportFragmentManager().beginTransaction().replace()
+                getSupportActionBar().setTitle("Tags");
                 break;
             }
         }
@@ -124,7 +131,6 @@ public class LandingPageActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onRoutineFragmentInteraction() {
@@ -141,32 +147,32 @@ public class LandingPageActivity extends AppCompatActivity
 
     }
 
-    public void setActionBarTitle(){
-        String fragmentTag = getFragmentAtTopOfBackstack();
+//    public void setActionBarTitle(){
+//        String fragmentTag = getFragmentAtTopOfBackstack();
+//
+//        if ( fragmentTag != null ) {
+//            if ( fragmentTag.equals(FRAGMENT_NOTES) ) {
+//                getSupportActionBar().setTitle( "Notes" );
+//                navigationView.getMenu().getItem(0).setChecked(true);
+//            } else if ( fragmentTag.equals( FRAGMENT_ROUTINE ) ){
+//                getSupportActionBar().setTitle( "Routine" );
+//                navigationView.getMenu().getItem(1).setChecked(true);
+//            } else {
+//                getSupportActionBar().setTitle( "Tasks" );
+//                navigationView.getMenu().getItem(2).setChecked(true);
+//            }
+//        }
+//
+//    }
 
-        if ( fragmentTag != null ) {
-            if ( fragmentTag.equals(FRAGMENT_NOTES) ) {
-                getSupportActionBar().setTitle( "Notes" );
-                navigationView.getMenu().getItem(0).setChecked(true);
-            } else if ( fragmentTag.equals( FRAGMENT_ROUTINE ) ){
-                getSupportActionBar().setTitle( "Routine" );
-                navigationView.getMenu().getItem(1).setChecked(true);
-            } else {
-                getSupportActionBar().setTitle( "Tasks" );
-                navigationView.getMenu().getItem(2).setChecked(true);
-            }
-        }
-
-    }
-
-    public String getFragmentAtTopOfBackstack(){
-
-        int index = this.getSupportFragmentManager().getBackStackEntryCount() - 1;
-
-        if ( index !=  -1 ){
-            return getSupportFragmentManager().getBackStackEntryAt( index ).getName();
-        }
-        return null;
-    }
+//    public String getFragmentAtTopOfBackstack(){
+//
+//        int index = this.getSupportFragmentManager().getBackStackEntryCount() - 1;
+//
+//        if ( index !=  -1 ){
+//            return getSupportFragmentManager().getBackStackEntryAt( index ).getName();
+//        }
+//        return null;
+//    }
 
 }

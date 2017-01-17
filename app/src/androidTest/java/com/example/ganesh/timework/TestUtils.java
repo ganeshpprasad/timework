@@ -8,7 +8,6 @@ import android.util.Log;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.DatabaseContract.NotesContract;
 import com.example.ganesh.timework.utils.Constants;
-import com.example.ganesh.timework.utils.Notes;
 
 import java.util.Map;
 import java.util.Set;
@@ -79,16 +78,16 @@ public class TestUtils extends AndroidTestCase {
     public static ContentValues getMockNotesValues(){
 
         ContentValues contentValues = new ContentValues();
-
-        Notes notes = new Notes( 01, "note1" , Constants.RoutineTypes.HOBBY , "note to check things");
-
-        contentValues.put( NotesContract.COLUMN_NOTES_NAME , notes.getName() );
-        contentValues.put( NotesContract.COLUMN_NOTES_TYPE , notes.getType() );
-        contentValues.put( NotesContract.COLUMN_NOTES_CONTENT , notes.getContent() );
-        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_HOUR , notes.getCreatedHour() );
-        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MINUTES , notes.getCreatedMinutes() );
-        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_DATE , notes.getCreatedDate() );
-        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MONTH , notes.getCreatedMonth() );
+//
+//        Notes notes = new Notes( 01, "note1" , Constants.RoutineTypes.HOBBY , "note to check things");
+//
+//        contentValues.put( NotesContract.COLUMN_NOTES_NAME , notes.getName() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_TYPE , notes.getType() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_CONTENT , notes.getContent() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_HOUR , notes.getCreatedHour() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MINUTES , notes.getCreatedMinutes() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_DATE , notes.getCreatedDate() );
+//        contentValues.put( NotesContract.COLUMN_NOTES_CREATED_MONTH , notes.getCreatedMonth() );
 
         return contentValues;
 
