@@ -21,13 +21,24 @@ public class DatePickerDialog extends DialogFragment implements android.app.Date
         return dialog;
     }
 
+    public static DatePickerDialog newInstance(setDateListener listener, int date, int month){
+        DatePickerDialog datePickerDialog = new DatePickerDialog();
+        datePickerDialog.day = date;
+        datePickerDialog.month = month;
+        datePickerDialog.dateListener = listener;
+        return datePickerDialog;
+    }
+
+    int day;
+    int month;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         final Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
         return new android.app.DatePickerDialog(getActivity() , this , year , month , day);

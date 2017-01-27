@@ -20,22 +20,24 @@ import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Constants;
+import com.example.ganesh.timework.utils.DescriptionTaskListenerModel;
 import com.example.ganesh.timework.utils.Routines;
 import com.example.ganesh.timework.utils.Tasks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ganesh.timework.ui.TasksFragment.DETAIL_REQUEST_NOTES_CODE;
+//import static com.example.ganesh.timework.ui.TasksFragment.DETAIL_REQUEST_NOTES_CODE;
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_DB_ID;
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_RECYCLERVIEW_POSITION;
 
 public class TodayFragment extends Fragment implements
         TaskRecycleAdapterForToday.OnTasksSelectListener ,
         RoutinesRecycleAdapter.OnExtraRoutineListener,
-CreateRoutineFragment.OnNewRoutineCreatedListener{
+        CreateRoutineFragment.OnNewRoutineCreatedListener,
+        DescriptionTaskListenerModel.OnDescriptionTaskDeleteListener{
 
-//    private static final String LOG_TAG = "Notes fragment";
+//    private static final String LOG_TAG = "Today fragment";
 
     private OnNotesFragmentInteractionListener mListener;
 
@@ -104,15 +106,14 @@ CreateRoutineFragment.OnNewRoutineCreatedListener{
             }while(cursorRoutines.moveToNext());
         }
 
-//        for ( int i = cursorRoutines.getCount() ; i > 0; i--  ){
-//            Routines newRoutine = Routines.getRoutinesFromCursor(cursorRoutines);
-//            routines.add(newRoutine);
-//        }
-
         cursorTasks.close();
         cursorRoutines.close();
-        // TODO need a model structure for deleting stuff
-//        DescriptionNoteListenerModel.getInstance().setListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        DescriptionTaskListenerModel.getInstance().setListener(this);
+        super.onResume();
     }
 
     /**
@@ -167,18 +168,19 @@ CreateRoutineFragment.OnNewRoutineCreatedListener{
         Intent intent = new Intent( getActivity() , TaskDescriptionActivity.class);
         intent.putExtra(TASK_DB_ID , taskDbId);
         intent.putExtra(TASK_RECYCLERVIEW_POSITION, taskRvPosition);
-        startActivityForResult(intent, DETAIL_REQUEST_NOTES_CODE);
+        startActivity(intent);
+//        startActivityForResult(intent, DETAIL_REQUEST_NOTES_CODE);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
-            updateTask(resultCode);
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
+//            updateTask(resultCode);
+//        }
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     private void updateTask(int updatedTaskPosition){
 
@@ -218,5 +220,16 @@ CreateRoutineFragment.OnNewRoutineCreatedListener{
     @Override
     public void onNewRoutineCreated() {
         adapterRoutines.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDescriptionTaskDelete(boolean isEdit, int itemPosition) {
+
+        if (isEdit){
+            updateTask(itemPosition);
+        } else {
+            tasks.remove(itemPosition);
+            adapterTasks.notifyDataSetChanged();
+        }
     }
 }

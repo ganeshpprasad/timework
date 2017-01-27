@@ -38,9 +38,7 @@ public class TasksFragment extends Fragment implements
     List<Tasks> tasks;
     TaskRecycleAdapter adapter;
 
-    public TasksFragment() {
-        // Required empty public constructor
-    }
+    public TasksFragment() {}
 
     public static TasksFragment newInstance() {
         return new TasksFragment();
@@ -134,27 +132,32 @@ public class TasksFragment extends Fragment implements
         adapter.notifyItemInserted( tasks.size() - 1 );
     }
 
+    /**
+     * Handling edit and delete of tasks using a listener - onDescriptionListener(Which handles both)
+     */
+
     public static final String TASK_DB_ID = "task db id";
     public static final String TASK_RECYCLERVIEW_POSITION = "position";
-
-    public static final int DETAIL_REQUEST_NOTES_CODE = 200;
-
+//
+//    public static final int DETAIL_REQUEST_NOTES_CODE = 200;
+//
     @Override
     public void onTaskSelect(int taskDbId , int taskRvPosition ) {
         Intent intent = new Intent(getActivity() , TaskDescriptionActivity.class);
         intent.putExtra( TASK_DB_ID , taskDbId );
         intent.putExtra( TASK_RECYCLERVIEW_POSITION , taskRvPosition );
-        startActivityForResult(intent , DETAIL_REQUEST_NOTES_CODE);
+        startActivity(intent);
+//        startActivityForResult(intent , DETAIL_REQUEST_NOTES_CODE);
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
-            updateItem(resultCode);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
+//            updateItem(resultCode);
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     private void updateItem(int updatedItemPosition){
         int id = tasks.get(updatedItemPosition).getId();
@@ -173,9 +176,18 @@ public class TasksFragment extends Fragment implements
         }
     }
 
+    /**
+     * To remove item from list
+     * @param itemPosition
+     */
     @Override
-    public void onDescriptionTaskDelete(int itemPosition) {
-        tasks.remove(itemPosition);
-        adapter.notifyItemRemoved(itemPosition);
+    public void onDescriptionTaskDelete( boolean isEdit, int itemPosition) {
+        if (isEdit){
+            updateItem(itemPosition);
+        } else {
+            tasks.remove(itemPosition);
+            adapter.notifyItemRemoved(itemPosition);
+        }
+
     }
 }

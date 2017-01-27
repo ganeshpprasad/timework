@@ -15,6 +15,12 @@ import com.example.ganesh.timework.data.DatabaseContract;
  */
 public class Utilities {
 
+    /**
+     * This class is to handle the dialogbox that comes when delete is pressed
+     * @param context
+     * @return
+     */
+
     public static boolean deleteItemRoutine(final Context context){
 
         final boolean[] isPositive = new boolean[1];

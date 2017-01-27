@@ -46,6 +46,7 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
     /**
      * variables initialised here to handle the soft keyboard
      */
+     // TODO soft keyboard not handled
     View rootView;
     InputMethodManager imm;
 
@@ -76,15 +77,16 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_task_dialog_fragment);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Create new Task");
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                hideSoftKeyboard();
+            }
+        });
 
         setHasOptionsMenu(true);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
-        }
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 

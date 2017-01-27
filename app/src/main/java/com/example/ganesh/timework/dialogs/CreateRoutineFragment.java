@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -75,16 +76,28 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     Routines mItem;
     int routineId;
 
+    /**
+     * creating instances of create routines
+     * getting the listener from parent
+      * @param listener
+     * @return
+     */
     public static CreateRoutineFragment newInstance( OnNewRoutineCreatedListener listener ) {
         CreateRoutineFragment createRoutineFragment = new CreateRoutineFragment();
         createRoutineFragment.saveRoutineListener = listener;
         return createRoutineFragment;
     }
 
-//    another new instance to edit an existing routine
+    /**
+     * Creating new instance to edit existing routines
+     * @param _item
+     * @param listener
+     * @return
+     */
     public static CreateRoutineFragment newInstance(Routines _item , OnNewRoutineCreatedListener listener){
         CreateRoutineFragment fragment = CreateRoutineFragment.newInstance(listener);
         fragment.mItem = _item;
+        fragment.saveRoutineListener = listener;
         return fragment;
     }
 
@@ -97,16 +110,20 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_routine_dialogfragment);
         toolbar.setTitle(R.string.dialog_routine_title);
-        ((AppCompatActivity) getActivity() ).setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                hideSoftKeyboard();
+            }
+        });
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity() ).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
-        }
-
+        /**
+         * Handing keyboard
+         */
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
 
         spinnerType = (Spinner) rootView.findViewById(R.id.spinner_type_routine_dialogfragment);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity() ,R.array.type_create_routine ,
@@ -120,6 +137,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if ( checkedId == R.id.radio_custom_routine_dialogfragment ) {
 
+                    // handling keyboard
                     moveFocusAndSoftKeyboard( imm , eventNameEt , rootView );
 
                     checkBoxContainerLl.setAlpha(1);
@@ -146,12 +164,15 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         checkBoxContainerLl = (LinearLayout) rootView.findViewById( R.id.check_box_container_routine_dialogfragment );
 
 //        Initialise Views that return event data
+//        event name
         eventNameEt = (EditText) rootView.findViewById( R.id.event_name_routine_dialogfragment );
         eventNameEt.requestFocus();
         handleTheSoftKeyboard( eventNameEt );
 
+//        notify user checkbox
         notifyCb = (CheckBox) rootView.findViewById( R.id.checkbox_notify_routine_dialogfragment );
 
+//        initialise days checkbox
         for ( int i = 0; i < daysCbArray.length; i++ ){
             daysCbArray[i] = (CheckBox) rootView.findViewById(daysCbViewArray[i]);
         }
@@ -161,12 +182,13 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         Calendar c = Calendar.getInstance();
         timeHour = c.get(Calendar.HOUR_OF_DAY);
         timeMinutes = c.get( Calendar.MINUTE );
-        updateTimeTv( timeHour , timeHour );
+        Log.d(LOG_TAG, timeHour + " " + timeMinutes);
+        updateTimeTv( timeHour , timeMinutes );
 
         timePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog time = TimePickerDialog.newInstance( CreateRoutineFragment.this );
+                TimePickerDialog time = TimePickerDialog.newInstance( CreateRoutineFragment.this, timeHour, timeMinutes );
                 time.show( getFragmentManager() , " Time Picker " );
             }
         });
@@ -179,6 +201,9 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         return rootView;
     }
 
+    /**
+     * Fill the fragment for editing existing routines
+     */
     public void fillRoutineFragment(){
 
         eventNameEt.setText(mItem.getRoutineName());
@@ -233,9 +258,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
         if (id == R.id.create_routine_menu_save) {
             saveRoutine();
-            dismiss();
-            hideSoftKeyboard();
-        }else if (id == android.R.id.home) {
             dismiss();
             hideSoftKeyboard();
         }
@@ -312,7 +334,8 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     }
 
     private void updateTimeTv( int hour , int minutes ) {
-        timePickerTv.setText( String.format(Locale.getDefault() , " %d : %d " , hour , minutes ) );
+        Log.d(LOG_TAG, hour + " : " + minutes);
+        timePickerTv.setText( hour + " : " + minutes  );
     }
 
     public interface OnNewRoutineCreatedListener{

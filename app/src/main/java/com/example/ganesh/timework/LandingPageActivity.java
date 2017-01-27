@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.ganesh.timework.ui.TodayFragment;
@@ -29,7 +30,7 @@ public class LandingPageActivity extends AppCompatActivity
 
     NavigationView navigationView;
 
-//    private static final String LOG_TAG = "Landing page";
+    private static final String LOG_TAG = "Landing page";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,18 @@ public class LandingPageActivity extends AppCompatActivity
 
     @Override
     public void onRoutineFragmentInteraction() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_landing_page);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Routine");
 
+        Log.d(LOG_TAG, "OnRoutineFragmentInteraction run ");
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        assert drawer != null;
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @Override
