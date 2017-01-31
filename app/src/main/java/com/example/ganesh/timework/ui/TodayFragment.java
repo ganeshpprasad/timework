@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import com.example.ganesh.timework.TaskDescriptionActivity;
 import com.example.ganesh.timework.adapter.RoutinesRecycleAdapter;
 import com.example.ganesh.timework.adapter.TaskRecycleAdapterForToday;
 import com.example.ganesh.timework.data.DatabaseContract;
-import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Constants;
 import com.example.ganesh.timework.utils.DescriptionTaskListenerModel;
@@ -27,7 +25,6 @@ import com.example.ganesh.timework.utils.Tasks;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static com.example.ganesh.timework.ui.TasksFragment.DETAIL_REQUEST_NOTES_CODE;
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_DB_ID;
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_RECYCLERVIEW_POSITION;
 
@@ -39,11 +36,11 @@ public class TodayFragment extends Fragment implements
 
 //    private static final String LOG_TAG = "Today fragment";
 
+//    Might need to use this listener to communicate with activity
     private OnNotesFragmentInteractionListener mListener;
 
     /**
      * Both adapter and notes' list is used for refreshing the recycleview on data set changes
-     *
      * There will be two lists - tasks and routines
      *
      */
@@ -52,9 +49,7 @@ public class TodayFragment extends Fragment implements
     List<Tasks> tasks ;
     List<Routines> routines ;
 
-    public TodayFragment() {
-        // Required empty public constructor
-    }
+    public TodayFragment() {}
 
     public static TodayFragment newInstance() {
         return new TodayFragment();
@@ -118,7 +113,6 @@ public class TodayFragment extends Fragment implements
 
     /**
      * RecycleView initialisation
-     * Floating button initialise
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -127,7 +121,7 @@ public class TodayFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
         /**
          * Adapter initialisation with List of notes as data set
@@ -163,25 +157,23 @@ public class TodayFragment extends Fragment implements
         mListener = null;
     }
 
+    /**
+     * Method to open task description activity after a task is selected
+     * @param taskDbId is the database ID of the task
+     * @param taskRvPosition is the position of the task in recycler view - same as list
+     */
     @Override
     public void onTaskSelect(int taskDbId, int taskRvPosition) {
         Intent intent = new Intent( getActivity() , TaskDescriptionActivity.class);
         intent.putExtra(TASK_DB_ID , taskDbId);
         intent.putExtra(TASK_RECYCLERVIEW_POSITION, taskRvPosition);
         startActivity(intent);
-//        startActivityForResult(intent, DETAIL_REQUEST_NOTES_CODE);
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
-//            updateTask(resultCode);
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
+    /**
+     * updates the task if it is edited in the description activity
+     * @param updatedTaskPosition
+     */
     private void updateTask(int updatedTaskPosition){
 
         int id = tasks.get(updatedTaskPosition).getId();
@@ -205,23 +197,39 @@ public class TodayFragment extends Fragment implements
         void OnNotesFragmentInteraction();
     }
 
+    /**
+     * Deleted the task from list and recycler view
+     * @param position
+     */
     @Override
     public void onDeleteRoutine(int position) {
         routines.remove(position);
         adapterRoutines.notifyItemRemoved(position);
     }
 
+    /**
+     * Opens the create routine dialog to edit the routine
+     * @param item
+     */
     @Override
     public void onEditRoutine(Routines item) {
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content ,
                 CreateRoutineFragment.newInstance(item, this)).commit();
     }
 
+    /**
+     * Callback from routine adapter after a new routine is created
+     */
     @Override
     public void onNewRoutineCreated() {
         adapterRoutines.notifyDataSetChanged();
     }
 
+    /**
+     * Listener method for task edit and delete
+     * @param isEdit
+     * @param itemPosition
+     */
     @Override
     public void onDescriptionTaskDelete(boolean isEdit, int itemPosition) {
 

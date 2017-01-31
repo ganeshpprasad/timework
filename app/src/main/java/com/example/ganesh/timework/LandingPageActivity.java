@@ -30,7 +30,7 @@ public class LandingPageActivity extends AppCompatActivity
 
     NavigationView navigationView;
 
-    private static final String LOG_TAG = "Landing page";
+//    private static final String LOG_TAG = "Landing page";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +44,6 @@ public class LandingPageActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, TodayFragment.newInstance() ).commit();
-
-//        Intent intent = getIntent();
-//        int fragment = intent.getIntExtra(TaskDescriptionActivity.ACTIVITY_TO_LANDING_PAGE , -1);
-//
-//        if ( fragment == TaskDescriptionActivity.TASK_FRAGMENT ){
-//            getSupportFragmentManager().beginTransaction().add( R.id.container_landing_page ,
-//                    TasksFragment.newInstance() ).commit();
-////            getSupportActionBar().setTitle("Tasks");
-//            navigationView.getMenu().getItem(2).setChecked(true);
-//        } else {
-//            getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page,
-//                    TodayFragment.newInstance()).commit();
-//        }
 
 //        Toolbar implementation
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_landing_page);
@@ -80,13 +67,7 @@ public class LandingPageActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            if ( getFragmentAtTopOfBackstack() == null){
-//                finish();
-//            } else if (getFragmentAtTopOfBackstack().equals(FRAGMENT_NOTES)){
-//                finish();
-//            }
             super.onBackPressed();
-//            setActionBarTitle();
         }
     }
 
@@ -135,18 +116,7 @@ public class LandingPageActivity extends AppCompatActivity
 
     @Override
     public void onRoutineFragmentInteraction() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_landing_page);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Routine");
 
-        Log.d(LOG_TAG, "OnRoutineFragmentInteraction run ");
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        assert drawer != null;
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
     }
 
     @Override
@@ -158,33 +128,5 @@ public class LandingPageActivity extends AppCompatActivity
     public void onTasksFragmentInteraction(Uri uri) {
 
     }
-
-//    public void setActionBarTitle(){
-//        String fragmentTag = getFragmentAtTopOfBackstack();
-//
-//        if ( fragmentTag != null ) {
-//            if ( fragmentTag.equals(FRAGMENT_NOTES) ) {
-//                getSupportActionBar().setTitle( "Notes" );
-//                navigationView.getMenu().getItem(0).setChecked(true);
-//            } else if ( fragmentTag.equals( FRAGMENT_ROUTINE ) ){
-//                getSupportActionBar().setTitle( "Routine" );
-//                navigationView.getMenu().getItem(1).setChecked(true);
-//            } else {
-//                getSupportActionBar().setTitle( "Tasks" );
-//                navigationView.getMenu().getItem(2).setChecked(true);
-//            }
-//        }
-//
-//    }
-
-//    public String getFragmentAtTopOfBackstack(){
-//
-//        int index = this.getSupportFragmentManager().getBackStackEntryCount() - 1;
-//
-//        if ( index !=  -1 ){
-//            return getSupportFragmentManager().getBackStackEntryAt( index ).getName();
-//        }
-//        return null;
-//    }
 
 }

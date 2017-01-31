@@ -3,10 +3,8 @@ package com.example.ganesh.timework.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -16,8 +14,6 @@ import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
-import com.example.ganesh.timework.data.RoutineItem;
-import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Routines;
 
 import java.util.List;
@@ -42,7 +38,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
 
     @Override
     public WeekDayRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.weekday_routine_item_layout , parent , false );
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_list_item, parent , false );
         return new ViewHolder(view);
     }
 
@@ -119,7 +115,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public final View mView;
-        public final ImageView mImageView;
+//        public final ImageView mImageView;
         public final TextView mEventName;
         public final TextView mTime;
         public final TextView mType;
@@ -135,7 +131,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            mImageView = (ImageView) mView.findViewById(R.id.image_weekday_routine_item);
+//            mImageView = (ImageView) mView.findViewById(R.id.image_weekday_routine_item);
             mEventName = (TextView) mView.findViewById(R.id.event_name_weekday_routine_item);
             mTime = (TextView) mView.findViewById(R.id.time_weekday_routine_item);
             mType = (TextView) mView.findViewById(R.id.type_weekday_routine_item);

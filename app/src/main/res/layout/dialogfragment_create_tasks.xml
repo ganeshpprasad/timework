@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_marginTop="24dp"
               android:background="@color/white"
               android:orientation="vertical">
@@ -26,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:clickable="false">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -38,34 +40,78 @@
                 android:id="@+id/task_name_task_dialog_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:hint="@string/task_name"/>
 
         </android.support.design.widget.TextInputLayout>
+
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
+            android:text="@string/type_of_routine"
+            style="@style/TextStyleForHeadings"/>
 
         <Spinner
             android:id="@+id/spinner_type_task_dialog_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:background="@color/lightGray"
             android:paddingStart="8dp"/>
 
+
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:id="@+id/select_date_task_dialog_fragment"
-            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
             android:text="@string/select_date"
-            android:gravity="center"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            style="@style/TextStyleForHeadings"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:id="@+id/select_time_task_dialog_fragment"
-            android:clickable="true"
-            android:text="@string/pick_time"
+            android:layout_marginBottom="16dp"
+            android:background="@color/lightGray"
+            android:textAppearance="?android:textAppearanceMedium"
             android:gravity="center"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            tools:text="Jan 29"
+            android:id="@+id/select_date_task_dialog_fragment"/>
+
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
+            android:text="@string/pick_time"
+            style="@style/TextStyleForHeadings"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/lightGray"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="center"
+            tools:text="06:00"
+            android:id="@+id/select_time_task_dialog_fragment"/>
 
         <CheckBox
             android:layout_width="match_parent"

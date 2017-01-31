@@ -55,7 +55,7 @@ public class TaskRecycleAdapterForToday extends RecyclerView.Adapter<TaskRecycle
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public final ImageView typeImage;
+//        public final ImageView typeImage;
         public final TextView taskName;
         public final TextView taskTime;
         public final View mView;
@@ -67,7 +67,7 @@ public class TaskRecycleAdapterForToday extends RecyclerView.Adapter<TaskRecycle
             super(itemView);
 
             mView = itemView;
-            typeImage = (ImageView) itemView.findViewById(R.id.image_task_list_item);
+//            typeImage = (ImageView) itemView.findViewById(R.id.image_task_list_item);
             taskName = (TextView) itemView.findViewById(R.id.task_name_task_list_item);
             taskTime = (TextView) itemView.findViewById(R.id.task_time_list_item);
 
