@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.utils.Routines;
+import com.example.ganesh.timework.utils.Utilities;
 
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class RoutinesRecycleAdapter extends RecyclerView.Adapter<RoutinesRecycle
         holder.mItem = mItemsArray.get(position);
 
         holder.mEventName.setText( holder.mItem.getRoutineName() );
-        String time = String.format( Locale.getDefault() , "%02d : %02d" , holder.mItem.getHour() , holder.mItem.getMinutes() );
+        String time = Utilities.formattedTimeForRoutines( holder.mItem.getHour() , holder.mItem.getMinutes() );
         holder.mTime.setText( time );
         final int routineId = holder.mItem.getRoutineid();
 
@@ -118,21 +119,21 @@ public class RoutinesRecycleAdapter extends RecyclerView.Adapter<RoutinesRecycle
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public final View mView;
+        final View mView;
 //        public final ImageView mImageView;
-        public final TextView mEventName;
-        public final TextView mTime;
-        public final TextView mType;
-        public final ImageButton mOptionsButton;
+        final TextView mEventName;
+        final TextView mTime;
+        final TextView mType;
+        final ImageButton mOptionsButton;
 
-        public final LinearLayout extraOptions;
-        public final ImageButton deleteButton;
-        public final ImageButton editButton;
-        public final ImageButton notificationButton;
+        final LinearLayout extraOptions;
+        final ImageButton deleteButton;
+        final ImageButton editButton;
+        final ImageButton notificationButton;
 
-        public Routines mItem;
+        Routines mItem;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 //            mImageView = (ImageView) mView.findViewById(R.id.image_weekday_routine_item);

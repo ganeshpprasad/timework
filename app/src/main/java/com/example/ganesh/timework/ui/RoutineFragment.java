@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ganesh.timework.R;
-import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Routines;
 
@@ -22,6 +21,8 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
 
     private OnRoutineFragmentInteractionListener mListener;
     SectionsPagerAdapter sectionsPagerAdapter;
+
+    public static final String CREATE_ROUTINE_DIALOGFRAGMENT = "create routine";
 
     public RoutineFragment() {
         // Required empty public constructor
@@ -61,7 +62,7 @@ WeekdayFragment.OnWeekdayFragmentInteractionListener{
             @Override
             public void onClick(View view) {
                 CreateRoutineFragment createRoutineFragment = CreateRoutineFragment.newInstance(RoutineFragment.this);
-                getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, createRoutineFragment).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(CREATE_ROUTINE_DIALOGFRAGMENT).add(android.R.id.content, createRoutineFragment).commit();
             }
         });
 

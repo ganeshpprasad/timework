@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:clickable="false">
+            android:clickable="true">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -57,6 +57,7 @@
                   android:background="@color/colorPrimaryDark"
                 android:layout_marginBottom="16dp"/>
 
+            <!-- Repeat tasks section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,6 +170,7 @@
                   android:background="@color/colorPrimaryDark"
                   android:layout_marginBottom="16dp"/>
 
+            <!-- Type of routine spinner -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,16 +182,17 @@
             <Spinner
                 android:id="@+id/spinner_type_routine_dialogfragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/lightGray"
-                android:paddingStart="8dp"/>
+                android:textAlignment="center"/>
 
             <View android:layout_height="1dp"
                   android:layout_width="match_parent"
                   android:background="@color/colorPrimaryDark"
                   android:layout_marginBottom="16dp"/>
 
+            <!-- Select time -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

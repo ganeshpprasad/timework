@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.utils.Tasks;
+import com.example.ganesh.timework.utils.Utilities;
 
 import java.util.List;
 
@@ -40,11 +41,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     @Override
     public void onBindViewHolder(final TaskRecycleAdapter.ViewHolder holder, int position) {
         holder.mItem = tasksList.get(position);
-        String time = holder.mItem.getHour() + ":" + holder.mItem.getMinutes();
+        String time = Utilities.formattedTimeForRoutines(holder.mItem.getHour(), holder.mItem.getMinutes());
+        String day = Utilities.formattedDayForTask(holder.mItem.getYear(), holder.mItem.getMonth(), holder.mItem.getDate());
 
         final int taskDbId = holder.mItem.getId();
         holder.taskName.setText(holder.mItem.getTaskName());
         holder.taskTime.setText(time);
+        holder.taskDate.setText(day);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,16 +63,17 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasksList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
 //        public final ImageView typeImage;
-        public final TextView taskName;
-        public final TextView taskTime;
-        public final View mView;
+        private final TextView taskName;
+        private final TextView taskTime;
+        private final TextView taskDate;
+        private final View mView;
 
-        public Tasks mItem;
+        private Tasks mItem;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
 
             super(itemView);
 
@@ -77,7 +81,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 //            typeImage = (ImageView) itemView.findViewById(R.id.image_task_list_item);
             taskName = (TextView) itemView.findViewById(R.id.task_name_task_list_item);
             taskTime = (TextView) itemView.findViewById(R.id.task_time_list_item);
-
+            taskDate = (TextView) itemView.findViewById(R.id.task_Date_list_item);
         }
     }
 

@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.WeekDayRecycleAdapter;
 import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
-import com.example.ganesh.timework.data.RoutineItem;
-import com.example.ganesh.timework.dialogs.CreateRoutineFragment;
 import com.example.ganesh.timework.utils.Constants.Days;
 import com.example.ganesh.timework.utils.Routines;
 

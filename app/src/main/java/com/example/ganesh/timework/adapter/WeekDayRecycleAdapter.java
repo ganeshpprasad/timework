@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
 import com.example.ganesh.timework.utils.Routines;
+import com.example.ganesh.timework.utils.Utilities;
 
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +48,7 @@ public class WeekDayRecycleAdapter extends RecyclerView.Adapter<WeekDayRecycleAd
         holder.mItem = mItemsArray.get(position);
 
         holder.mEventName.setText( holder.mItem.getRoutineName() );
-        String time = String.format( Locale.getDefault() , "%02d : %02d" , holder.mItem.getHour() , holder.mItem.getMinutes() );
+        String time = Utilities.formattedTimeForRoutines(holder.mItem.getHour() , holder.mItem.getMinutes() );
         holder.mTime.setText( time );
         final int routineId = holder.mItem.getRoutineid();
 

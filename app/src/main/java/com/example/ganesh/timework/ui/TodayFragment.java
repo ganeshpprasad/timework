@@ -123,6 +123,11 @@ public class TodayFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
+        if( tasks.size() == 0 ){
+            rootView.findViewById(R.id.today_tasks_no_tasks_textview).setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.recycler_view_tasks_fragment).setVisibility(View.INVISIBLE);
+        }
+
         /**
          * Adapter initialisation with List of notes as data set
          */

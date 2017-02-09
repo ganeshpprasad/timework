@@ -13,12 +13,23 @@ public class Tasks {
     private String taskName;
     private String taskType;
     private boolean notify;
+
     private int hour;
     private int minutes;
+
     private int date;
     private int month;
+    private int year;
 
-    public Tasks( String _taskName , String _taskType , boolean _notify  ) {
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public Tasks(String _taskName , String _taskType , boolean _notify  ) {
 
         this.taskName = _taskName;
         this.taskType = _taskType;

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,7 +18,6 @@ import android.view.Window;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,12 +27,11 @@ import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.adapter.DialogToDatabaseAdapter;
-import com.example.ganesh.timework.data.RoutineItem;
 import com.example.ganesh.timework.utils.Constants;
 import com.example.ganesh.timework.utils.Routines;
+import com.example.ganesh.timework.utils.Utilities;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by Ganesh Prasad on 06-07-2016.
@@ -57,8 +53,11 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     OnNewRoutineCreatedListener saveRoutineListener;
 
+//    Remove these once done
     int timeHour;
     int timeMinutes;
+
+    long time;
 
     boolean isUpdate = false;
 
@@ -116,6 +115,22 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             public void onClick(View v) {
                 dismiss();
                 hideSoftKeyboard();
+            }
+        });
+        toolbar.inflateMenu(R.menu.dialogfragment_menu_create_routine);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int id = item.getItemId();
+
+                if (id == R.id.create_routine_menu_save) {
+                    saveRoutine();
+                    dismiss();
+                    hideSoftKeyboard();
+                }
+
+                return false;
             }
         });
 
@@ -182,14 +197,14 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         Calendar c = Calendar.getInstance();
         timeHour = c.get(Calendar.HOUR_OF_DAY);
         timeMinutes = c.get( Calendar.MINUTE );
-        Log.d(LOG_TAG, timeHour + " " + timeMinutes);
+//        Log.d(LOG_TAG, timeHour + " " + timeMinutes);
         updateTimeTv( timeHour , timeMinutes );
 
         timePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog time = TimePickerDialog.newInstance( CreateRoutineFragment.this, timeHour, timeMinutes );
-                time.show( getFragmentManager() , " Time Picker " );
+                TimePickerDialog timePicker = TimePickerDialog.newInstance( CreateRoutineFragment.this, timeHour, timeMinutes );
+                timePicker.show( getFragmentManager() , " Time Picker " );
             }
         });
 
@@ -214,7 +229,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         }
 
         spinnerType.setSelection(Constants.getIntForTypeOfRoutine(mItem.getRoutineType()));
-        String time = mItem.getHour() + ":" + mItem.getMinutes();
+        String time = Utilities.formattedTimeForRoutines(mItem.getHour() , mItem.getMinutes());
         timePickerTv.setText(time);
         notifyCb.setChecked( mItem.isNotify() );
     }
@@ -245,23 +260,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.dialogfragment_menu_create_routine , menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.create_routine_menu_save) {
-            saveRoutine();
-            dismiss();
-            hideSoftKeyboard();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void hideSoftKeyboard(){
@@ -328,14 +326,15 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     @Override
     public void onSetTime(int hour, int minutes) {
+//        Log.d(LOG_TAG, hour + minutes + " ");
         updateTimeTv( hour , minutes );
         timeHour = hour;
         timeMinutes = minutes;
     }
 
     private void updateTimeTv( int hour , int minutes ) {
-        Log.d(LOG_TAG, hour + " : " + minutes);
-        timePickerTv.setText( hour + " : " + minutes  );
+//        Log.d(LOG_TAG, hour + " : " + minutes);
+        timePickerTv.setText(Utilities.formattedTimeForRoutines(hour,minutes));
     }
 
     public interface OnNewRoutineCreatedListener{

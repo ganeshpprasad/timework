@@ -32,6 +32,7 @@ import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.utils.Constants;
 import com.example.ganesh.timework.data.DatabaseContract.TaskContract;
 import com.example.ganesh.timework.utils.Tasks;
+import com.example.ganesh.timework.utils.Utilities;
 
 import java.util.Calendar;
 
@@ -60,8 +61,10 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
     int hour;
     int minutes;
-    int date;
+
+    int day;
     int month;
+    int year;
 
     public static CreateTasksFragment newInstance(OnNewTaskCreatedListener _listener){
         CreateTasksFragment fragment = new CreateTasksFragment();
@@ -75,7 +78,6 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         rootView = inflater.inflate(R.layout.dialogfragment_create_tasks, container, false);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_task_dialog_fragment);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Create new Task");
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,30 +88,38 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
             }
         });
 
+        toolbar.inflateMenu(R.menu.dialogfragment_menu_create_routine);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int id = item.getItemId();
+
+                if (id == android.R.id.home) {
+                    dismiss();
+                    hideSoftKeyboard();
+                }
+
+                if (id == R.id.create_routine_menu_save) {
+                    saveTask();
+                    dismiss();
+                    hideSoftKeyboard();
+                }
+
+                return false;
+            }
+        });
+
         setHasOptionsMenu(true);
 
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
-        date = calendar.get(Calendar.DAY_OF_MONTH);
-        month = calendar.get(Calendar.MONTH);
-        String datePicker = date + "/" + month;
-
-        datePickerTv = (TextView) rootView.findViewById(R.id.select_date_task_dialog_fragment);
-        datePickerTv.setText(datePicker);
-        datePickerTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker(datePickerTv);
-            }
-        });
-
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minutes = calendar.get(Calendar.MINUTE);
-        String timePicker = hour + ":" + minutes;
+        Log.d(LOG_TAG, hour + " " + minutes);
 
         timePickerTv = (TextView) rootView.findViewById(R.id.select_time_task_dialog_fragment);
-        timePickerTv.setText(timePicker);
         timePickerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +127,20 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
                 timefragment.show(getFragmentManager(), "time fragment");
             }
         });
+        updateTimeTv(hour, minutes);
+
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
+
+        datePickerTv = (TextView) rootView.findViewById(R.id.select_date_task_dialog_fragment);
+        datePickerTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(datePickerTv);
+            }
+        });
+        updateDateTv(year, month, day);
 
         spinnerTypeCreateTask = (Spinner) rootView.findViewById(R.id.spinner_type_task_dialog_fragment);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.type_create_routine,
@@ -142,30 +166,6 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         return dialog;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.dialogfragment_menu_create_routine, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            dismiss();
-            hideSoftKeyboard();
-        }
-
-        if (id == R.id.create_routine_menu_save) {
-            saveTask();
-            dismiss();
-            hideSoftKeyboard();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void hideSoftKeyboard() {
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
@@ -186,7 +186,7 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         taskType = spinnerTypeCreateTask.getSelectedItemPosition();
         notify = notifyCb.isChecked();
 
-        //        storing the int value in database.
+//        storing the int value in database.
         notifyInt = Constants.booleanToInt(notify);
 
 //        getting the type string based on typeSelected
@@ -196,20 +196,22 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         values.put(TaskContract.COLUMN_TASK_NAME, taskName);
         values.put(TaskContract.COLUMN_TASK_TYPE, typeString);
         values.put(TaskContract.COLUMN_TASK_NOTIFY, notifyInt);
-        values.put(TaskContract.COLUMN_TASK_DATE, date);
+        values.put(TaskContract.COLUMN_TASK_DATE, day);
         values.put(TaskContract.COLUMN_TASK_MONTH, month);
+        values.put(TaskContract.COLUMN_TASK_YEAR, year);
         values.put(TaskContract.COLUMN_TASK_TIME_HOUR, hour);
         values.put(TaskContract.COLUMN_TASK_TIME_MINUTES, minutes);
 
         if (!taskName.isEmpty()) {
 
             task = new Tasks(taskName, typeString, notify);
-            task.setDate(date);
+            task.setDate(day);
             task.setMonth(month);
             task.setHour(hour);
             task.setMinutes(minutes);
 
             Uri uri = getActivity().getContentResolver().insert(TaskContract.CONTENT_URI, values);
+            Log.d(LOG_TAG, uri.toString());
             id = ContentUris.parseId(uri);
             if (id > 0) {
                 task.setId((int)id);
@@ -226,15 +228,25 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
     public void onSetTime(int hour, int minutes) {
         this.hour = hour;
         this.minutes = minutes;
-        String time = hour + ":" + minutes;
-        timePickerTv.setText(time);
+        updateTimeTv(hour, minutes);
     }
 
     @Override
     public void setDate(int year, int month, int day) {
-        this.date = day;
+        this.day = day;
         this.month = month;
-        String date = day + "/" + month;
+        this.year = year;
+        updateDateTv(year, month, day);
+    }
+
+    public void updateTimeTv(int hour, int minutes){
+        String time = Utilities.formattedTimeForRoutines(hour,minutes);
+        Log.d(LOG_TAG, time);
+        timePickerTv.setText(time);
+    }
+
+    public void updateDateTv(int year, int month, int day){
+        String date = Utilities.formattedDayForTask(year, month, day);
         datePickerTv.setText(date);
     }
 

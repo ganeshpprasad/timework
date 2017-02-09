@@ -8,6 +8,7 @@ import android.widget.TableRow;
 import android.widget.TimePicker;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 /**
@@ -35,7 +36,7 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
 
         timePickerDialog.hour = hour;
         timePickerDialog.minutes = minutes;
-        timePickerDialog.flag = true;
+        timePickerDialog.flagEditRoutine = true;
 
         return timePickerDialog;
 
@@ -43,20 +44,20 @@ public class TimePickerDialog extends DialogFragment implements android.app.Time
 
     int hour;
     int minutes;
-    boolean flag = false;
+    boolean flagEditRoutine = false;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         final Calendar calendar = Calendar.getInstance();
-        if(flag){
-
+        if(flagEditRoutine){
+//          hour and minutes already have values of routine
+//          Cause we are opening an old routine
         }else{
             hour = calendar.get( Calendar.HOUR_OF_DAY );
             minutes = calendar.get( Calendar.MINUTE );
         }
-
 
         return new android.app.TimePickerDialog( getActivity() , this , hour , minutes ,
                 android.text.format.DateFormat.is24HourFormat(getActivity()));

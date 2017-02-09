@@ -24,6 +24,7 @@
     <string name="select_date">Select Date</string>
     <string name="pick_time">Select Time</string>
     <string name="type_of_routine">Type of routine</string>
+    <string name="type_of_task">Type of task</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -33,6 +33,7 @@ public class TasksFragment extends Fragment implements
 
     private OnTasksFragmentInteractionListener mListener;
 
+    public static final String CREATE_TASK_DIALOGFRAGMENT = "create task";
 //    private static final String LOG_TAG = "task fragment";
 
     List<Tasks> tasks;
@@ -97,7 +98,7 @@ public class TasksFragment extends Fragment implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content ,
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(CREATE_TASK_DIALOGFRAGMENT).add(android.R.id.content ,
                         CreateTasksFragment.newInstance(TasksFragment.this)).commit();
             }
         });
@@ -138,26 +139,14 @@ public class TasksFragment extends Fragment implements
 
     public static final String TASK_DB_ID = "task db id";
     public static final String TASK_RECYCLERVIEW_POSITION = "position";
-//
-//    public static final int DETAIL_REQUEST_NOTES_CODE = 200;
-//
+
     @Override
     public void onTaskSelect(int taskDbId , int taskRvPosition ) {
         Intent intent = new Intent(getActivity() , TaskDescriptionActivity.class);
         intent.putExtra( TASK_DB_ID , taskDbId );
         intent.putExtra( TASK_RECYCLERVIEW_POSITION , taskRvPosition );
         startActivity(intent);
-//        startActivityForResult(intent , DETAIL_REQUEST_NOTES_CODE);
     }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        if (requestCode == DETAIL_REQUEST_NOTES_CODE && resultCode > 0){
-//            updateItem(resultCode);
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 
     private void updateItem(int updatedItemPosition){
         int id = tasks.get(updatedItemPosition).getId();
