@@ -4,8 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.utils.Tasks;
@@ -63,6 +65,7 @@ public class TaskRecycleAdapterForToday extends RecyclerView.Adapter<TaskRecycle
         private final TextView taskTime;
         private final TextView taskDate;
         private final View mView;
+//        private final ToggleButton checkTask;
 
         private Tasks mItem;
 
@@ -75,7 +78,7 @@ public class TaskRecycleAdapterForToday extends RecyclerView.Adapter<TaskRecycle
             taskName = (TextView) itemView.findViewById(R.id.task_name_task_list_item);
             taskTime = (TextView) itemView.findViewById(R.id.task_time_list_item);
             taskDate = (TextView) itemView.findViewById(R.id.task_Date_list_item);
-
+//            checkTask = (ToggleButton) itemView.findViewById(R.id.task_check_item);
         }
     }
 

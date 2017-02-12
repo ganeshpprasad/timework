@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tags_hobby_title"
+            android:text="Hobby"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="center"
+            android:layout_alignParentTop="true"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_tags_hobby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tags_hobby_title"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tags_personal_title"
+            android:text="Personal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="center"
+            android:layout_alignParentTop="true"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_tags_personal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tags_personal_title"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tags_work_title"
+            android:text="Work"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="center"
+            android:layout_alignParentTop="true"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_tags_work"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tags_work_title"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

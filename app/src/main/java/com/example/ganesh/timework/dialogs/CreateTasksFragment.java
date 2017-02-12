@@ -117,7 +117,7 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         Calendar calendar = Calendar.getInstance();
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minutes = calendar.get(Calendar.MINUTE);
-        Log.d(LOG_TAG, hour + " " + minutes);
+//
 
         timePickerTv = (TextView) rootView.findViewById(R.id.select_time_task_dialog_fragment);
         timePickerTv.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +131,9 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
         day = calendar.get(Calendar.DAY_OF_MONTH);
         month = calendar.get(Calendar.MONTH);
+//        month++; // jan is 0
         year = calendar.get(Calendar.YEAR);
+//        Log.d(LOG_TAG, year + " " + month + "  " );
 
         datePickerTv = (TextView) rootView.findViewById(R.id.select_date_task_dialog_fragment);
         datePickerTv.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +204,8 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
         values.put(TaskContract.COLUMN_TASK_TIME_HOUR, hour);
         values.put(TaskContract.COLUMN_TASK_TIME_MINUTES, minutes);
 
+        Log.d(LOG_TAG + "db call" , year + " " + month + " db call");
+
         if (!taskName.isEmpty()) {
 
             task = new Tasks(taskName, typeString, notify);
@@ -241,12 +245,13 @@ public class CreateTasksFragment extends DialogFragment implements TimePickerDia
 
     public void updateTimeTv(int hour, int minutes){
         String time = Utilities.formattedTimeForRoutines(hour,minutes);
-        Log.d(LOG_TAG, time);
+//        Log.d(LOG_TAG, time);
         timePickerTv.setText(time);
     }
 
     public void updateDateTv(int year, int month, int day){
         String date = Utilities.formattedDayForTask(year, month, day);
+        Log.d(LOG_TAG, year + " " + month + "  " + day);
         datePickerTv.setText(date);
     }
 

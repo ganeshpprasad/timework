@@ -13,10 +13,13 @@ public class Routines {
     private int Routineid;
     private String RoutineName;
     private String RoutineType;
+
     private boolean[] DaysToRepeat = new boolean[7];
     private int hour;
     private int minutes;
     private boolean notify;
+
+    private String time_size;
 
     public Routines(int routineid, String routineName, String routineType) {
         Routineid = routineid;
@@ -80,16 +83,23 @@ public class Routines {
         DaysToRepeat = daysToRepeat;
     }
 
+    public String getTime_size() {
+        return time_size;
+    }
+
+    public void setTime_size(String time_size) {
+        this.time_size = time_size;
+    }
+
     public static Routines getRoutinesFromCursor(Cursor cursor){
         Routines routines = null;
 
         if (cursor != null) {
 
-
-
                 int id = cursor.getInt( cursor.getColumnIndexOrThrow(DatabaseContract.RoutineContract._ID) );
                 String name = cursor.getString( cursor.getColumnIndexOrThrow(DatabaseContract.RoutineContract.COLUMN_ROUTINE_NAME) );
                 String type = cursor.getString( cursor.getColumnIndexOrThrow(DatabaseContract.RoutineContract.COLUMN_ROUTINE_TYPE) );
+                String timeSize = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.RoutineContract.COLUMN_ROUTINE_TIME_SIZE));
 
                 boolean[] daysToRepeat = new boolean[7];
 
@@ -108,8 +118,7 @@ public class Routines {
                 routines.setDaysToRepeat(daysToRepeat);
                 routines.setHour(hour);
                 routines.setMinutes(minutes);
-
-
+                routines.setTime_size(timeSize);
 
         }
 

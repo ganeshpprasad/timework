@@ -93,7 +93,7 @@ public class Utilities {
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.set(year, month, date);
         Date taskDay = new Date(calendarToday.getTimeInMillis());
-        Log.d("date shit", taskDay.toString());
+        Log.d("task date", taskDay.toString());
 
 //        Today's date
         Date today = Calendar.getInstance().getTime();
@@ -104,7 +104,7 @@ public class Utilities {
         calendarTomo.setTime(today);
         calendarTomo.add(Calendar.DATE, 1);
         Date tomorrow = calendarTomo.getTime();
-        Log.d("date shit", tomorrow.toString());
+//        Log.d("date shit", tomorrow.toString());
 
 //        Date formatter
         SimpleDateFormat monthDate = new SimpleDateFormat("MMM d", Locale.getDefault());
@@ -117,7 +117,7 @@ public class Utilities {
             formattedDate = weekMonthDate.format(taskDay);
         }
 
-        Log.d("Date shit ", formattedDate);
+//        Log.d("Date shit ", formattedDate);
         return formattedDate;
 
     }

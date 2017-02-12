@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //    private static final String LOG_TAG = "DatabaseHelper Log";
 
     public static final String DATABASE_NAME = "timework.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     RoutineContract.COLUMN_ROUTINE_NAME + TEXT_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_NOTIFY + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_TYPE + TEXT_TYPE + COMMA_SEP +
+                    RoutineContract.COLUMN_ROUTINE_TIME_SIZE + TEXT_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_TIME_HOUR + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_ROUTINE_TIME_MINUTES + INTEGER_TYPE + COMMA_SEP +
                     RoutineContract.COLUMN_DAY_MON + INTEGER_TYPE + COMMA_SEP +
@@ -58,26 +59,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     TaskContract.COLUMN_TASK_TIME_MINUTES + INTEGER_TYPE +
                     " );";
 
-//     final String SQL_CREATE_NOTE_TABLE =
-//            "CREATE TABLE " + NotesContract.TABLE_NAME + " (" +
-//                    NotesContract._ID + PRIMARY_KEY + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_NAME + TEXT_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_CONTENT + TEXT_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_TYPE + TEXT_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_CREATED_HOUR + INTEGER_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_CREATED_MINUTES + INTEGER_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_CREATED_DATE + INTEGER_TYPE + COMMA_SEP +
-//                    NotesContract.COLUMN_NOTES_CREATED_MONTH + INTEGER_TYPE +
-//                    " );";
-
     private static final String SQL_DELETE_ROUTINE_TABLE =
             "DROP TABLE IF EXISTS " + RoutineContract.TABLE_NAME;
 
     private static final String SQL_DELETE_TASK_TABLE =
             "DROP TABLE IF EXISTS " + TaskContract.TABLE_NAME;
-
-//    private static final String SQL_DELETE_NOTE_TABLE =
-//            "DROP TABLE IF EXISTS " + NotesContract.TABLE_NAME;
 
     @Override
     public void onCreate(SQLiteDatabase db) {

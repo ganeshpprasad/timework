@@ -6,28 +6,30 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_nav_menu_home"
             android:title="Today"/>
-        <item
-            android:id="@+id/nav_routine"
-            android:icon="@drawable/ic_nav_menu_routine"
-            android:title="Routine"/>
-        <item
-            android:id="@+id/nav_tasks"
-            android:icon="@drawable/ic_nav_menu_tasks"
-            android:title="Tasks"/>
-
     </group>
 
     <item
-        android:id="@+id/nav_tags"
-        android:icon="@drawable/ic_nav_menu_tags"
-        android:title="Tags">
+        android:title="List">
+        <menu>
+            <item
+                android:id="@+id/nav_routine"
+                android:icon="@drawable/ic_nav_menu_routine"
+                android:title="Routine"/>
+            <item
+                android:id="@+id/nav_tasks"
+                android:icon="@drawable/ic_nav_menu_tasks"
+                android:title="Tasks"/>
+            <item
+                android:id="@+id/nav_tags"
+                android:icon="@drawable/ic_nav_menu_tags"
+                android:title="Tags">
+            </item>
+        </menu>
     </item>
 
     <item
-        android:title="">
-
+        android:title="Misc">
         <menu>
-
             <item
                 android:id="@+id/nav_Settings"
                 android:icon="@drawable/ic_nav_menu_settings"
@@ -36,9 +38,7 @@
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_nav_menu_aboutus"
                 android:title="About"/>
-
         </menu>
-
     </item>
 
 </menu>

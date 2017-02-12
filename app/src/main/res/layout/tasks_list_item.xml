@@ -4,73 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:layout_marginTop="8dp"
     android:background="@color/lightGray"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/task_name_task_list_item"
-        style="@style/TextStyleTaskCardsTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Task Name"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:textAppearance="?android:textAppearanceSmall"
-        tools:text="This is a task description."/>
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_weight="7">
+
+        <TextView
+            android:id="@+id/task_name_task_list_item"
+            style="@style/TextStyleTaskCardsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Task Name"
+            android:layout_marginBottom="4dp"/>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_list_item_placeholder_image"/>
-
-            <TextView
-                android:id="@+id/task_time_list_item"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:textAppearanceSmall"
-                tools:text="7:00 AM"/>
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_list_item_placeholder_image"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/task_time_list_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    tools:text="7:00 AM"/>
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_nav_menu_tasks"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/task_Date_list_item"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:textAppearanceSmall"
-                tools:text="Jan 29"/>
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_nav_menu_tasks"/>
+
+                <TextView
+                    android:id="@+id/task_Date_list_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    tools:text="Jan 29"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <ToggleButton
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/task_check_item"
+        android:textOff=""
+        android:textOn=""
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/task_check_item_toggle"/>
 
 </LinearLayout>

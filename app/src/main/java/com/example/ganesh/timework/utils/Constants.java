@@ -1,6 +1,9 @@
 package com.example.ganesh.timework.utils;
 
 import android.util.Log;
+import android.util.StringBuilderPrinter;
+
+import java.sql.Time;
 
 /**
  * Created by Ganesh Prasad on 15-07-2016.
@@ -17,12 +20,31 @@ public class Constants {
         public static final int SUNDAY = 7;
     }
 
+    public static int getIntWeekday(String day){
+        switch( day ){
+            case "Monday" : return 1;
+            case "Tuesday" : return 2;
+            case "Wednesday" : return 3;
+            case "Thursday" : return 4;
+            case "Friday" : return 5;
+            case "Saturday" : return 6;
+            case "Sunday" : return 7;
+            default: return -1;
+        }
+    }
+
     public static final class RoutineTypes {
 
         public static final String PERSONAL = "personal";
         public static final String WORK = "work";
         public static final String HOBBY = "hobby";
 
+    }
+
+    public static final class TimeSizes{
+        public static final String LESS = "less";
+        public static final String MORE = "more";
+        public static final String ALOT = "a lot";
     }
 
     public static final class RoutineBoolean {
@@ -75,6 +97,28 @@ public class Constants {
         else return -1;
     }
 
+    /**
+     * return methods for timesize
+     * @param timesize
+     * @return
+     */
+    public static String getTimeSize( int timesize ){
+        switch ( timesize ){
+            case 0 : return TimeSizes.LESS;
+            case 1: return TimeSizes.MORE;
+            case 2: return TimeSizes.ALOT;
+            default: return null;
+        }
+    }
+
+    public static int getIntForTimeSize( String time_size ){
+        if( time_size.equals(TimeSizes.LESS) ) return 0;
+        else if( time_size.equals(TimeSizes.MORE) ) return 1;
+        else if ( time_size.equals(TimeSizes.ALOT) ) return 2;
+        else return -1;
+    }
+
+//    bool to int method
     public static int booleanToInt( boolean bool ) {
 
         if ( bool ) return 1;

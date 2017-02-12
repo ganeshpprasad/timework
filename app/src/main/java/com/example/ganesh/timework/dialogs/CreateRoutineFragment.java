@@ -48,6 +48,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     LinearLayout checkBoxContainerLl;
     EditText eventNameEt;
     Spinner spinnerType;
+    Spinner spinnerTimeSize;
     CheckBox notifyCb;
     TextView timePickerTv;
 
@@ -146,6 +147,12 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerType.setAdapter(arrayAdapter);
 
+        spinnerTimeSize = (Spinner) rootView.findViewById(R.id.spinner_time_size_routine_dialogfragment);
+        ArrayAdapter<CharSequence> arrayAdapter_time = ArrayAdapter.createFromResource(getActivity(), R.array.time_size,
+                android.R.layout.simple_spinner_item);
+        arrayAdapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTimeSize.setAdapter(arrayAdapter_time);
+
         radioDaysGroup = (RadioGroup) rootView.findViewById( R.id.radio_group_days_routine_dialogfragment );
         radioDaysGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -229,6 +236,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         }
 
         spinnerType.setSelection(Constants.getIntForTypeOfRoutine(mItem.getRoutineType()));
+        spinnerTimeSize.setSelection(Constants.getIntForTimeSize(mItem.getTime_size()));
         String time = Utilities.formattedTimeForRoutines(mItem.getHour() , mItem.getMinutes());
         timePickerTv.setText(time);
         notifyCb.setChecked( mItem.isNotify() );
@@ -273,6 +281,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         int dayGroup;
         int idRadioDays = radioDaysGroup.getCheckedRadioButtonId();
         int idTypeSelection = spinnerType.getSelectedItemPosition();
+        int routineTimeSize = spinnerTimeSize.getSelectedItemPosition();
         boolean notifyBool = notifyCb.isChecked();
         String eventNameString = eventNameEt.getText().toString();
 
@@ -292,8 +301,10 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 custom = null;
             }
 
+            Log.d( "Time size debug create" , routineTimeSize + " "  );
+
             adapter = adapterInitialise( eventNameString , dayGroup ,
-                    idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate);
+                    idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate, routineTimeSize);
             adapter.addValuesToDb();
             saveRoutineListener.onNewRoutineCreated();
         }else {
@@ -314,10 +325,11 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
             boolean[] daysSelectedArray,
             int hour,
             int minutes,
-            boolean isUpdate
+            boolean isUpdate,
+            int routineTimeSize
     ){
         DialogToDatabaseAdapter adapter = new DialogToDatabaseAdapter(getContext() ,
-                eventName , day , type , notify , daysSelectedArray , hour , minutes , isUpdate);
+                eventName , day , type , notify , daysSelectedArray , hour , minutes , isUpdate, routineTimeSize);
         if ( isUpdate ){
             adapter.setId(routineId);
         }

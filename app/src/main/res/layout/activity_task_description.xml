@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     android:id="@+id/coordinator_layout_routine_fragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,79 +7,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context="com.example.ganesh.timework.TaskDescriptionActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_tasks_detail_page"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white">
 
-        <android.support.design.widget.AppBarLayout
+        <EditText
+            android:id="@+id/name_task_detail_page"
             android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:text="Task Name"
+            android:textColor="@color/colorAccent"
+            android:textAppearance="?android:textAppearance"
+            android:maxLines="1"
+            android:textSize="20sp"/>
+
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
+            android:text="@string/type_of_task"
+            style="@style/TextStyleForHeadings"/>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_tasks_detail_page"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <LinearLayout
+        <Spinner
+            android:id="@+id/type_task_detail_page"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/lightGray"
+            android:textAppearance="?android:textAppearance"
+            android:textSize="20sp"/>
 
-            <EditText
-                android:id="@+id/name_task_detail_page"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
-                android:text="Task Name"
-                android:background="@android:color/transparent"
-                android:textAppearance="?android:textAppearance"
-                android:textSize="20sp"/>
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
 
-            <Spinner
-                android:id="@+id/type_task_detail_page"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textAppearance="?android:textAppearance"
-                android:textSize="20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/task_desc_time"
+            style="@style/TextStyleForHeadings"/>
 
-            <TextView
-                android:id="@+id/time_task_detail_page"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="12:00"
-                android:textAppearance="?android:textAppearance"
-                android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/time_task_detail_page"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/lightGray"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            tools:text="12:00"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textSize="20sp"/>
 
-            <TextView
-                android:id="@+id/date_task_detail_page"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="4 / 5 / 16"
-                android:textAppearance="?android:textAppearance"
-                android:textSize="20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/task_desc_date"
+            style="@style/TextStyleForHeadings"/>
 
-            <CheckBox
-                android:id="@+id/notify_checkbox_task_detail_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Notify"
-                android:textAppearance="?android:textAppearance"
-                android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/date_task_detail_page"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/lightGray"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            tools:text="Today, Feb 4"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textSize="20sp"/>
 
-        </LinearLayout>
+        <View android:layout_height="1dp"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimaryDark"
+              android:layout_marginBottom="16dp"/>
+
+        <CheckBox
+            android:id="@+id/notify_checkbox_task_detail_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/notify"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

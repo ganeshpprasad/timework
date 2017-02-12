@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.TaskDescriptionActivity;
@@ -22,8 +24,11 @@ import com.example.ganesh.timework.utils.DescriptionTaskListenerModel;
 import com.example.ganesh.timework.utils.Routines;
 import com.example.ganesh.timework.utils.Tasks;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_DB_ID;
 import static com.example.ganesh.timework.ui.TasksFragment.TASK_RECYCLERVIEW_POSITION;
@@ -75,8 +80,12 @@ public class TodayFragment extends Fragment implements
         String sortOrder = DatabaseContract.RoutineContract.COLUMN_ROUTINE_TIME_HOUR + " ASC," +
                 DatabaseContract.RoutineContract.COLUMN_ROUTINE_TIME_MINUTES + " ASC";
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.getDefault());
+        String dayOfWeek = sdf.format(c.getTime());
+
         Cursor cursorRoutines = getActivity().getContentResolver().query(
-                DatabaseContract.RoutineContract.buildRoutineUriWithDay(Constants.Days.MONDAY),
+                DatabaseContract.RoutineContract.buildRoutineUriWithDay(Constants.getIntWeekday(dayOfWeek)),
                 null ,
                 null ,
                 null ,
@@ -121,7 +130,7 @@ public class TodayFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
         if( tasks.size() == 0 ){
             rootView.findViewById(R.id.today_tasks_no_tasks_textview).setVisibility(View.VISIBLE);
@@ -141,6 +150,24 @@ public class TodayFragment extends Fragment implements
         RecyclerView recyclerViewRoutines = (RecyclerView) rootView.findViewById(R.id.recycler_view_routines_fragment);
         recyclerViewRoutines.setLayoutManager( new LinearLayoutManager(getActivity()));
         recyclerViewRoutines.setAdapter(adapterRoutines);
+
+        /**
+         * Implementing tasks hide and show
+         * text view on click toggles tasks' list
+         */
+
+        TextView taskTitleTv = (TextView) rootView.findViewById(R.id.today_tasks_title);
+        taskTitleTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RelativeLayout todayTasksRl = (RelativeLayout) rootView.findViewById(R.id.today_tasks);
+                if( todayTasksRl.getVisibility() == View.GONE ){
+                    todayTasksRl.setVisibility(View.VISIBLE);
+                } else {
+                    todayTasksRl.setVisibility(View.GONE);
+                }
+            }
+        });
 
         return rootView;
     }

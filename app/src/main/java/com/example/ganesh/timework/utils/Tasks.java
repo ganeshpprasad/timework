@@ -107,6 +107,7 @@ public class Tasks {
                 int minutes = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_TIME_MINUTES ) );
                 int date = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_DATE ) );
                 int month = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_MONTH ) );
+                int year = cursor.getInt( cursor.getColumnIndexOrThrow( TaskContract.COLUMN_TASK_YEAR ) );
 
                 boolean notify = cursor.getInt(cursor.getColumnIndexOrThrow(TaskContract.COLUMN_TASK_NOTIFY)) == 1;
                 int id = cursor.getInt( cursor.getColumnIndexOrThrow(TaskContract._ID) );
@@ -115,8 +116,11 @@ public class Tasks {
                 tasks = new Tasks( taskName , taskType , notify );
 
                 tasks.setId(id);
+
                 tasks.setDate(date);
                 tasks.setMonth(month);
+                tasks.setYear(year);
+
                 tasks.setHour(hour);
                 tasks.setMinutes(minutes);
 

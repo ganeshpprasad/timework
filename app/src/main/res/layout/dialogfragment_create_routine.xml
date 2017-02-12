@@ -192,6 +192,27 @@
                   android:background="@color/colorPrimaryDark"
                   android:layout_marginBottom="16dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="8dp"
+                android:text="Select time size"
+                style="@style/TextStyleForHeadings"/>
+
+            <Spinner
+                android:id="@+id/spinner_time_size_routine_dialogfragment"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/lightGray"
+                android:textAlignment="center"/>
+
+            <View android:layout_height="1dp"
+                  android:layout_width="match_parent"
+                  android:background="@color/colorPrimaryDark"
+                  android:layout_marginBottom="16dp"/>
+
             <!-- Select time -->
             <TextView
                 android:layout_width="wrap_content"

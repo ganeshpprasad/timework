@@ -51,10 +51,14 @@ public class TaskDescriptionActivity extends AppCompatActivity implements TimePi
     //     tasks details are used in updating the task if edited
     String taskName;
     String taskType;
+
     int taskHour;
     int taskMinutes;
+
     int taskDate;
     int taskMonth;
+    int taskYear;
+
     boolean isNotify;
 
     //    To check if the database update happened without any error
@@ -123,6 +127,7 @@ public class TaskDescriptionActivity extends AppCompatActivity implements TimePi
             taskType = tasks.getTaskType();
             taskDate = tasks.getDate();
             taskMonth = tasks.getMonth();
+            taskYear = tasks.getYear();
             taskHour = tasks.getHour();
             taskMinutes = tasks.getMinutes();
             isNotify = tasks.isNotify();
@@ -133,8 +138,8 @@ public class TaskDescriptionActivity extends AppCompatActivity implements TimePi
         taskTypeSpinner.setSelection(Constants.getIntForTypeOfRoutine(taskType));
 
 //        TODO format date and time - better
-        String time = taskHour + ":" + taskMinutes;
-        String date = taskDate + "/" + taskMonth;
+        String time = Utilities.formattedTimeForRoutines(taskHour, taskMinutes);
+        String date = Utilities.formattedDayForTask(taskYear, taskMonth , taskDate);
 
         taskTimeTv.setText(time);
         taskDateTv.setText(date);

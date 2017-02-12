@@ -2,47 +2,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/lightGray"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:fitsSystemWindows="true">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/today_tasks_title"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Tasks"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/today_tasks"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/lightGray"
         android:padding="4dp"
-        android:layout_alignParentTop="true">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/today_tasks_title"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="Tasks"
-            android:textColor="@color/lightGray"
-            android:textSize="20sp"
-            android:layout_alignParentTop="true"/>
+        android:layout_below="@+id/today_tasks_title"
+        android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_tasks_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/today_tasks_title"/>
+            android:layout_alignParentTop="true"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="100dp"
             android:id="@+id/today_tasks_no_tasks_textview"
             android:visibility="invisible"
             android:text="No Tasks Today. Yay!"
             android:textColor="@color/white"
-            android:layout_below="@+id/today_tasks_title"
+            android:layout_alignParentTop="true"
             android:gravity="center"/>
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/today_separator"
+        android:background="@color/cardview_dark_background"
+        android:layout_below="@+id/today_tasks"
+        android:layout_margin="4dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +61,7 @@
         android:background="@color/lightGray"
         android:orientation="vertical"
         android:padding="4dp"
-        android:layout_below="@+id/today_tasks">
+        android:layout_below="@+id/today_separator">
 
         <TextView
             android:layout_width="match_parent"

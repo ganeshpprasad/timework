@@ -160,6 +160,8 @@ public class TasksFragment extends Fragment implements
                     null
             ) );
 
+            Log.d("update task list", task.getYear() + " " + task.getMonth());
+
             tasks.add(updatedItemPosition , task);
             adapter.notifyItemChanged(updatedItemPosition);
         }

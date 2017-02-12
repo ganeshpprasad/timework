@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
 
@@ -20,6 +21,7 @@ public class DialogToDatabaseAdapter {
     String routineName;
     int dayGroup;
     int typeSelected;
+    int timeSize;
     Boolean notify;
 
     int hour;
@@ -32,10 +34,11 @@ public class DialogToDatabaseAdapter {
     int id;
 
     public DialogToDatabaseAdapter(Context _context , String _routineName , int _dayGroup , int _typeSelected ,
-                                   Boolean _notify , boolean[] _custom , int _hour , int _minutes , boolean _isUpdate ) {
+                                   Boolean _notify , boolean[] _custom , int _hour , int _minutes , boolean _isUpdate, int routineTimeSize ) {
         this.routineName = _routineName;
         this.dayGroup = _dayGroup;
         this.typeSelected = _typeSelected;
+        this.timeSize = routineTimeSize;
         this.notify = _notify;
 
         this.hour = _hour;
@@ -56,6 +59,9 @@ public class DialogToDatabaseAdapter {
 
 //        getting the type string based on typeSelected
         String typeString = Constants.getTypeOfRoutine( typeSelected );
+//
+        String timeSizeString = Constants.getTimeSize( timeSize );
+        Log.d( "time size debug", timeSizeString + "  " + timeSize);
 
 //        Get an array of days column names for for loop
         String[] daysColumnArray = RoutineContract.getColumnNameDaysArray();
@@ -64,6 +70,7 @@ public class DialogToDatabaseAdapter {
 
         contentValues.put( RoutineContract.COLUMN_ROUTINE_NAME , routineName );
         contentValues.put( RoutineContract.COLUMN_ROUTINE_TYPE , typeString );
+        contentValues.put( RoutineContract.COLUMN_ROUTINE_TIME_SIZE , timeSizeString );
         contentValues.put( RoutineContract.COLUMN_ROUTINE_NOTIFY , notifyInt );
         contentValues.put( RoutineContract.COLUMN_ROUTINE_TIME_HOUR , hour );
         contentValues.put( RoutineContract.COLUMN_ROUTINE_TIME_MINUTES , minutes );

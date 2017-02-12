@@ -24,11 +24,6 @@ public class DatabaseProvider extends ContentProvider {
     private static final int ROUTINE_TABLE_WITH_TYPE = 103;
     private static final int ROUTINE_TABLE_WITH_DAY = 104;
 
-//    private static final int NOTES_TABLE = 201;
-//    private static final int NOTES_TABLE_ID = 202;
-//    private static final int NOTES_TABLE_WITH_TYPE = 203;
-//    private static final int NOTES_TABLE_WITH_CREATED_DATE = 204;
-
     private static final int TASKS_TABLE = 301;
     private static final int TASKS_WITH_ID = 302;
     private static final int TASKS_WITH_TYPE = 303;
@@ -37,15 +32,11 @@ public class DatabaseProvider extends ContentProvider {
     public DatabaseHelper mOpenDbHelper;
 
     private static SQLiteQueryBuilder sRoutineQueryBuilder;
-//    private static SQLiteQueryBuilder sNotesQueryBuilder;
     private static SQLiteQueryBuilder sTasksQueryBuilder;
 
     static {
         sRoutineQueryBuilder = new SQLiteQueryBuilder();
         sRoutineQueryBuilder.setTables(DatabaseContract.RoutineContract.TABLE_NAME);
-
-//        sNotesQueryBuilder = new SQLiteQueryBuilder();
-//        sNotesQueryBuilder.setTables( DatabaseContract.NotesContract.TABLE_NAME );
 
         sTasksQueryBuilder = new SQLiteQueryBuilder();
         sTasksQueryBuilder.setTables(DatabaseContract.TaskContract.TABLE_NAME);
@@ -70,16 +61,12 @@ public class DatabaseProvider extends ContentProvider {
 //        used in routine day page filter button - /day/type
         uriMatcher.addURI(DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_ROUTINE + "/*/*" , ROUTINE_TABLE_WITH_TYPE);
 
-//        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_NOTE , NOTES_TABLE);
-//
-//        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_NOTE + "/#" , NOTES_TABLE_ID );
-//
-//        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_NOTE + "/*" , NOTES_TABLE_WITH_TYPE );
-
 //        task table constants
         uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_TASK , TASKS_TABLE );
-
+//        task with ID
         uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY , DatabaseContract.PATH_TASK + "/#" , TASKS_WITH_ID );
+//        task with type
+        uriMatcher.addURI( DatabaseContract.CONTENT_AUTHORITY, DatabaseContract.PATH_TASK + "/*" , TASKS_WITH_TYPE );
 
         return uriMatcher;
     }
@@ -131,11 +118,11 @@ public class DatabaseProvider extends ContentProvider {
         String day = DatabaseContract.RoutineContract.getColumnDayFromUri(uri);
         String type = DatabaseContract.RoutineContract.getRoutineType(uri);
 
-        Log.d( LOG_TAG , day + " " + type );
+//        Log.d( LOG_TAG , day + " " + type );
 
         String selection = day + " = ? AND " + DatabaseContract.RoutineContract.COLUMN_ROUTINE_TYPE +
                 " = ? ";
-        String[] selectionArgs = new String[] {"1" , type};
+        String[] selectionArgs = new String[] {day , type};
 
         return sRoutineQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase() ,
@@ -148,26 +135,6 @@ public class DatabaseProvider extends ContentProvider {
         );
 
     }
-
-//    Method to return the cursor for Notes on a id from uri
-//    private Cursor getNotesWithId( Uri uri , String[] projection , String sortOrder ) {
-//
-//        String id = NotesContract.getIdFromUri(uri);
-//
-//        String selection = NotesContract._ID + " = ?";
-//        String[] selectionArgs = new String[]{id};
-//
-//        return sNotesQueryBuilder.query(
-//                mOpenDbHelper.getReadableDatabase() ,
-//                projection ,
-//                selection ,
-//                selectionArgs ,
-//                null ,
-//                null ,
-//                sortOrder
-//        );
-//
-//    }
 
 //    method to return the cursor for tasks on a id from uri
     private Cursor getTasksWithId( Uri uri , String[] projection , String sortOrder ) {
@@ -186,7 +153,24 @@ public class DatabaseProvider extends ContentProvider {
                 null ,
                 sortOrder
         );
+    }
 
+    private Cursor getTasksWithType(Uri uri, String[] projection, String sortOrder){
+
+        String type = uri.getPathSegments().get(1);
+
+        String selection = DatabaseContract.TaskContract.COLUMN_TASK_TYPE + " = ?";
+        String[] selectionArgs = new String[] {type};
+
+        return sTasksQueryBuilder.query(
+                mOpenDbHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
     }
 
     @Override
@@ -230,26 +214,6 @@ public class DatabaseProvider extends ContentProvider {
                 return retCursor;
             }
 
-//            case NOTES_TABLE : {
-//
-//                retCursor = mOpenDbHelper.getReadableDatabase().query(
-//                        NotesContract.TABLE_NAME ,
-//                        projection ,
-//                        selection ,
-//                        selectionArgs ,
-//                        null ,
-//                        null ,
-//                        sortOrder
-//                );
-//                return retCursor;
-//
-//            }
-
-//            case NOTES_TABLE_ID : {
-//                retCursor = getNotesWithId(uri , projection , sortOrder);
-//                return  retCursor;
-//            }
-
             case TASKS_TABLE : {
 
                 retCursor = mOpenDbHelper.getReadableDatabase().query(
@@ -270,6 +234,10 @@ public class DatabaseProvider extends ContentProvider {
                 return retCursor;
             }
 
+            case TASKS_WITH_TYPE : {
+                return getTasksWithType(uri,projection,sortOrder);
+            }
+
         }
 
         return null;
@@ -280,6 +248,7 @@ public class DatabaseProvider extends ContentProvider {
     public String getType(Uri uri) {
 
         switch (sUriMatcher.match(uri)){
+
 //            Return types for the routine table
 //            query returns entire table
             case ROUTINE_TABLE : return DatabaseContract.RoutineContract.CONTENT_TYPE;
@@ -288,13 +257,6 @@ public class DatabaseProvider extends ContentProvider {
 //            query to return the set of items matching the type and day
             case ROUTINE_TABLE_WITH_DAY : return DatabaseContract.RoutineContract.CONTENT_TYPE;
             case ROUTINE_TABLE_WITH_TYPE : return DatabaseContract.RoutineContract.CONTENT_TYPE;
-
-//            retuen calls for Notes Table
-//            case NOTES_TABLE : return NotesContract.CONTENT_TYPE;
-//
-//            case NOTES_TABLE_ID : return NotesContract.CONTENT_ITEM_TYPE;
-//
-//            case NOTES_TABLE_WITH_TYPE : return NotesContract.CONTENT_TYPE;
 
 //            return types for tasks table
             case TASKS_TABLE : return DatabaseContract.TaskContract.CONTENT_TYPE;
@@ -329,22 +291,6 @@ public class DatabaseProvider extends ContentProvider {
                 }
             }
 
-//            case NOTES_TABLE : {
-//
-//                long id = mOpenDbHelper.getWritableDatabase().insert(
-//                        NotesContract.TABLE_NAME ,
-//                        null ,
-//                        values
-//                );
-//                if ( id > 0 ) {
-//                    returnUri = NotesContract.buildNotesUriWithId( id );
-//                    return returnUri;
-//                } else{
-//                    return null;
-//                }
-//
-//            }
-
             case TASKS_TABLE : {
 
                 long id = mOpenDbHelper.getWritableDatabase().insert(
@@ -373,14 +319,6 @@ public class DatabaseProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
 
         switch ( match ) {
-
-//            case NOTES_TABLE_ID : {
-//                return mOpenDbHelper.getWritableDatabase().delete(
-//                  NotesContract.TABLE_NAME ,
-//                  NotesContract._ID + " = ?" ,
-//                  new String[] { NotesContract.getIdFromUri(uri) }
-//                );
-//            }
 
             case ROUTINE_TABLE_ID : {
                 return mOpenDbHelper.getWritableDatabase().delete(
@@ -411,15 +349,6 @@ public class DatabaseProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
 
         switch (match) {
-
-//            case NOTES_TABLE_ID : {
-//                return mOpenDbHelper.getWritableDatabase().update(
-//                        NotesContract.TABLE_NAME ,
-//                        values ,
-//                        NotesContract._ID + " = ?" ,
-//                        new String[] {NotesContract.getIdFromUri(uri)}
-//                );
-//            }
 
             case ROUTINE_TABLE_ID : {
                 return mOpenDbHelper.getWritableDatabase().update(

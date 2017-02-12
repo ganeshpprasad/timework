@@ -3,6 +3,7 @@ package com.example.ganesh.timework.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.ganesh.timework.R;
 import com.example.ganesh.timework.data.DatabaseContract;
+import com.example.ganesh.timework.utils.Constants;
 import com.example.ganesh.timework.utils.Routines;
 import com.example.ganesh.timework.utils.Utilities;
 
@@ -54,6 +56,15 @@ public class RoutinesRecycleAdapter extends RecyclerView.Adapter<RoutinesRecycle
         final int routineId = holder.mItem.getRoutineid();
 
         holder.mType.setText(holder.mItem.getRoutineType());
+
+        String time_size = holder.mItem.getTime_size();
+        if( time_size.equals(Constants.TimeSizes.LESS) ){
+            holder.mEventName.setTextSize(20);
+        }else if ( time_size.equals(Constants.TimeSizes.MORE) ){
+            holder.mEventName.setTextSize(25);
+        }else {
+            holder.mEventName.setTextSize(35);
+        }
 
         holder.mOptionsButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -21,7 +21,6 @@ public final class DatabaseContract {
 
     public static final String PATH_ROUTINE = "routine";
     public static final String PATH_TASK = "task";
-    public static final String PATH_NOTE = "note";
 
     //    Empty constructor
     public DatabaseContract() {
@@ -47,6 +46,8 @@ public final class DatabaseContract {
 
 //        Has only 3 values - HOBBY  , PRESONAL , WORK [for now]
         public static final String COLUMN_ROUTINE_TYPE = "type";
+//        Time sizes
+        public static final String COLUMN_ROUTINE_TIME_SIZE = "size";
 
         public static final String COLUMN_ROUTINE_TIME_HOUR = "hour";
         public static final String COLUMN_ROUTINE_TIME_MINUTES = "minutes";
@@ -137,49 +138,14 @@ public final class DatabaseContract {
             return ContentUris.withAppendedId( CONTENT_URI , id );
         }
 
+        public static Uri buildUriWithType( String type ){
+            return CONTENT_URI.buildUpon().appendPath(type).build();
+        }
+
         public static String getIdFromUri( Uri uri ) {
             return uri.getPathSegments().get(1);
         }
 
     }
-
-//    public static abstract class NotesContract implements BaseColumns {
-//
-//        //        Content uri for the content provider
-//        public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_NOTE).build();
-//
-//        //         Content types for the uri matcher
-//        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NOTE;
-//        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NOTE;
-//
-//        public static final String TABLE_NAME = "note";
-//
-//        public static final String COLUMN_NOTES_NAME = "name";
-//        public static final String COLUMN_NOTES_CONTENT = "content";
-//        public static final String COLUMN_NOTES_TYPE = "type";
-//        public static final String COLUMN_NOTES_CREATED_HOUR = "createdHour";
-//        public static final String COLUMN_NOTES_CREATED_MINUTES = "createdMinutes";
-//        public static final String COLUMN_NOTES_CREATED_DATE = "createdDate";
-//        public static final String COLUMN_NOTES_CREATED_MONTH = "createdMonth";
-//
-////        method to return uri with id
-//        public static Uri buildNotesUriWithId( long id )  {
-//            return ContentUris.withAppendedId( CONTENT_URI , id );
-//        }
-//
-////        method to return uri with type
-//        public static Uri buildNotesUriWithType( String type ){
-//            return CONTENT_URI.buildUpon().appendPath( type ).build();
-//        }
-//
-//        public static String getIdFromUri(Uri uri){
-//            return uri.getPathSegments().get(1);
-//        }
-//
-//        public static String getTypeFromUri( Uri uri ){
-//            return uri.getPathSegments().get(1);
-//        }
-//
-//    }
 
 }

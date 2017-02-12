@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.ganesh.timework.ui.TagsFragment;
 import com.example.ganesh.timework.ui.TodayFragment;
 import com.example.ganesh.timework.ui.RoutineFragment;
 import com.example.ganesh.timework.ui.TasksFragment;
@@ -102,7 +103,7 @@ public class LandingPageActivity extends AppCompatActivity
             }
 
             case R.id.nav_tags: {
-//                getSupportFragmentManager().beginTransaction().replace()
+                getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TagsFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Tags");
                 break;
             }
