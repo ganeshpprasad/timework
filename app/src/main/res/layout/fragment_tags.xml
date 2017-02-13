@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,10 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tags_hobby_title"
-            android:text="Hobby"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:gravity="center"
-            android:layout_alignParentTop="true"/>
+            android:text="@string/hobby"
+            android:layout_alignParentTop="true"
+            style="@style/TextStyleTaskHeading"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_tags_hobby"
@@ -38,9 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tags_personal_title"
-            android:text="Personal"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:gravity="center"
+            android:text="@string/personal"
+            style="@style/TextStyleTaskHeading"
             android:layout_alignParentTop="true"/>
 
         <android.support.v7.widget.RecyclerView
@@ -60,9 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tags_work_title"
-            android:text="Work"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:gravity="center"
+            android:text="@string/work"
+            style="@style/TextStyleTaskHeading"
             android:layout_alignParentTop="true"/>
 
         <android.support.v7.widget.RecyclerView

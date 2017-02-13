@@ -38,41 +38,65 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
+    <!-- Parent style for all text -->
+
     <style name="TextAppTheme">
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <!-- Parent style for content text - light -->
+
+    <style name="TextAppTheme.Body">
+        <item name="android:fontFamily">serif-light</item>
+    </style>
+
+    <!-- Parent style for title of items - bold -->
+
+    <style name="TextAppTheme.Heading">
         <item name="android:fontFamily">sans-serif</item>
-    </style>
-
-    <style name="TextAppTheme.Light">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="TextStyleNotesHeading" parent="TextAppTheme">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Task list item and task heading in fragments styles -->
+
+    <!-- Style for task and routine heading in today fragment -->
+    <style name="TextStyleTaskHeading" parent="TextAppTheme.Heading">
         <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="TextStyleNotesContent" parent="TextAppTheme.Light">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="TextStyleRoutineCardsTitle" parent="TextAppTheme">
-        <!--<item name="android:textSize">17sp</item>-->
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="TextStyleRoutineCardsTime" parent="TextAppTheme">
-        <item name="android:textSize">11sp</item>
-    </style>
-
-    <style name="TextStyleRoutineCardsType" parent="TextAppTheme">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="TextStyleTaskCardsTitle" parent="TextAppTheme">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="TextStyleTaskCardContent" parent="TextAppTheme.Body">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/textScondary</item>
+    </style>
+
+    <!-- Routine item title style -->
+    <style name="TextStyleRoutineCardsTitle" parent="TextAppTheme">
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <!-- No text size cause its set based on time size selected for the routine -->
+    </style>
+
+    <!-- Routine item time text style -->
+    <style name="TextStyleRoutineCardsTime" parent="TextAppTheme.Body">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/textScondary</item>
+    </style>
+
+    <style name="TextStyleRoutineCardsType" parent="TextAppTheme.Body">
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/textScondary</item>
     </style>
 
 </resources>

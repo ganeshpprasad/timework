@@ -1,5 +1,6 @@
 package com.example.ganesh.timework;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,11 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.ganesh.timework.ui.TagsFragment;
 import com.example.ganesh.timework.ui.TodayFragment;
 import com.example.ganesh.timework.ui.RoutineFragment;
 import com.example.ganesh.timework.ui.TasksFragment;
+
+import org.w3c.dom.Text;
 
 /**
  * Landing page contains
@@ -42,7 +47,16 @@ public class LandingPageActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
+//        navigationView.getMenu().getItem(0).setChecked(true);
+
+        TextView aboutTv = (TextView) findViewById(R.id.about_landing_page);
+        aboutTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( LandingPageActivity.this , AboutActivity.class );
+                startActivity(intent);
+            }
+        });
 
         getSupportFragmentManager().beginTransaction().add(R.id.container_landing_page, TodayFragment.newInstance() ).commit();
 
@@ -85,26 +99,34 @@ public class LandingPageActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.nav_home: {
+                navigationView.getMenu().getItem(0).setChecked(true);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TodayFragment.newInstance() ).commit();
                 getSupportActionBar().setTitle( "Today" );
+
                 break;
             }
 
             case R.id.nav_routine: {
+                navigationView.getMenu().getItem(1).setChecked(true);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, RoutineFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Routines");
+
                 break;
             }
 
             case R.id.nav_tasks: {
+                navigationView.getMenu().getItem(2).setChecked(true);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TasksFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Tasks");
+
                 break;
             }
 
             case R.id.nav_tags: {
+                navigationView.getMenu().getItem(3).setChecked(true);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container_landing_page, TagsFragment.newInstance()).commit();
                 getSupportActionBar().setTitle("Tags");
+
                 break;
             }
         }

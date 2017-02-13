@@ -24,8 +24,13 @@
             android:name=".data.DatabaseProvider"
             android:authorities="com.example.ganesh.timework.app"/>
 
-        <activity android:name=".TaskDescriptionActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".TaskDescriptionActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".AboutActivity"
+            android:parentActivityName=".LandingPageActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

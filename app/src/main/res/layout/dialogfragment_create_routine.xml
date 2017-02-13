@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="24dp"
-    android:fitsSystemWindows="true">
+    android:background="@color/white"
+    android:clickable="false"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:clickable="false">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_routine_dialogfragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_routine_dialogfragment"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    </android.support.design.widget.AppBarLayout>
 
-        </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:clickable="true">
+            android:padding="16dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -47,31 +47,32 @@
                     android:id="@+id/event_name_routine_dialogfragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="@string/event_name"/>
+                    android:hint="@string/event_name"
+                    android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
 
-            <View android:layout_height="1dp"
-                  android:layout_width="match_parent"
-                  android:background="@color/colorPrimaryDark"
-                android:layout_marginBottom="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorPrimaryDark"/>
 
             <!-- Repeat tasks section -->
             <TextView
+                style="@style/TextStyleForHeadings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
-                android:text="@string/repeat_string"
-                style="@style/TextStyleForHeadings"/>
+                android:text="@string/repeat_string"/>
 
             <RadioGroup
+                android:id="@+id/radio_group_days_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:id="@+id/radio_group_days_routine_dialogfragment"
                 android:paddingStart="8dp">
 
                 <RadioButton
@@ -83,28 +84,28 @@
                     android:text="Weekdays"/>
 
                 <RadioButton
+                    android:id="@+id/radio_alldays_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/radio_alldays_routine_dialogfragment"
                     android:text="All Days"/>
 
                 <RadioButton
+                    android:id="@+id/radio_custom_routine_dialogfragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/radio_custom_routine_dialogfragment"
                     android:text="Custom"/>
 
             </RadioGroup>
 
             <LinearLayout
+                android:id="@+id/check_box_container_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:id="@+id/check_box_container_routine_dialogfragment"
                 android:alpha="0.5"
+                android:orientation="horizontal"
                 android:paddingStart="8dp">
 
                 <CheckBox
@@ -165,19 +166,20 @@
 
             </LinearLayout>
 
-            <View android:layout_height="1dp"
-                  android:layout_width="match_parent"
-                  android:background="@color/colorPrimaryDark"
-                  android:layout_marginBottom="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorPrimaryDark"/>
 
             <!-- Type of routine spinner -->
             <TextView
+                style="@style/TextStyleForHeadings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
-                android:text="@string/type_of_routine"
-                style="@style/TextStyleForHeadings"/>
+                android:text="@string/type_of_routine"/>
 
             <Spinner
                 android:id="@+id/spinner_type_routine_dialogfragment"
@@ -187,18 +189,19 @@
                 android:background="@color/lightGray"
                 android:textAlignment="center"/>
 
-            <View android:layout_height="1dp"
-                  android:layout_width="match_parent"
-                  android:background="@color/colorPrimaryDark"
-                  android:layout_marginBottom="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorPrimaryDark"/>
 
             <TextView
+                style="@style/TextStyleForHeadings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
-                android:text="Select time size"
-                style="@style/TextStyleForHeadings"/>
+                android:text="Select time size"/>
 
             <Spinner
                 android:id="@+id/spinner_time_size_routine_dialogfragment"
@@ -208,40 +211,41 @@
                 android:background="@color/lightGray"
                 android:textAlignment="center"/>
 
-            <View android:layout_height="1dp"
-                  android:layout_width="match_parent"
-                  android:background="@color/colorPrimaryDark"
-                  android:layout_marginBottom="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorPrimaryDark"/>
 
             <!-- Select time -->
             <TextView
+                style="@style/TextStyleForHeadings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
-                android:text="Select Time"
-                style="@style/TextStyleForHeadings"/>
+                android:text="Select Time"/>
 
             <TextView
+                android:id="@+id/time_picker_tv_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/lightGray"
-                android:textAppearance="?android:textAppearanceMedium"
                 android:gravity="center"
-                tools:text="06:00"
-                android:id="@+id/time_picker_tv_routine_dialogfragment"/>
+                android:textAppearance="?android:textAppearanceMedium"
+                tools:text="06:00"/>
 
             <CheckBox
+                android:id="@+id/checkbox_notify_routine_dialogfragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
-                android:id="@+id/checkbox_notify_routine_dialogfragment"
                 android:text="Notify ?"
                 android:textAppearance="?android:textAppearanceMedium"/>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

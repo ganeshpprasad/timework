@@ -48,6 +48,19 @@
         app:headerLayout="@layout/nav_header_landing_page"
         app:menu="@menu/activity_landing_page_drawer">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/about_landing_page"
+            android:layout_gravity="bottom"
+            android:padding="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Made with ♥"
+            android:textColor="#111"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="center"/>
+
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/lightGray"
+                android:background="@color/white"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:fitsSystemWindows="true">
 
@@ -10,23 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/today_tasks_title"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="Tasks"
-        android:textColor="@color/cardview_dark_background"
-        android:textSize="20sp"
-        android:layout_alignParentTop="true"/>
+        android:text="@string/Tasks_h1"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        style="@style/TextStyleTaskHeading"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:id="@+id/today_tasks"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/lightGray"
-        android:padding="4dp"
-        android:layout_below="@+id/today_tasks_title"
-        android:visibility="visible">
+        android:background="@color/white"
+        android:padding="8dp"
+        android:layout_below="@+id/today_tasks_title">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_tasks_fragment"
@@ -36,11 +31,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:id="@+id/today_tasks_no_tasks_textview"
             android:visibility="invisible"
-            android:text="No Tasks Today. Yay!"
-            android:textColor="@color/white"
+            android:text="@string/no_tasks"
+            android:textColor="@color/colorPrimaryLight"
             android:layout_alignParentTop="true"
             android:gravity="center"/>
 
@@ -50,33 +45,30 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/today_separator"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/divider"
         android:layout_below="@+id/today_tasks"
-        android:layout_margin="4dp"/>
+        android:layout_margin="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@color/lightGray"
+        android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:padding="4dp"
+        android:padding="8dp"
         android:layout_below="@+id/today_separator">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
-            android:text="Routines"
-            android:textColor="@color/cardview_dark_background"
-            android:textSize="20sp"/>
+            android:text="@string/routines_title"
+            style="@style/TextStyleTaskHeading"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_routines_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="300dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

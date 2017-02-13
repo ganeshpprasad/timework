@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Time Work</string>
     <string name="title_activity_landing_page">Home</string>
-
+    <string name="About_text">Designed and developed by Ganesh Prasad P | 2016</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -36,4 +36,11 @@
     <string name="notify">Notify</string>
     <string name="task_desc_time">Time of task</string>
     <string name="task_desc_date">Task date</string>
+    <string name="Tasks_h1">Tasks</string>
+    <string name="routines_title">Routines</string>
+    <string name="hobby">Hobby</string>
+    <string name="personal">Personal</string>
+    <string name="work">Work</string>
+    <string name="no_tasks">No Tasks Today. Yay!</string>
+
 </resources>
