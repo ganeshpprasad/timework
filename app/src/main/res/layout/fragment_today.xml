@@ -17,7 +17,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="wrap_content"
+        android:minHeight="170dp"
         android:id="@+id/today_tasks"
         android:background="@color/white"
         android:padding="8dp"
@@ -31,13 +32,13 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/today_tasks_no_tasks_textview"
             android:visibility="invisible"
             android:text="@string/no_tasks"
             android:textColor="@color/colorPrimaryLight"
             android:layout_alignParentTop="true"
-            android:gravity="center"/>
+            android:layout_gravity="center"/>
 
     </RelativeLayout>
 

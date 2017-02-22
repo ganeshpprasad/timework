@@ -132,9 +132,13 @@ public class TodayFragment extends Fragment implements
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
+        final RelativeLayout todayTasksRl = (RelativeLayout) rootView.findViewById(R.id.today_tasks);
+
         if( tasks.size() == 0 ){
             rootView.findViewById(R.id.today_tasks_no_tasks_textview).setVisibility(View.VISIBLE);
             rootView.findViewById(R.id.recycler_view_tasks_fragment).setVisibility(View.INVISIBLE);
+
+            todayTasksRl.setVisibility(View.GONE);
         }
 
         /**
@@ -160,7 +164,7 @@ public class TodayFragment extends Fragment implements
         taskTitleTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RelativeLayout todayTasksRl = (RelativeLayout) rootView.findViewById(R.id.today_tasks);
+
                 if( todayTasksRl.getVisibility() == View.GONE ){
                     todayTasksRl.setVisibility(View.VISIBLE);
                 } else {
