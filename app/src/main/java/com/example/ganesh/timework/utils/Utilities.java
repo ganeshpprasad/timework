@@ -71,7 +71,6 @@ public class Utilities {
                 formattedTime = String.format(Locale.getDefault() , "%02d:%02d PM " ,hour , minutes);
             }else {
                 int hourPM = hour % 12;
-                Log.d("time shit,", hourPM + " ");
                 formattedTime = String.format(Locale.getDefault() , "%02d:%02d PM " ,hourPM , minutes);
             }
         } else {
@@ -81,7 +80,6 @@ public class Utilities {
                 formattedTime = String.format(Locale.getDefault() , "%02d:%02d AM " ,hour , minutes);
             }
         }
-        Log.d("time shit", formattedTime);
         return formattedTime;
     }
 
@@ -93,18 +91,15 @@ public class Utilities {
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.set(year, month, date);
         Date taskDay = new Date(calendarToday.getTimeInMillis());
-        Log.d("task date", taskDay.toString());
 
 //        Today's date
         Date today = Calendar.getInstance().getTime();
-        Log.d("Date shit", today.toString());
 
 //        Tomorrow's date
         Calendar calendarTomo = Calendar.getInstance();
         calendarTomo.setTime(today);
         calendarTomo.add(Calendar.DATE, 1);
         Date tomorrow = calendarTomo.getTime();
-//        Log.d("date shit", tomorrow.toString());
 
 //        Date formatter
         SimpleDateFormat monthDate = new SimpleDateFormat("MMM d", Locale.getDefault());
@@ -117,7 +112,6 @@ public class Utilities {
             formattedDate = weekMonthDate.format(taskDay);
         }
 
-//        Log.d("Date shit ", formattedDate);
         return formattedDate;
 
     }

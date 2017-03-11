@@ -108,6 +108,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         rootView = inflater.inflate(R.layout.dialogfragment_create_routine , container , false);
         setHasOptionsMenu(true);
 
+//        Toolbar
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_routine_dialogfragment);
         toolbar.setTitle(R.string.dialog_routine_title);
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -118,6 +119,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 hideSoftKeyboard();
             }
         });
+//        Not Actionbar so - Menu inflate here
         toolbar.inflateMenu(R.menu.dialogfragment_menu_create_routine);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -204,7 +206,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
         Calendar c = Calendar.getInstance();
         timeHour = c.get(Calendar.HOUR_OF_DAY);
         timeMinutes = c.get( Calendar.MINUTE );
-//        Log.d(LOG_TAG, timeHour + " " + timeMinutes);
         updateTimeTv( timeHour , timeMinutes );
 
         timePickerTv.setOnClickListener(new View.OnClickListener() {
@@ -256,7 +257,6 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
     }
 
     private boolean moveFocusAndSoftKeyboard( InputMethodManager imm , View view , View window ){
-        Log.d( LOG_TAG , "Enter key pressed" );
         imm.hideSoftInputFromWindow(window.getWindowToken() , 0);
         view.setFocusable(false);
         view.setFocusableInTouchMode(true);
@@ -300,8 +300,7 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
                 dayGroup = Constants.DayGroups.WEEKDAYS;
                 custom = null;
             }
-
-            Log.d( "Time size debug create" , routineTimeSize + " "  );
+            Log.d(LOG_TAG, "From createRoutine : notify " + notifyBool);
 
             adapter = adapterInitialise( eventNameString , dayGroup ,
                     idTypeSelection , notifyBool , custom , timeHour , timeMinutes , isUpdate, routineTimeSize);
@@ -338,14 +337,12 @@ public class CreateRoutineFragment extends DialogFragment implements TimePickerD
 
     @Override
     public void onSetTime(int hour, int minutes) {
-//        Log.d(LOG_TAG, hour + minutes + " ");
         updateTimeTv( hour , minutes );
         timeHour = hour;
         timeMinutes = minutes;
     }
 
     private void updateTimeTv( int hour , int minutes ) {
-//        Log.d(LOG_TAG, hour + " : " + minutes);
         timePickerTv.setText(Utilities.formattedTimeForRoutines(hour,minutes));
     }
 

@@ -32,6 +32,7 @@
             android:parentActivityName=".LandingPageActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <receiver android:name=".utils.AlarmReceiver"/>
     </application>
 
 </manifest>
