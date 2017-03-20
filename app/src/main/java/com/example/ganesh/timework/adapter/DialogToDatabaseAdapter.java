@@ -9,7 +9,6 @@ import android.util.Log;
 import com.example.ganesh.timework.data.DatabaseContract.RoutineContract;
 
 import com.example.ganesh.timework.utils.Constants;
-import com.example.ganesh.timework.utils.NotifyRoutineOrTask;
 
 /**
  * Created by Ganesh Prasad on 22-07-2016.
@@ -97,15 +96,6 @@ public class DialogToDatabaseAdapter {
             if(dbId != 0){
                 Log.d(LOG_TEXT, " Id number : " + dbId);
             }
-        }
-
-        if( notify  ){
-            // notify is true
-            // Call the notification alarm setter
-            Log.d(LOG_TEXT, " Database ID : " + dbId);
-            NotifyRoutineOrTask.setRoutineNotificationAlarm(context, dbId);
-        } else {
-            NotifyRoutineOrTask.removeRoutineNotification(context, dbId);
         }
 
         return true;

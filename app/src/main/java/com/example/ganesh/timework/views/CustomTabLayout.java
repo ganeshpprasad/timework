@@ -7,8 +7,7 @@ import android.util.AttributeSet;
 import java.lang.reflect.Field;
 
 /**
- * Created by Ganesh Prasad on 05-07-2016.
- */
+ * Created by Ganesh Prasad on 05-07-2016. */
 
 public class CustomTabLayout extends TabLayout {
 
