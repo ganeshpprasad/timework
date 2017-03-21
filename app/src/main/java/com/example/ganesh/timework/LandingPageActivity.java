@@ -77,6 +77,7 @@ public class LandingPageActivity extends AppCompatActivity
 //
     getSupportFragmentManager().beginTransaction()
         .add(R.id.container_landing_page, TodayFragment.newInstance()).commit();
+    navigationView.getMenu().getItem(0).setChecked(true);
 
 //
 //        Toolbar implementation
@@ -113,9 +114,11 @@ public class LandingPageActivity extends AppCompatActivity
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
+
 //
 //     Handle navigation view item clicks here.
 //
+    
     int id = item.getItemId();
 
     switch (id) {

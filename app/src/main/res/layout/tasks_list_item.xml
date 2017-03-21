@@ -1,89 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="16dp"
+  android:background="@color/cardview_light_background"
+  android:orientation="horizontal">
+
+  <LinearLayout
+    android:id="@+id/task_content_list_item"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:background="@color/cardview_light_background"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:layout_weight="7"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/task_name_task_list_item"
+      style="@style/TextStyleTaskCardsTitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="4dp"
+      tools:text="Task Name"/>
 
     <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="8dp"
+      android:paddingEnd="8dp"
+      android:orientation="horizontal">
+
+      <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="7">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+          android:layout_width="15dp"
+          android:layout_height="15dp"
+          android:layout_marginEnd="8dp"
+          android:src="@drawable/ic_list_item_placeholder_image"/>
 
         <TextView
-            android:id="@+id/task_name_task_list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Task Name"
-            android:layout_marginBottom="4dp"
-            style="@style/TextStyleTaskCardsTitle"/>
+          android:id="@+id/task_time_list_item"
+          style="@style/TextStyleTaskCardContent"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          tools:text="7:00 AM"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+      </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_list_item_placeholder_image"/>
+        <ImageView
+          android:layout_width="15dp"
+          android:layout_height="15dp"
+          android:layout_marginEnd="8dp"
+          android:src="@drawable/ic_nav_menu_tasks"/>
 
-                <TextView
-                    android:id="@+id/task_time_list_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    tools:text="7:00 AM"
-                    style="@style/TextStyleTaskCardContent"/>
+        <TextView
+          android:id="@+id/task_Date_list_item"
+          style="@style/TextStyleTaskCardContent"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          tools:text="Jan 29"/>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_nav_menu_tasks"/>
-
-                <TextView
-                    android:id="@+id/task_Date_list_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    tools:text="Jan 29"
-                    style="@style/TextStyleTaskCardContent"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+      </LinearLayout>
 
     </LinearLayout>
 
-    <ToggleButton
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/task_check_item"
-        android:layout_weight="1"
-        android:textOff=""
-        android:textOn=""
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:background="@drawable/task_check_item_toggle"/>
+  </LinearLayout>
+
+  <RelativeLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1.5">
+
+    <ImageButton
+      android:id="@+id/task_check_item"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:scaleType="centerCrop"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:background="@android:color/transparent"
+      android:src="@drawable/task_check_item_toggle"/>
+
+  </RelativeLayout>
 
 </LinearLayout>
